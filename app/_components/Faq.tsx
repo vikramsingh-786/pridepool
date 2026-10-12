@@ -108,7 +108,7 @@ export default function Faq() {
               style={
                 { "--reveal-delay": `${Math.min(0.06 + i * 0.05, 0.34).toFixed(3)}s` } as React.CSSProperties
               }
-              className={`overflow-hidden rounded-xl transition-shadow duration-300 ${
+              className={`overflow-hidden rounded-xl md:transition-shadow md:duration-300 ${
                 isOpen ? "neu-inset" : "neu-raised"
               }`}
             >
@@ -136,12 +136,12 @@ export default function Faq() {
                 role="region"
                 aria-labelledby={buttonId}
                 inert={!isOpen}
-                className={`grid transition-[grid-template-rows] duration-300 ease-arena-out ${
+                className={`grid md:transition-[grid-template-rows] md:duration-300 md:ease-arena-out ${
                   isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                 }`}
               >
                 <div className="overflow-hidden">
-                  <p className="max-w-[78ch] px-4 pb-4 pr-10 text-[0.875rem] leading-relaxed text-fg-muted sm:px-5 sm:pb-5 sm:pr-12">
+                  <p className={`max-w-[78ch] px-4 pb-4 pr-10 text-[0.875rem] leading-relaxed text-fg-muted transition-opacity duration-300 sm:px-5 sm:pb-5 sm:pr-12 ${isOpen ? "opacity-100" : "opacity-0"}`}>
                     {faq.a}
                   </p>
                 </div>

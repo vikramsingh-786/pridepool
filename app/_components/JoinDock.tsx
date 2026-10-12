@@ -47,7 +47,7 @@ export default function JoinDock() {
       aria-label="Join the pool"
       aria-hidden={!visible}
       inert={!visible}
-      className={`fixed bottom-4 right-3 z-50 transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none md:bottom-6 md:right-6 md:w-[21rem] ${
+      className={`fixed bottom-8 right-3 z-50 transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none md:bottom-6 md:right-6 md:w-[21rem] ${
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"
       }`}
       style={{ marginBottom: "env(safe-area-inset-bottom, 0px)" }}
