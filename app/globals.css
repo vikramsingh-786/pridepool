@@ -358,7 +358,6 @@
   .arena-particle {
     animation: arena-particle var(--p-duration, 18s) linear
       var(--p-delay, 0s) infinite;
-    will-change: transform, opacity;
   }
   @keyframes arena-particle {
     0% {
@@ -514,5 +513,26 @@
   100% {
     opacity: 0;
     transform: translate(calc(var(--dx) * 1.35), calc(var(--dy) + 80vh)) rotate(var(--rot)) scale(1);
+  }
+}
+
+/* Phones, tablets and touch devices: hold the ambient background still.
+   ~130 looping particles plus drifting, masked and blurred SVG layers made
+   scrolling stutter on mid-range Android. Everything stays where it is,
+   it just stops moving. Entrance animations and the confetti are unaffected. */
+@media (max-width: 1023px), (pointer: coarse) {
+  .arena-drift,
+  .arena-particle,
+  .arena-halo,
+  .arena-beam::before {
+    animation: none !important;
+    will-change: auto;
+  }
+  .arena-particle {
+    opacity: var(--p-opacity, 0.5);
+  }
+  /* Park the Join card's rim light (same as the reduced-motion rule). */
+  .arena-beam::before {
+    transform: translate(-50%, -50%) rotate(300deg);
   }
 }
