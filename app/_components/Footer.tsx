@@ -4,6 +4,7 @@ import { JOIN_HREF } from "../_lib/links";
 
 const LINKS = [
   { href: "/#basis", label: "Why this campaign" },
+  { href: "/#giveaway", label: "Laptop giveaway" },
   { href: "/#moment", label: "The moment" },
   { href: "/#leaderboard", label: "Leaderboard" },
   { href: "/#faqs", label: "FAQs" },
@@ -46,7 +47,7 @@ export default function Footer() {
               </span>
               <span className="flex h-10 w-32 items-center justify-center rounded-xl bg-white px-2">
                 <Image
-                  src="/bomming-bulls-icon.png"
+                  src="/bomming-bulls-icon.webp"
                   alt="Booming Bulls Academy"
                   width={2170}
                   height={725}

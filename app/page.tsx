@@ -6,6 +6,7 @@ import Leaderboard from "./_components/Leaderboard";
 import PageBackdrop from "./_components/PageBackdrop";
 import CampaignBasis from "./_components/CampaignBasis";
 import Faq from "./_components/Faq";
+import Giveaway from "./_components/Giveaway";
 import Spotlight from "./_components/Spotlight";
 
 const TITLE = "₹1 Crore Brokerage Credits Pool — Lemonn × Booming Bulls";
@@ -52,6 +53,7 @@ export default function CampaignPage() {
           <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-bg to-transparent sm:h-64" />
         </div>
         <CampaignBasis />
+        <Giveaway />
         <Spotlight />
         <Leaderboard />
         <Faq />

@@ -31,7 +31,7 @@ export default function TermsPage() {
             </span>
             <span className="flex h-9 w-28 items-center justify-center rounded-lg bg-white px-1.5 sm:h-10 sm:w-32">
               <Image
-                src="/bomming-bulls-icon.png"
+                src="/bomming-bulls-icon.webp"
                 alt=""
                 width={2170}
                 height={725}

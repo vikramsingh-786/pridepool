@@ -536,3 +536,18 @@
     transform: translate(-50%, -50%) rotate(300deg);
   }
 }
+
+/* Giveaway laptop: a gentle float (translate only, cheap on phones). */
+@media (prefers-reduced-motion: no-preference) {
+  .laptop-float {
+    animation: laptop-float 6s ease-in-out infinite alternate;
+  }
+}
+@keyframes laptop-float {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -10px;
+  }
+}

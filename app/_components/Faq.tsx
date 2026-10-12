@@ -28,6 +28,10 @@ const FAQS: { q: string; a: string }[] = [
     a: "The allocation method, applicable conditions, and any eligibility restrictions have not yet been approved.",
   },
   {
+    q: "Is there a laptop giveaway?",
+    a: "Yes. 20 laptops will be given away to participants. How winners are chosen, who is eligible and when results are announced are still to be confirmed, and will be published in the terms.",
+  },
+  {
     q: "Where can I find the campaign rules?",
     a: "The draft terms are on the Terms & Conditions page, linked in the footer. The final terms will be published after business and legal review.",
   },

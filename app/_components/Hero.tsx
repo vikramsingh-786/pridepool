@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ArenaBackdrop from "./ArenaBackdrop";
+import Placeholder from "./Placeholder";
 import HeroConfetti from "./HeroConfetti";
 import { JOIN_HREF } from "../_lib/links";
 
@@ -20,7 +21,7 @@ export default function Hero() {
               className="hero-figure-rim pointer-events-none absolute -inset-x-[24%] -top-[8%] bottom-[6%] -z-10"
             />
             <Image
-              src="/Anish-Sir-.png"
+              src="/anish.webp"
               alt="Anish Singh Thakur"
               width={629}
               height={904}
@@ -43,7 +44,7 @@ export default function Hero() {
             <span aria-hidden className="text-2xl font-light leading-none text-fg-muted sm:text-3xl">×</span>
             <span className="flex h-10 w-32 items-center justify-center rounded-xl bg-white px-2 sm:h-11 sm:w-36 lg:h-12 lg:w-40">
               <Image
-                src="/bomming-bulls-icon.png"
+                src="/bomming-bulls-icon.webp"
                 alt="Booming Bulls Academy"
                 width={2170}
                 height={725}
@@ -104,6 +105,18 @@ export default function Hero() {
                 for India&rsquo;s trading community
               </p>
               <p
+                className="arena-enter mt-4 flex justify-center lg:justify-start"
+                style={{ "--e-delay": "0.22s" } as React.CSSProperties}
+              >
+                <a
+                  href="#giveaway"
+                  className="inline-flex items-center gap-2 rounded-full border border-accent/50 bg-accent/10 px-3.5 py-1.5 text-[0.8125rem] font-bold text-accent transition-colors duration-200 hover:bg-accent/20"
+                >
+                  <span aria-hidden>💻</span>
+                  <Placeholder>+ 20 laptops to be won</Placeholder>
+                </a>
+              </p>
+              <p
                 className="arena-enter mx-auto mt-5 max-w-[42ch] text-pretty text-base font-medium leading-relaxed text-fg/90 lg:mx-0 md:text-[1.0625rem] xl:text-xl"
                 style={{ "--e-delay": "0.24s" } as React.CSSProperties}
               >
@@ -133,7 +146,7 @@ export default function Hero() {
                 className="hero-figure-rim pointer-events-none absolute -inset-x-[24%] -top-[8%] bottom-[6%] -z-10"
               />
               <Image
-                src="/Anish-Sir-.png"
+                src="/anish.webp"
                 alt="Anish Singh Thakur"
                 width={629}
                 height={904}

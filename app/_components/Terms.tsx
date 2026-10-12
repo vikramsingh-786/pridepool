@@ -14,7 +14,7 @@ const CLAUSES: Clause[] = [
     heading: "Campaign period",
     points: [
       "The Campaign runs from [start date] to [end date], both days inclusive (Indian Standard Time).",
-      "Lemonn may extend the Campaign or end it early under clause 9.",
+      "Lemonn may extend the Campaign or end it early under clause 10.",
     ],
   },
   {
@@ -51,6 +51,14 @@ const CLAUSES: Clause[] = [
     ],
   },
   {
+    heading: "Laptop giveaway",
+    points: [
+      "20 laptops will be given away to participants. [Selection method \u2014 e.g. random draw or leaderboard rank \u2014 to be confirmed.]",
+      "[Eligibility, entry period, results date, winner notification, laptop model and any tax (TDS) on prizes to be confirmed.]",
+      "Prizes are non-transferable and cannot be exchanged for cash.",
+    ],
+  },
+  {
     heading: "Leaderboard",
     points: [
       "The leaderboard shows brokerage credits used by participants. It is for information only and does not by itself entitle anyone to a reward.",
@@ -69,7 +77,7 @@ const CLAUSES: Clause[] = [
     heading: "Changes, suspension and withdrawal",
     points: [
       "Lemonn may modify, extend, suspend or withdraw the Campaign or these terms at any time. Changes take effect when published on this page, with an updated date.",
-      "[Confirm: credits already issued stay valid until their expiry date unless withdrawn under clause 8.]",
+      "[Confirm: credits already issued stay valid until their expiry date unless withdrawn under clause 9.]",
     ],
   },
   {
