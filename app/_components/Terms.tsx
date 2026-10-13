@@ -143,7 +143,7 @@ export default function Terms() {
         className="pointer-events-none absolute inset-x-0 -top-16 -z-10 h-[28rem]"
         style={{
           background:
-            "radial-gradient(ellipse 60% 70% at 50% 0%, rgba(242,163,60,0.14), transparent 70%)",
+            "radial-gradient(ellipse 60% 70% at 50% 0%, rgba(177,69,201,0.14), transparent 70%)",
         }}
       />
       <div className="mx-auto max-w-4xl">

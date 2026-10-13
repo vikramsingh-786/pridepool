@@ -1,7 +1,6 @@
 import Image from "next/image";
 import ArenaBackdrop from "./ArenaBackdrop";
 import Placeholder from "./Placeholder";
-import HeroConfetti from "./HeroConfetti";
 import { JOIN_HREF } from "../_lib/links";
 
 export default function Hero() {
@@ -12,7 +11,6 @@ export default function Hero() {
       className="relative isolate flex min-h-svh flex-col overflow-hidden"
     >
       <ArenaBackdrop />
-      <HeroConfetti />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[11] hidden xl:block">
         <div className="arena-container relative xl:max-w-[100rem]">
           <div className="hero-figure absolute bottom-0 left-[clamp(1.25rem,4vw,3rem)]">
@@ -86,13 +84,13 @@ export default function Hero() {
                 style={{ "--e-delay": "0.14s" } as React.CSSProperties}
               >
                 <span
-                  className="arena-reveal block text-[clamp(3.5rem,13.5vw,8rem)] lg:text-[clamp(4rem,8vw,6rem)] xl:text-[clamp(5.5rem,8.5vw,9rem)] text-gold-bright [text-shadow:0_0_90px_rgba(255,201,120,0.45)]"
+                  className="arena-reveal block text-[clamp(3.5rem,13.5vw,8rem)] lg:text-[clamp(4rem,8vw,6rem)] xl:text-[clamp(5.5rem,8.5vw,9rem)] text-white [text-shadow:0_0_60px_rgba(177,69,201,0.45)]"
                   style={{ "--r-delay": "0.18s" } as React.CSSProperties}
                 >
                   ₹1 Crore
                 </span>
                 <span
-                  className="arena-reveal mt-1.5 block text-[clamp(1.375rem,4.4vw,2.625rem)] leading-[1.05] xl:text-[clamp(2.5rem,3.8vw,3.5rem)]"
+                  className="arena-reveal mt-1.5 block text-[clamp(1.375rem,4.4vw,2.625rem)] leading-[1.05] text-grad-silver pb-[0.14em] -mb-[0.14em] xl:text-[clamp(2.5rem,3.8vw,3.5rem)]"
                   style={{ "--r-delay": "0.42s" } as React.CSSProperties}
                 >
                   Brokerage Credits Pool

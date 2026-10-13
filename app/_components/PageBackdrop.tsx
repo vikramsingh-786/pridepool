@@ -26,17 +26,17 @@ const MOTES = (() => {
 })();
 
 const VOLUMES = [
-  { top: "25%", left: "12%", size: "52rem", color: "109,40,217", opacity: 0.25 },
+  { top: "25%", left: "12%", size: "52rem", color: "123,31,143", opacity: 0.25 },
 
-  { top: "33%", left: "88%", size: "38rem", color: "242,163,60", opacity: 0.12 },
+  { top: "33%", left: "88%", size: "38rem", color: "177,69,201", opacity: 0.12 },
 
-  { top: "48%", left: "72%", size: "42rem", color: "109,40,217", opacity: 0.23 },
+  { top: "48%", left: "72%", size: "42rem", color: "123,31,143", opacity: 0.23 },
 
-  { top: "66%", left: "16%", size: "44rem", color: "109,40,217", opacity: 0.23 },
+  { top: "66%", left: "16%", size: "44rem", color: "123,31,143", opacity: 0.23 },
 
-  { top: "78%", left: "82%", size: "32rem", color: "242,163,60", opacity: 0.11 },
+  { top: "78%", left: "82%", size: "32rem", color: "177,69,201", opacity: 0.11 },
 
-  { top: "90%", left: "40%", size: "46rem", color: "109,40,217", opacity: 0.2 },
+  { top: "90%", left: "40%", size: "46rem", color: "123,31,143", opacity: 0.2 },
 ];
 
 const BAND_W = 1440;
@@ -209,7 +209,7 @@ export default function PageBackdrop() {
         className="absolute inset-x-0 bottom-[24%] h-px"
         style={{
           background:
-            "linear-gradient(90deg, transparent, rgba(167,139,250,0.16) 35%, rgba(242,163,60,0.12) 65%, transparent)",
+            "linear-gradient(90deg, transparent, rgba(177,69,201,0.16) 35%, rgba(177,69,201,0.12) 65%, transparent)",
         }}
       />
       {MOTES.map((m) => (
@@ -226,8 +226,8 @@ export default function PageBackdrop() {
                 ? "var(--color-gold-bright)"
                 : "var(--color-violet)",
               boxShadow: m.gold
-                ? "0 0 6px 1px rgba(255,201,120,0.45)"
-                : "0 0 6px 1px rgba(167,139,250,0.4)",
+                ? "0 0 6px 1px rgba(231,182,242,0.45)"
+                : "0 0 6px 1px rgba(177,69,201,0.4)",
               "--p-duration": m.duration,
               "--p-delay": m.delay,
               "--p-opacity": m.opacity,

@@ -9,13 +9,13 @@ export default function CampaignBasis() {
     >
       <div
         data-reveal
-        className="relative overflow-hidden rounded-2xl neu-raised px-6 py-8 text-center sm:px-10 sm:py-10"
+        className="relative overflow-hidden rounded-3xl key-light px-6 py-8 text-center sm:px-10 sm:py-10"
       >
         <div
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-1/2 h-64 w-[40rem] max-w-full -translate-x-1/2 -translate-y-1/2 opacity-60 blur-3xl"
           style={{
-            background: "radial-gradient(closest-side, rgba(242,163,60,0.35), transparent)",
+            background: "radial-gradient(closest-side, rgba(177,69,201,0.35), transparent)",
           }}
         />
         <div className="relative">
@@ -29,7 +29,7 @@ export default function CampaignBasis() {
             </span>
             Live counter
           </h2>
-          <p className="mt-4 text-[clamp(2.25rem,6vw,4.5rem)] font-extrabold leading-none tracking-[-0.03em] text-gold-bright [text-shadow:0_0_70px_rgba(255,201,120,0.45)]">
+          <p className="mt-4 text-[clamp(2.25rem,6vw,4.5rem)] font-extrabold leading-none tracking-[-0.03em] text-gold-bright [text-shadow:0_0_70px_rgba(231,182,242,0.45)]">
             <PoolCounter />
           </p>
           <p className="mt-2 text-[clamp(1rem,1.8vw,1.25rem)] font-bold text-fg">

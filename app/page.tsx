@@ -53,8 +53,8 @@ export default function CampaignPage() {
           <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-bg to-transparent sm:h-64" />
         </div>
         <CampaignBasis />
-        <Giveaway />
         <Spotlight />
+        <Giveaway />
         <Leaderboard />
         <Faq />
       </main>

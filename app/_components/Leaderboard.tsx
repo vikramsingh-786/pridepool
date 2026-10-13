@@ -22,10 +22,10 @@ type Medal = {
 
 const MEDALS: Record<number, Medal> = {
   1: {
-    text: "text-gold-bright",
-    ring: "border-gold-bright/45",
+    text: "text-gold",
+    ring: "border-gold/45",
     glow: "rgba(255,201,120,0.40)",
-    side: "#5c4116",
+    side: "#d4a24c",
     pad: "py-7 sm:py-9",
     icon: "crown",
     label: "First",
@@ -34,7 +34,7 @@ const MEDALS: Record<number, Medal> = {
     text: "text-silver",
     ring: "border-silver/35",
     glow: "rgba(217,217,232,0.26)",
-    side: "#34343f",
+    side: "#b4b4c2",
     pad: "py-5 sm:py-6",
     icon: "medal",
     label: "Second",
@@ -43,7 +43,7 @@ const MEDALS: Record<number, Medal> = {
     text: "text-bronze",
     ring: "border-bronze/35",
     glow: "rgba(224,154,98,0.28)",
-    side: "#4a2c18",
+    side: "#c98c5c",
     pad: "py-4 sm:py-5",
     icon: "medal",
     label: "Third",
@@ -129,31 +129,53 @@ function PodiumCard({
   );
 }
 
-function RankRow({ entry, delay }: { entry: LeaderboardEntry; delay: string }) {
+// Bar = this score as a share of first place's score, derived from the
+// figures already shown (not a new metric).
+function RankRow({ entry, delay, max }: { entry: LeaderboardEntry; delay: string; max: number }) {
+  const pct = Math.max(4, Math.round((entry.score / max) * 100));
   return (
     <li
       data-reveal="near"
       style={{ "--reveal-delay": delay } as React.CSSProperties}
-      className="grid grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-3 rounded-xl neu-raised px-3 py-2.5 sm:grid-cols-[3.5rem_minmax(0,1fr)_auto] sm:gap-4 sm:px-4 sm:py-3"
+      className="group relative grid grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-3 px-3 py-3 transition-colors duration-200 hover:bg-black/[0.03] sm:grid-cols-[3.5rem_minmax(0,1fr)_auto] sm:gap-5 sm:px-5 sm:py-3.5"
     >
-      <span className="rank-chip font-mono text-[0.8125rem] font-bold tabular-nums">
+      <span
+        aria-hidden
+        className="absolute inset-y-2 left-0 w-[3px] rounded-r-full bg-[#9a2fb3] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+      />
+      <span className="inline-flex h-8 w-10 items-center justify-center rounded-lg border border-black/10 bg-black/[0.05] font-mono text-[0.8125rem] font-bold tabular-nums text-fg">
         <span className="sr-only">Rank </span>
         {entry.rank}
       </span>
       <span className="flex min-w-0 items-center gap-3">
         <span
           aria-hidden
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg key-cap-sm font-mono text-[0.6875rem] font-bold text-violet"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#b145c9] to-[#4a1159] p-[1.5px]"
         >
-          {entry.participant.slice(0, 2).toUpperCase()}
+          <span className="flex h-full w-full items-center justify-center rounded-full bg-white font-mono text-[0.6875rem] font-bold text-fg">
+            {entry.participant.slice(0, 2).toUpperCase()}
+          </span>
         </span>
-        <span className="truncate text-[0.875rem] font-semibold text-fg sm:text-[0.9375rem]">
-          {entry.participant}
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[0.875rem] font-semibold text-fg sm:text-[0.9375rem]">
+            {entry.participant}
+          </span>
+          <span aria-hidden className="mt-1.5 block h-1.5 w-full max-w-[16rem] overflow-hidden rounded-full bg-black/[0.08]">
+            <span
+              className="block h-full rounded-full bg-gradient-to-r from-[#7b1f8f] to-[#c45fd8]"
+              style={{ width: `${pct}%` }}
+            />
+          </span>
         </span>
       </span>
-      <span className="font-mono text-[0.875rem] font-bold tabular-nums text-fg-muted">
-        <span className="sr-only">score </span>
-        {formatScore(entry.score)}
+      <span className="text-right">
+        <span className="block font-mono text-[0.9375rem] font-bold tabular-nums text-fg">
+          <span className="sr-only">score </span>
+          {formatScore(entry.score)}
+        </span>
+        <span aria-hidden className="block font-mono text-[0.625rem] tabular-nums text-fg-subtle">
+          {pct}% of #1
+        </span>
       </span>
     </li>
   );
@@ -168,10 +190,15 @@ const LIST_LABEL = IS_DEMO_DATA
   : "Leaderboard";
 
 function RankList({ entries, start }: { entries: LeaderboardEntry[]; start: number }) {
+  const max = DEMO_LEADERBOARD[0]?.score || 1;
   return (
-    <ol start={start} aria-label={LIST_LABEL} className="flex flex-col gap-2.5">
+    <ol
+      start={start}
+      aria-label={LIST_LABEL}
+      className="divide-y divide-black/[0.07] overflow-hidden rounded-2xl border border-black/[0.08] bg-white/70"
+    >
       {entries.map((entry, i) => (
-        <RankRow key={entry.rank} entry={entry} delay={rowDelay(i)} />
+        <RankRow key={entry.rank} entry={entry} delay={rowDelay(i)} max={max} />
       ))}
     </ol>
   );
@@ -276,7 +303,7 @@ export default function Leaderboard() {
         </p>
         <h2
           id="leaderboard-heading"
-          className="mt-5 text-[clamp(1.75rem,5vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-fg [text-shadow:0_0_60px_rgba(167,139,250,0.55)]"
+          className="mt-5 text-[clamp(1.75rem,5vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-fg [text-shadow:0_0_60px_rgba(177,69,201,0.55)]"
         >
           The Leaderboard
         </h2>
@@ -303,7 +330,7 @@ export default function Leaderboard() {
         </div>
       ) : null}
 
-      <div className={`relative ${showDemoLabels ? "mt-4" : "mt-8"} overflow-hidden rounded-2xl neu-raised`}>
+      <div className={`relative ${showDemoLabels ? "mt-4" : "mt-8"} overflow-hidden rounded-3xl key-light`}>
         <span
           aria-hidden
           className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent"
@@ -311,7 +338,7 @@ export default function Leaderboard() {
         <div
           data-reveal
           style={{ "--reveal-delay": "0.14s" } as React.CSSProperties}
-          className="flex items-center justify-between gap-4 border-b border-border-subtle bg-bg/50 px-5 py-4 sm:px-7"
+          className="flex items-center justify-between gap-4 border-b border-border-subtle bg-black/[0.025] px-5 py-4 sm:px-7"
         >
           <p className="flex items-center gap-2.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-fg">
             <span aria-hidden className="text-accent">
@@ -389,7 +416,7 @@ export default function Leaderboard() {
         ) : null}
 
         {showDemoLabels ? (
-          <p className="border-t border-border-subtle bg-bg/40 px-5 py-3 text-center text-[0.6875rem] leading-relaxed text-fg-subtle sm:px-7">
+          <p className="border-t border-border-subtle bg-black/[0.025] px-5 py-3 text-center text-[0.6875rem] leading-relaxed text-fg-subtle sm:px-7">
             Sample data shown for layout purposes. Not actual participants,
             rankings, or scores.
           </p>

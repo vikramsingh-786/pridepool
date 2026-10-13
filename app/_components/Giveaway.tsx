@@ -18,31 +18,30 @@ export default function Giveaway() {
     >
       <div
         data-reveal
-        className="relative overflow-hidden rounded-2xl neu-raised px-6 py-8 sm:px-10 sm:py-10"
+        className="relative overflow-hidden rounded-3xl key-dark px-6 py-8 sm:px-10 sm:py-10"
       >
         <div
           aria-hidden
           className="pointer-events-none absolute -left-16 top-1/2 h-64 w-[30rem] max-w-full -translate-y-1/2 opacity-60 blur-3xl"
-          style={{ background: "radial-gradient(closest-side, rgba(124,58,237,0.45), transparent)" }}
+          style={{ background: "radial-gradient(closest-side, rgba(123,31,143,0.45), transparent)" }}
         />
 
         <div className="relative grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-12">
-          {/* Rawpixel CC0 photo, background cut out and screen filled with the
-              campaign violet. Unbranded on purpose: the prize model is not confirmed. */}
-          <figure className="group mx-auto flex w-full max-w-sm flex-col items-center [perspective:1000px] lg:max-w-none">
+          {/* Laptop render supplied for the campaign (transparent WebP). */}
+          <figure className="group mx-auto flex w-full max-w-[20rem] flex-col items-center [perspective:1000px] lg:max-w-[22rem]">
             <div className="relative w-full">
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-x-[12%] -bottom-2 h-10 rounded-[50%] opacity-70 blur-2xl"
-                style={{ background: "radial-gradient(closest-side, rgba(242,163,60,0.55), transparent)" }}
+                style={{ background: "radial-gradient(closest-side, rgba(177,69,201,0.55), transparent)" }}
               />
               <div className="laptop-float transition-transform duration-500 ease-out motion-reduce:transition-none group-hover:[transform:rotateX(10deg)_rotateY(-14deg)_scale(1.03)]">
                 <Image
-                  src="/giveaway-laptop-open.webp"
-                  alt="An open laptop"
-                  width={822}
-                  height={690}
-                  sizes="(min-width: 1024px) 26rem, (min-width: 448px) 28rem, 100vw"
+                  src="/laptop-hd.webp"
+                  alt="A laptop showing a market chart"
+                  width={2800}
+                  height={2858}
+                  sizes="(min-width: 1024px) 22rem, 20rem"
                   className="h-auto w-full select-none"
                 />
               </div>
@@ -61,7 +60,7 @@ export default function Giveaway() {
             </div>
             <h2
               id="giveaway-heading"
-              className="mt-4 text-[clamp(1.75rem,4.5vw,2.75rem)] font-extrabold leading-[1.08] tracking-[-0.025em] text-fg [text-shadow:0_0_50px_rgba(167,139,250,0.5)]"
+              className="mt-4 text-[clamp(1.75rem,4.5vw,2.75rem)] font-extrabold leading-[1.08] tracking-[-0.025em] text-fg [text-shadow:0_0_50px_rgba(177,69,201,0.5)]"
             >
               <Placeholder>
                 <span className="text-gold-bright">20 laptops</span> up for grabs
@@ -80,7 +79,7 @@ export default function Giveaway() {
                   <dt className="text-[0.625rem] font-bold uppercase tracking-[0.14em] text-fg-subtle">
                     {d.label}
                   </dt>
-                  <dd className="mt-1 text-sm font-semibold text-accent">
+                  <dd className="mt-1 text-sm font-semibold text-fg">
                     <Placeholder>{d.value}</Placeholder>
                   </dd>
                 </div>

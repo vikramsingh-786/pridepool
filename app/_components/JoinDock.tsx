@@ -75,7 +75,7 @@ export default function JoinDock() {
         <div className="relative overflow-hidden rounded-[calc(1rem-1px)] bg-bg/95">
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-[0.045]"
+            className="pointer-events-none absolute inset-0 opacity-[0.09]"
             style={{
               backgroundImage:
                 "linear-gradient(var(--color-violet) 1px, transparent 1px), linear-gradient(90deg, var(--color-violet) 1px, transparent 1px)",
@@ -94,7 +94,7 @@ export default function JoinDock() {
             <span className="flex items-center gap-2 text-[0.625rem] font-bold uppercase tracking-[0.18em] text-fg-subtle">
               <span
                 aria-hidden
-                className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_2px_rgba(242,163,60,0.7)]"
+                className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_2px_rgba(177,69,201,0.7)]"
               />
               Registration
             </span>

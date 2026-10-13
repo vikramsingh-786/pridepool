@@ -65,7 +65,7 @@ export default function ArenaBackdrop() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 90% 70% at 22% 42%, rgba(109,40,217,0.55), transparent 62%), radial-gradient(ellipse 60% 55% at 85% 72%, rgba(242,163,60,0.22), transparent 65%)",
+            "radial-gradient(ellipse 90% 70% at 22% 42%, rgba(123,31,143,0.55), transparent 62%), radial-gradient(ellipse 60% 55% at 85% 72%, rgba(177,69,201,0.22), transparent 65%)",
         }}
       />
       <div
@@ -144,8 +144,8 @@ export default function ArenaBackdrop() {
               height: m.size,
               background: m.gold ? "var(--color-gold-bright)" : "var(--color-violet)",
               boxShadow: m.gold
-                ? "0 0 8px 1.5px rgba(255,201,120,0.7)"
-                : "0 0 7px 1.5px rgba(167,139,250,0.6)",
+                ? "0 0 8px 1.5px rgba(231,182,242,0.7)"
+                : "0 0 7px 1.5px rgba(177,69,201,0.6)",
               "--p-duration": m.duration,
               "--p-delay": m.delay,
               "--p-opacity": m.opacity,
