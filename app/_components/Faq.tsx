@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useState } from "react";
 
 const FAQS: { q: string; a: string }[] = [
   {
@@ -36,7 +36,6 @@ const FAQS: { q: string; a: string }[] = [
 function Chevron({ open }: { open: boolean }) {
   return (
     <span
-      aria-hidden
       className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-[color,box-shadow] duration-200 ${
         open
           ? "neu-inset text-accent"
@@ -63,18 +62,15 @@ function Chevron({ open }: { open: boolean }) {
 }
 
 export default function Faq() {
-  const baseId = useId();
 
   const [open, setOpen] = useState<number | null>(0);
 
   return (
     <section
       id="faqs"
-      aria-labelledby="faqs-heading"
       className="arena-container relative pb-20 lg:pb-28"
     >
       <div
-        aria-hidden
         className="pointer-events-none absolute left-1/2 top-4 h-72 w-[40rem] max-w-full -translate-x-1/2 opacity-70 blur-[110px]"
         style={{
           background:
@@ -84,7 +80,7 @@ export default function Faq() {
       <div className="relative mx-auto max-w-4xl min-[1920px]:max-w-5xl">
         <div data-reveal className="text-center">
           <p className="section-label neu-inset">
-            <span aria-hidden className="section-label-dot" />
+            <span className="section-label-dot" />
             FAQ
           </p>
           <h2
@@ -98,8 +94,6 @@ export default function Faq() {
       <ul className="relative space-y-2.5">
         {FAQS.map((faq, i) => {
           const isOpen = open === i;
-          const buttonId = `${baseId}-q-${i}`;
-          const panelId = `${baseId}-a-${i}`;
 
           return (
             <li
@@ -115,11 +109,8 @@ export default function Faq() {
               <h3>
                 <button
                   type="button"
-                  id={buttonId}
-                  aria-expanded={isOpen}
-                  aria-controls={panelId}
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 rounded-xl px-4 py-4 text-left focus-visible:shadow-[inset_0_0_0_2px_var(--color-focus)] focus-visible:outline-none sm:px-5"
+                  className="flex w-full items-center justify-between gap-4 rounded-xl px-4 py-4 text-left sm:px-5"
                 >
                   <span
                     className={`text-[0.9375rem] font-bold leading-snug transition-colors duration-200 ${
@@ -132,9 +123,6 @@ export default function Faq() {
                 </button>
               </h3>
               <div
-                id={panelId}
-                role="region"
-                aria-labelledby={buttonId}
                 inert={!isOpen}
                 className={`grid md:transition-[grid-template-rows] md:duration-300 md:ease-arena-out ${
                   isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"

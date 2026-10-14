@@ -7,11 +7,9 @@ export default function Spotlight() {
   return (
     <section
       id="moment"
-      aria-labelledby="moment-heading"
       className="arena-container relative pb-20 lg:pb-28"
     >
       <div
-        aria-hidden
         className="pointer-events-none absolute right-[10%] top-10 h-80 w-[36rem] max-w-full opacity-70 blur-[110px]"
         style={{
           background: "radial-gradient(closest-side, var(--color-violet-deep), transparent)",
@@ -21,7 +19,7 @@ export default function Spotlight() {
       <div className="relative mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16 min-[1920px]:max-w-6xl min-[1920px]:grid-cols-[minmax(0,1fr)_25rem]">
         <div data-reveal className="text-center lg:text-left">
           <p className="section-label neu-inset">
-            <span aria-hidden className="section-label-dot" />
+            <span className="section-label-dot" />
             From the championship stage
           </p>
           <h2
@@ -52,7 +50,6 @@ export default function Spotlight() {
         <div data-reveal style={{ "--reveal-delay": "0.1s" } as React.CSSProperties} className="mx-auto w-full max-w-[20rem] lg:max-w-none">
           <div className="relative isolate">
             <div
-              aria-hidden
               className="pointer-events-none absolute -inset-6 -z-10 rounded-[3rem] opacity-60 blur-3xl"
               style={{ background: "radial-gradient(closest-side, rgba(177,69,201,0.35), transparent)" }}
             />
@@ -63,7 +60,6 @@ export default function Spotlight() {
                   title="Anish Singh Thakur on stage at the World Trading Championship"
                 />
                 <span
-                  aria-hidden
                   className="pointer-events-none absolute left-1/2 top-2.5 h-5 w-20 -translate-x-1/2 rounded-full bg-black/80"
                 />
               </div>
@@ -76,7 +72,7 @@ export default function Spotlight() {
             className="mt-4 flex items-center justify-center gap-1.5 text-[0.8125rem] font-semibold text-fg-muted transition-colors duration-200 hover:text-fg"
           >
             Watch on YouTube
-            <span aria-hidden>↗</span>
+            <span>↗</span>
           </a>
         </div>
       </div>

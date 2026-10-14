@@ -14,7 +14,7 @@ const LINKS = [
 export default function Footer() {
   return (
     <footer id="footer" className="relative isolate overflow-hidden border-t border-white/5 bg-bg">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+      <div className="pointer-events-none absolute inset-0 -z-10">
         <div
           className="absolute inset-0"
           style={{
@@ -34,7 +34,6 @@ export default function Footer() {
         />
       </div>
       <span
-        aria-hidden
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"
       />
       <div className="arena-container py-10 sm:py-12">
@@ -42,7 +41,7 @@ export default function Footer() {
           <div className="max-w-sm">
             <div className="flex items-center gap-4">
               <Image src="/lemonn-white.svg" alt="Lemonn" width={193} height={52} className="h-6 w-auto" />
-              <span aria-hidden className="text-xl font-light leading-none text-fg-muted">
+              <span className="text-xl font-light leading-none text-fg-muted">
                 ×
               </span>
               <span className="flex h-10 w-32 items-center justify-center rounded-xl bg-white px-2">
@@ -66,7 +65,7 @@ export default function Footer() {
             </p>
           </div>
           <div className="flex flex-col gap-8 sm:flex-row sm:gap-16">
-            <nav aria-label="Footer">
+            <nav>
               <p className="text-[0.625rem] font-bold uppercase tracking-[0.18em] text-fg-subtle">
                 Campaign
               </p>
@@ -92,7 +91,7 @@ export default function Footer() {
                 className="arena-cta mt-4 inline-flex h-12 items-center justify-center gap-2 btn-key px-6 text-sm font-extrabold tracking-[-0.01em]"
               >
                 Join the ₹1 Crore Pool
-                <span aria-hidden>→</span>
+                <span>→</span>
               </a>
             </div>
           </div>
@@ -111,7 +110,7 @@ export default function Footer() {
             className="inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold text-fg-muted transition-colors duration-200 hover:text-fg"
           >
             Back to top
-            <span aria-hidden>↑</span>
+            <span>↑</span>
           </a>
         </div>
         <div className="mt-6 flex flex-col gap-2 text-xs text-fg-muted sm:flex-row sm:items-center sm:justify-between">
@@ -119,7 +118,7 @@ export default function Footer() {
             <Placeholder>© 2026 Lemonn. All rights reserved.</Placeholder>
           </p>
           <p className="flex items-center gap-1.5">
-            <span aria-hidden className="text-accent">✦</span>
+            <span className="text-accent">✦</span>
             Crafted for traders in India
           </p>
         </div>

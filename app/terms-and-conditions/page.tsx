@@ -20,13 +20,13 @@ export default function TermsPage() {
             href="/"
             className="inline-flex items-center gap-1.5 justify-self-start text-[0.8125rem] font-semibold text-fg-muted transition-colors duration-200 hover:text-fg"
           >
-            <span aria-hidden>←</span>
+            <span>←</span>
             <span className="hidden sm:inline">Back to campaign</span>
             <span className="sm:hidden">Back</span>
           </Link>
-          <Link href="/" aria-label="Lemonn × Booming Bulls — campaign home" className="flex items-center gap-4 sm:gap-6">
+          <Link href="/" className="flex items-center gap-4 sm:gap-6">
             <Image src="/lemonn-white.svg" alt="" width={193} height={52} priority className="h-5 w-auto sm:h-6" />
-            <span aria-hidden className="text-xl font-light leading-none text-fg-muted">
+            <span className="text-xl font-light leading-none text-fg-muted">
               ×
             </span>
             <span className="flex h-9 w-28 items-center justify-center rounded-lg bg-white px-1.5 sm:h-10 sm:w-32">

@@ -15,7 +15,6 @@
 
   --color-success: #3dd68c;
 
-  --color-focus: #ffffff;
 
   --color-violet: #d590e6;
   --color-violet-deep: #7b1f8f;
@@ -130,55 +129,34 @@
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .reveal-ready [data-reveal] {
-    opacity: 0;
-    transform: translateY(1.25rem);
-    transition:
-      opacity 0.75s var(--ease-arena-out) var(--reveal-delay, 0s),
-      transform 0.75s var(--ease-arena-out) var(--reveal-delay, 0s);
-  }
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 0.75s var(--ease-arena-out) var(--reveal-delay, 0s),
+    transform 0.75s var(--ease-arena-out) var(--reveal-delay, 0s);
+}
 
-  .reveal-ready [data-reveal="fade"] {
-    transform: none;
-  }
+.reveal-ready [data-reveal="fade"] {
+  transform: none;
+}
 
-  .reveal-ready [data-reveal="near"] {
-    transform: translateY(0.75rem);
-  }
+.reveal-ready [data-reveal="near"] {
+  transform: translateY(0.75rem);
+}
 
-  .reveal-ready [data-reveal][data-revealed] {
-    opacity: 1;
-    transform: none;
-  }
+.reveal-ready [data-reveal][data-revealed] {
+  opacity: 1;
+  transform: none;
+}
 
-  .reveal-ready .count-up {
-    position: relative;
-  }
-  .reveal-ready .count-up .count-up-value {
-    opacity: 0;
-  }
-  .reveal-ready .count-up::after {
-    --cu-n: var(--to);
-    --cu-k: calc(var(--cu-n) / 1000 - 0.5);
-    --cu-r: calc(var(--cu-n) - var(--cu-k) * 1000);
-    counter-reset: cu-k var(--cu-k) cu-r var(--cu-r);
-    content: counter(cu-k) "," counter(cu-r, cu-pad3);
-    position: absolute;
-    inset: 0;
-  }
-  .reveal-ready [data-revealed] .count-up::after {
-    animation: count-up 0.9s cubic-bezier(0.2, 0.7, 0.3, 1)
-      calc(var(--reveal-delay, 0s) + 0.15s) both;
-  }
 
-  .reveal-ready .key-cap[data-reveal] {
-    transition:
-      opacity 0.75s var(--ease-arena-out) var(--reveal-delay, 0s),
-      transform 0.75s var(--ease-arena-out) var(--reveal-delay, 0s),
-      translate 0.22s cubic-bezier(0.2, 0.7, 0.3, 1),
-      box-shadow 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
-  }
+.reveal-ready .key-cap[data-reveal] {
+  transition:
+    opacity 0.75s var(--ease-arena-out) var(--reveal-delay, 0s),
+    transform 0.75s var(--ease-arena-out) var(--reveal-delay, 0s),
+    translate 0.22s cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
 @layer base {
@@ -210,9 +188,8 @@
      Two states: gold at rest, white over anything clickable. Zuperior, the
      reference for this, uses one arrow everywhere and so has no hover cue —
      that would have been a regression here, because the page currently gets a
-     real affordance from the pointer hand. White also matches --color-focus,
-     so "white means you can interact with this" stays consistent with the
-     focus ring.
+     real affordance from the pointer hand. White means
+     "you can interact with this".
 
      Both carry a dark outline. A flat gold arrow is invisible over the gold
      CTA and over the white logo chips — the outline is what keeps the cursor
@@ -228,7 +205,7 @@
   html {
     cursor: url("/cursor-theme.svg") 5 5, auto;
   }
-  :where(a[href], button, summary, select, label[for], [role="button"]) {
+  :where(a[href], button, summary, select, label[for]) {
     cursor: url("/cursor-theme-hover.svg") 5 5, pointer;
   }
   /* Text entry keeps a real I-beam. `cursor` inherits, so without this the
@@ -251,22 +228,8 @@
 }
 
 @layer base {
-  :where(button:disabled, [aria-disabled="true"]) {
+  :where(button:disabled) {
     cursor: not-allowed;
-  }
-
-  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 2px solid var(--color-bg);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px var(--color-focus);
-    border-radius: inherit;
-  }
-
-  @media (forced-colors: active) {
-    :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-      outline-color: Highlight;
-      box-shadow: none;
-    }
   }
 
   .arena-drift {
@@ -312,6 +275,49 @@
       clip-path: inset(-50% -25% -50% -25%);
       opacity: 1;
       transform: none;
+    }
+  }
+
+  .arena-halo {
+    animation: arena-halo 7s ease-in-out 1.6s infinite alternate;
+  }
+  @keyframes arena-halo {
+    from {
+      opacity: 0.3;
+    }
+    to {
+      opacity: 0.75;
+    }
+  }
+
+  .arena-beam {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .arena-beam::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 190%;
+    aspect-ratio: 1;
+    z-index: -1;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg 190deg,
+      rgba(177, 69, 201, 0.9) 268deg,
+      rgba(231, 182, 242, 0.95) 310deg,
+      transparent 350deg
+    );
+    animation: arena-beam 9s linear infinite;
+  }
+  @keyframes arena-beam {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
     }
   }
 
@@ -366,45 +372,6 @@
   html {
     scroll-behavior: smooth;
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-      animation-iteration-count: 1 !important;
-      transition-property: opacity, color, background-color, border-color,
-        box-shadow, outline-color !important;
-    }
-
-    .arena-drift,
-    .arena-particle,
-    .arena-cta::after {
-      animation: none !important;
-    }
-    .arena-particle {
-      opacity: var(--p-opacity, 0.5);
-    }
-
-    .arena-enter {
-      opacity: 1;
-      animation: none !important;
-      transform: none !important;
-    }
-
-    .arena-reveal {
-      opacity: 1;
-      clip-path: none !important;
-      animation: none !important;
-      transform: none !important;
-    }
-    .arena-cta::after {
-      display: none;
-    }
-  }
 }
 
 :root {
@@ -441,33 +408,6 @@
   );
 }
 
-@property --cu-n {
-  syntax: "<integer>";
-  inherits: false;
-  initial-value: 0;
-}
-@property --cu-k {
-  syntax: "<integer>";
-  inherits: false;
-  initial-value: 0;
-}
-@property --cu-r {
-  syntax: "<integer>";
-  inherits: false;
-  initial-value: 0;
-}
-@counter-style cu-pad3 {
-  system: extends decimal;
-  pad: 3 "0";
-}
-@keyframes count-up {
-  from {
-    --cu-n: calc(var(--to) * 0.6);
-  }
-  to {
-    --cu-n: var(--to);
-  }
-}
 
 /* Phones, tablets and touch devices: hold the ambient background still.
    ~130 looping particles plus drifting, masked and blurred SVG layers made
@@ -475,20 +415,24 @@
    it just stops moving. Entrance animations are unaffected. */
 @media (max-width: 1023px), (pointer: coarse) {
   .arena-drift,
-  .arena-particle {
+  .arena-particle,
+  .arena-halo,
+  .arena-beam::before {
     animation: none !important;
     will-change: auto;
   }
   .arena-particle {
     opacity: var(--p-opacity, 0.5);
   }
+  /* Park the Join card's rim light. */
+  .arena-beam::before {
+    transform: translate(-50%, -50%) rotate(300deg);
+  }
 }
 
 /* Giveaway laptop: a gentle float (translate only, cheap on phones). */
-@media (prefers-reduced-motion: no-preference) {
-  .laptop-float {
-    animation: laptop-float 6s ease-in-out infinite alternate;
-  }
+.laptop-float {
+  animation: laptop-float 6s ease-in-out infinite alternate;
 }
 @keyframes laptop-float {
   from {
@@ -578,4 +522,34 @@
   width: 0.375rem;
   border-radius: 9999px;
   background: var(--color-accent);
+}
+
+/* Pagination keys: light keycaps (same build as .key-light). Hover sinks
+   1px, :active bottoms out; disabled keys sit flat. */
+.page-key {
+  --pk: 4px;
+  color: var(--color-fg);
+  background: linear-gradient(180deg, #ffffff 0%, #eeeaf3 100%);
+  border: 1px solid rgb(0 0 0 / 0.1);
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 var(--pk) 0 #c9c2d4,
+    0 calc(var(--pk) + 6px) 10px -4px rgb(0 0 0 / 0.25);
+  transition:
+    translate 0.12s cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 0.12s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.page-key:hover:not(:disabled) {
+  --pk: 3px;
+  translate: 0 1px;
+}
+.page-key:active:not(:disabled) {
+  --pk: 1px;
+  translate: 0 3px;
+}
+.page-key:disabled {
+  --pk: 1px;
+  translate: 0 3px;
+  opacity: 0.45;
+  cursor: not-allowed;
 }

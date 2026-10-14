@@ -49,7 +49,7 @@ export default function CampaignPage() {
       <main id="main" className="relative">
         <PageBackdrop />
         <Hero />
-        <div aria-hidden className="pointer-events-none relative -z-[5] h-0">
+        <div className="pointer-events-none relative -z-[5] h-0">
           <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-bg to-transparent sm:h-64" />
         </div>
         <CampaignBasis />

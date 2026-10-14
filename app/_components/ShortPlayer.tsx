@@ -25,7 +25,6 @@ export default function ShortPlayer({ id, title }: { id: string; title: string }
     <button
       type="button"
       onClick={() => setPlaying(true)}
-      aria-label={`Play video: ${title}`}
       className="group absolute inset-0 h-full w-full cursor-pointer"
     >
       <Image
@@ -36,11 +35,9 @@ export default function ShortPlayer({ id, title }: { id: string; title: string }
         className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
       />
       <span
-        aria-hidden
         className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-bg/10"
       />
       <span
-        aria-hidden
         className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/15 text-white backdrop-blur-sm transition-colors duration-200 group-hover:bg-white/25"
       >
         <svg viewBox="0 0 24 24" width="22" height="22" className="ml-0.5">

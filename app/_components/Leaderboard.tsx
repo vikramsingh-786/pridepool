@@ -1,12 +1,7 @@
 import Placeholder from "./Placeholder";
-import {
-  DEMO_LEADERBOARD,
-  IS_DEMO_DATA,
-  LEADERBOARD_STATUS,
-  formatScore,
-  type LeaderboardEntry,
-  type LeaderboardStatus,
-} from "../_mock/leaderboard";
+import RankTable from "./RankTable";
+import ConsoleError from "./ConsoleError";
+import { getTopBrokerageSavings, type BoardEntry, type Contest, type LeaderboardStatus } from "../_lib/trading-api";
 
 type Medal = {
   text: string;
@@ -17,7 +12,6 @@ type Medal = {
 
   pad: string;
   icon: "crown" | "medal";
-  label: string;
 };
 
 const MEDALS: Record<number, Medal> = {
@@ -28,7 +22,6 @@ const MEDALS: Record<number, Medal> = {
     side: "#d4a24c",
     pad: "py-7 sm:py-9",
     icon: "crown",
-    label: "First",
   },
   2: {
     text: "text-silver",
@@ -37,7 +30,6 @@ const MEDALS: Record<number, Medal> = {
     side: "#b4b4c2",
     pad: "py-5 sm:py-6",
     icon: "medal",
-    label: "Second",
   },
   3: {
     text: "text-bronze",
@@ -46,7 +38,6 @@ const MEDALS: Record<number, Medal> = {
     side: "#c98c5c",
     pad: "py-4 sm:py-5",
     icon: "medal",
-    label: "Third",
   },
 };
 
@@ -54,16 +45,11 @@ const PODIUM_ORDER = ["order-2", "order-1", "order-3"];
 
 const PODIUM_DELAY: Record<number, string> = { 1: "0.48s", 2: "0.34s", 3: "0.22s" };
 
-// ponytail: CSS count-up is exact only for 1,000–999,999; other scores render static.
-function canCountUp(score: number) {
-  return score >= 1000 && score < 1_000_000;
-}
-
 function PodiumCard({
   entry,
   orderClass,
 }: {
-  entry: LeaderboardEntry;
+  entry: BoardEntry;
   orderClass: string;
 }) {
   const delay = PODIUM_DELAY[entry.rank];
@@ -76,20 +62,17 @@ function PodiumCard({
     >
       {entry.rank === 1 ? (
         <span
-          aria-hidden
           className="pointer-events-none absolute -inset-3 -z-10 rounded-3xl opacity-70 blur-2xl"
           style={{ background: "radial-gradient(closest-side, rgba(255,201,120,0.55), transparent)" }}
         />
       ) : null}
       <span
-        aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-24 rounded-t-xl"
         style={{
           background: `radial-gradient(ellipse 70% 100% at 50% 0%, ${medal.glow}, transparent)`,
         }}
       />
       <span
-        aria-hidden
         className={`relative mx-auto mb-2.5 flex h-9 w-9 items-center justify-center rounded-full border ${medal.ring} key-cap-sm ${medal.text}`}
       >
         {medal.icon === "crown" ? (
@@ -107,129 +90,26 @@ function PodiumCard({
       >
         {entry.rank}
       </span>
-      <span className="sr-only">{medal.label} place, demo data</span>
       <p className="relative mt-2.5 truncate text-[0.8125rem] font-bold text-fg sm:text-[0.9375rem]">
         {entry.participant}
       </p>
       <p
         className={`relative mt-1 font-mono text-[0.8125rem] font-bold tabular-nums sm:text-sm ${medal.text}`}
       >
-        {canCountUp(entry.score) ? (
-          <span
-            className="count-up"
-            style={{ "--to": entry.score } as React.CSSProperties}
-          >
-            <span className="count-up-value">{formatScore(entry.score)}</span>
-          </span>
-        ) : (
-          formatScore(entry.score)
-        )}
+        {entry.display}
+      </p>
+      <p className="relative mt-0.5 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-fg-subtle">
+        Brokerage saved
       </p>
     </li>
-  );
-}
-
-// Bar = this score as a share of first place's score, derived from the
-// figures already shown (not a new metric).
-function RankRow({ entry, delay, max }: { entry: LeaderboardEntry; delay: string; max: number }) {
-  const pct = Math.max(4, Math.round((entry.score / max) * 100));
-  return (
-    <li
-      data-reveal="near"
-      style={{ "--reveal-delay": delay } as React.CSSProperties}
-      className="group relative grid grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-3 px-3 py-3 transition-colors duration-200 hover:bg-black/[0.03] sm:grid-cols-[3.5rem_minmax(0,1fr)_auto] sm:gap-5 sm:px-5 sm:py-3.5"
-    >
-      <span
-        aria-hidden
-        className="absolute inset-y-2 left-0 w-[3px] rounded-r-full bg-[#9a2fb3] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-      />
-      <span className="inline-flex h-8 w-10 items-center justify-center rounded-lg border border-black/10 bg-black/[0.05] font-mono text-[0.8125rem] font-bold tabular-nums text-fg">
-        <span className="sr-only">Rank </span>
-        {entry.rank}
-      </span>
-      <span className="flex min-w-0 items-center gap-3">
-        <span
-          aria-hidden
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#b145c9] to-[#4a1159] p-[1.5px]"
-        >
-          <span className="flex h-full w-full items-center justify-center rounded-full bg-white font-mono text-[0.6875rem] font-bold text-fg">
-            {entry.participant.slice(0, 2).toUpperCase()}
-          </span>
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block truncate text-[0.875rem] font-semibold text-fg sm:text-[0.9375rem]">
-            {entry.participant}
-          </span>
-          <span aria-hidden className="mt-1.5 block h-1.5 w-full max-w-[16rem] overflow-hidden rounded-full bg-black/[0.08]">
-            <span
-              className="block h-full rounded-full bg-gradient-to-r from-[#7b1f8f] to-[#c45fd8]"
-              style={{ width: `${pct}%` }}
-            />
-          </span>
-        </span>
-      </span>
-      <span className="text-right">
-        <span className="block font-mono text-[0.9375rem] font-bold tabular-nums text-fg">
-          <span className="sr-only">score </span>
-          {formatScore(entry.score)}
-        </span>
-        <span aria-hidden className="block font-mono text-[0.625rem] tabular-nums text-fg-subtle">
-          {pct}% of #1
-        </span>
-      </span>
-    </li>
-  );
-}
-
-function rowDelay(i: number) {
-  return `${Math.min(0.06 + i * 0.045, 0.3).toFixed(3)}s`;
-}
-
-const LIST_LABEL = IS_DEMO_DATA
-  ? "Demo leaderboard. Illustrative data for design preview only — not actual participants or scores."
-  : "Leaderboard";
-
-function RankList({ entries, start }: { entries: LeaderboardEntry[]; start: number }) {
-  const max = DEMO_LEADERBOARD[0]?.score || 1;
-  return (
-    <ol
-      start={start}
-      aria-label={LIST_LABEL}
-      className="divide-y divide-black/[0.07] overflow-hidden rounded-2xl border border-black/[0.08] bg-white/70"
-    >
-      {entries.map((entry, i) => (
-        <RankRow key={entry.rank} entry={entry} delay={rowDelay(i)} max={max} />
-      ))}
-    </ol>
   );
 }
 
 const STATUS_CHIP: Record<LeaderboardStatus, string> = {
-  ready: "Sample",
-  loading: "Loading",
+  ready: "Live",
   empty: "No entries yet",
   unavailable: "Unavailable",
 };
-
-function Skeleton() {
-  return (
-    <div aria-busy="true" className="px-4 pb-6 pt-5 sm:px-7 sm:pt-6">
-      <p className="sr-only" role="status">
-        Loading standings…
-      </p>
-      <div aria-hidden className="grid grid-cols-3 items-end gap-2 sm:gap-4">
-        {["h-32 order-1", "h-40 order-2", "h-28 order-3"].map((c) => (
-          <div key={c} className={`neu-inset rounded-xl ${c}`} />
-        ))}
-      </div>
-      <div aria-hidden className="mt-6 flex flex-col gap-2.5">
-        {[0, 1, 2, 3, 4].map((i) => (
-          <div key={i} className="neu-inset h-14 rounded-xl" />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 const NOTICE: Record<"empty" | "unavailable", { title: string; body: string }> = {
   empty: {
@@ -238,16 +118,15 @@ const NOTICE: Record<"empty" | "unavailable", { title: string; body: string }> =
   },
   unavailable: {
     title: "Standings unavailable",
-    body: "The live leaderboard goes up once ranking rules and a verified data source are approved. Nothing is shown until then.",
+    body: "Standings couldn’t be loaded right now. Please check back in a minute.",
   },
 };
 
 function Notice({ kind }: { kind: "empty" | "unavailable" }) {
   const n = NOTICE[kind];
   return (
-    <div className="flex flex-col items-center px-6 py-14 text-center sm:py-20">
+    <div className="flex flex-col items-center px-6 py-8 text-center sm:py-10">
       <span
-        aria-hidden
         className="flex h-14 w-14 items-center justify-center rounded-2xl neu-inset text-violet"
       >
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
@@ -266,30 +145,75 @@ function Notice({ kind }: { kind: "empty" | "unavailable" }) {
       <p className="mt-2 max-w-[46ch] text-pretty text-[0.875rem] leading-relaxed text-fg-muted">
         <Placeholder>{n.body}</Placeholder>
       </p>
+      {/* Faded preview of the table shape: rank, name, amount. */}
+      <div
+        className="mt-8 w-full max-w-xl space-y-2 opacity-70 [mask-image:linear-gradient(to_bottom,#000_20%,transparent)]"
+      >
+        {[72, 58, 46].map((w) => (
+          <div key={w} className="flex h-12 items-center gap-4 rounded-xl neu-inset px-4">
+            <span className="h-3 w-6 rounded bg-fg-subtle/30" />
+            <span className="h-6 w-6 rounded-full bg-fg-subtle/25" />
+            <span className="h-3 rounded bg-fg-subtle/30" style={{ width: `${w}%` }} />
+            <span className="ml-auto h-3 w-14 rounded bg-fg-subtle/30" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
-export default function Leaderboard() {
-  const status: LeaderboardStatus =
-    LEADERBOARD_STATUS === "ready" && DEMO_LEADERBOARD.length === 0
-      ? "empty"
-      : LEADERBOARD_STATUS;
-  const showRows = status === "ready";
-  const showDemoLabels = IS_DEMO_DATA && showRows;
+// Live pool stats from the contest API: usage bar plus three figures.
+function ContestStats({ c }: { c: Contest }) {
+  const stats = [
+    { label: "Traders enrolled", value: c.usersEnrolled.toLocaleString("en-IN") },
+    { label: "Traders benefited", value: c.usersBenefited.toLocaleString("en-IN") },
+    { label: "Campaign period", value: c.period },
+  ];
+  return (
+    <div className="border-b border-border-subtle px-5 py-5 sm:px-7">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <p className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-fg-subtle">Pool used</p>
+        <p className="font-mono text-sm tabular-nums text-fg-muted">
+          <span className="font-bold text-fg">{c.used}</span> of {c.poolSize}
+        </p>
+      </div>
+      <div
+        className="mt-2 h-2 overflow-hidden rounded-full bg-black/[0.08]"
+      >
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-[#7b1f8f] to-[#c45fd8]"
+          style={{ width: `${Math.max(c.usedPct, 1.5)}%` }}
+        />
+      </div>
+      <p className="mt-1.5 text-right font-mono text-xs tabular-nums text-fg-subtle">{c.remaining} remaining</p>
+      <dl className="mt-4 grid grid-cols-3 divide-x divide-border-subtle overflow-hidden rounded-xl neu-inset">
+        {stats.map((s) => (
+          <div key={s.label} className="px-3 py-3 text-center sm:px-4">
+            <dt className="text-[0.625rem] font-bold uppercase tracking-[0.12em] text-fg-subtle">{s.label}</dt>
+            <dd className="mt-1 font-mono text-base font-bold tabular-nums text-fg sm:text-lg">{s.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
 
-  const podium = DEMO_LEADERBOARD.slice(0, 3);
-  const top = DEMO_LEADERBOARD.slice(3, 10);
-  const more = DEMO_LEADERBOARD.slice(10);
+export default async function Leaderboard() {
+  const { status: loaded, entries, contest, updatedAt, total, error } = await getTopBrokerageSavings();
+  const status: LeaderboardStatus = loaded === "ready" && entries.length === 0 ? "empty" : loaded;
+  const showRows = status === "ready";
+  const max = entries[0]?.score || 1;
+
+  const podium = entries.slice(0, 3);
+  const rest = entries.slice(3);
 
   return (
     <section
       id="leaderboard"
-      aria-labelledby="leaderboard-heading"
       className="arena-container relative pb-20 lg:pb-28"
     >
+      {error ? <ConsoleError message={error} /> : null}
       <div
-        aria-hidden
         className="pointer-events-none absolute left-1/2 top-0 h-80 w-[50rem] max-w-full -translate-x-1/2 opacity-80 blur-[110px]"
         style={{
           background:
@@ -297,8 +221,8 @@ export default function Leaderboard() {
         }}
       />
       <div data-reveal className="relative text-center">
-        <p className="inline-flex items-center gap-2.5 rounded-full neu-inset px-4 py-2 text-[0.625rem] font-bold uppercase tracking-[0.2em] text-fg-muted backdrop-blur-sm">
-          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-violet" />
+        <p className="section-label neu-inset">
+          <span className="section-label-dot" />
           <Placeholder>Tournament standings</Placeholder>
         </p>
         <h2
@@ -308,31 +232,13 @@ export default function Leaderboard() {
           The Leaderboard
         </h2>
         <p className="mx-auto mt-4 max-w-[52ch] text-pretty text-[0.9375rem] leading-relaxed text-fg-muted">
-          A preview of how standings will look. The live leaderboard goes up
-          once ranking rules and a verified data source are approved.
+          <Placeholder>
+            Live standings by brokerage saved from the pool, refreshed every minute.
+          </Placeholder>
         </p>
       </div>
-      {showDemoLabels ? (
-        <div
-          data-reveal
-          style={{ "--reveal-delay": "0.08s" } as React.CSSProperties}
-          className="relative mt-8 overflow-hidden rounded-xl border border-accent/30 neu-raised"
-        >
-          <p className="flex flex-col items-center gap-2 px-4 py-3.5 text-center sm:flex-row sm:gap-3.5 sm:px-5 sm:text-left">
-            <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-accent px-3 py-1 text-[0.625rem] font-extrabold uppercase tracking-[0.14em] text-fg-on-accent">
-              Demo data · Preview only
-            </span>
-            <span className="text-[0.8125rem] leading-relaxed text-accent">
-              Illustrative leaderboard data for design preview only. These are
-              not actual participants, rankings, or campaign scores.
-            </span>
-          </p>
-        </div>
-      ) : null}
-
-      <div className={`relative ${showDemoLabels ? "mt-4" : "mt-8"} overflow-hidden rounded-3xl key-light`}>
+      <div className="relative mt-8 overflow-hidden rounded-3xl key-light">
         <span
-          aria-hidden
           className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent"
         />
         <div
@@ -341,7 +247,7 @@ export default function Leaderboard() {
           className="flex items-center justify-between gap-4 border-b border-border-subtle bg-black/[0.025] px-5 py-4 sm:px-7"
         >
           <p className="flex items-center gap-2.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-fg">
-            <span aria-hidden className="text-accent">
+            <span className="text-accent">
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none">
                 <path
                   d="M12 3v18M12 21c-4 0-7-3-7-7 3.5 0 7 2 7 7Zm0 0c4 0 7-3 7-7-3.5 0-7 2-7 7Zm0-8c-3 0-5.5-2.2-5.5-5.5C9.5 7.5 12 9.5 12 13Zm0 0c3 0 5.5-2.2 5.5-5.5C14.5 7.5 12 9.5 12 13Z"
@@ -355,18 +261,21 @@ export default function Leaderboard() {
             Standings
           </p>
           <p className="flex items-center gap-2 rounded-full neu-inset px-3 py-1.5 text-[0.625rem] font-bold uppercase tracking-[0.14em] text-accent">
-            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
-            {STATUS_CHIP[status]}
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            {status === "ready"
+              ? contest && !contest.isActive
+                ? "Campaign ended"
+                : `Live${updatedAt ? ` · Updated ${updatedAt}` : ""}`
+              : STATUS_CHIP[status]}
           </p>
         </div>
-        {status === "loading" ? <Skeleton /> : null}
+        {contest ? <ContestStats c={contest} /> : null}
         {status === "empty" || status === "unavailable" ? <Notice kind={status} /> : null}
 
         {showRows ? (
           <>
             <div className="px-3 pt-5 sm:px-7 sm:pt-6">
               <ol
-                aria-label={IS_DEMO_DATA ? "Top three, demo data" : "Top three"}
                 className="isolate grid grid-cols-3 items-end gap-2 sm:gap-4"
               >
                 {podium.map((entry, i) => (
@@ -374,40 +283,16 @@ export default function Leaderboard() {
                 ))}
               </ol>
             </div>
-            {top.length > 0 ? (
+            {rest.length > 0 ? (
               <div className="mt-6 px-3 pb-5 sm:px-7 sm:pb-6">
                 <div
-                  aria-hidden
                   className="mb-2.5 grid grid-cols-[2.75rem_minmax(0,1fr)_auto] gap-3 border-b border-border-subtle px-3 pb-2.5 text-[0.625rem] font-bold uppercase tracking-[0.16em] text-fg-subtle sm:grid-cols-[3.5rem_minmax(0,1fr)_auto] sm:gap-4 sm:px-4"
                 >
                   <Placeholder>Rank</Placeholder>
                   <Placeholder>Participant</Placeholder>
-                  <Placeholder>Score</Placeholder>
+                  <Placeholder>Brokerage saved</Placeholder>
                 </div>
-                <RankList entries={top} start={4} />
-                {more.length > 0 ? (
-                  <details className="group mt-2.5">
-                    <summary className="mx-auto flex w-fit cursor-pointer list-none items-center gap-2 rounded-full key-cap relative px-5 py-2.5 text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-fg-muted hover:text-fg [&::-webkit-details-marker]:hidden">
-                      <span className="group-open:hidden">
-                        Show more ({more.length})
-                      </span>
-                      <span className="hidden group-open:inline">Show fewer</span>
-                      <svg
-                        aria-hidden
-                        viewBox="0 0 16 16"
-                        width="12"
-                        height="12"
-                        fill="none"
-                        className="transition-transform duration-200 group-open:rotate-180"
-                      >
-                        <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </summary>
-                    <div className="mt-2.5">
-                      <RankList entries={more} start={11} />
-                    </div>
-                  </details>
-                ) : null}
+                <RankTable firstPage={rest} total={total} max={max} />
               </div>
             ) : (
               <div className="pb-5 sm:pb-6" />
@@ -415,12 +300,6 @@ export default function Leaderboard() {
           </>
         ) : null}
 
-        {showDemoLabels ? (
-          <p className="border-t border-border-subtle bg-black/[0.025] px-5 py-3 text-center text-[0.6875rem] leading-relaxed text-fg-subtle sm:px-7">
-            Sample data shown for layout purposes. Not actual participants,
-            rankings, or scores.
-          </p>
-        ) : null}
       </div>
     </section>
   );

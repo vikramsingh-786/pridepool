@@ -13,7 +13,6 @@ export default function Giveaway() {
   return (
     <section
       id="giveaway"
-      aria-labelledby="giveaway-heading"
       className="arena-container relative pb-20 lg:pb-28"
     >
       <div
@@ -21,7 +20,6 @@ export default function Giveaway() {
         className="relative overflow-hidden rounded-3xl key-dark px-6 py-8 sm:px-10 sm:py-10"
       >
         <div
-          aria-hidden
           className="pointer-events-none absolute -left-16 top-1/2 h-64 w-[30rem] max-w-full -translate-y-1/2 opacity-60 blur-3xl"
           style={{ background: "radial-gradient(closest-side, rgba(123,31,143,0.45), transparent)" }}
         />
@@ -31,11 +29,10 @@ export default function Giveaway() {
           <figure className="group mx-auto flex w-full max-w-[20rem] flex-col items-center [perspective:1000px] lg:max-w-[22rem]">
             <div className="relative w-full">
               <div
-                aria-hidden
                 className="pointer-events-none absolute inset-x-[12%] -bottom-2 h-10 rounded-[50%] opacity-70 blur-2xl"
                 style={{ background: "radial-gradient(closest-side, rgba(177,69,201,0.55), transparent)" }}
               />
-              <div className="laptop-float transition-transform duration-500 ease-out motion-reduce:transition-none group-hover:[transform:rotateX(10deg)_rotateY(-14deg)_scale(1.03)]">
+              <div className="laptop-float transition-transform duration-500 ease-out group-hover:[transform:rotateX(10deg)_rotateY(-14deg)_scale(1.03)]">
                 <Image
                   src="/laptop-hd.webp"
                   alt="A laptop showing a market chart"
@@ -51,7 +48,7 @@ export default function Giveaway() {
           <div className="text-center lg:text-left">
             <div className="flex flex-wrap items-center justify-center gap-2 lg:justify-start">
               <p className="section-label neu-inset">
-                <span aria-hidden className="section-label-dot" />
+                <span className="section-label-dot" />
                 Bonus giveaway
               </p>
               <p className="text-[0.625rem] font-bold uppercase tracking-[0.14em] text-fg-subtle">

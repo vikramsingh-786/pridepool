@@ -60,7 +60,7 @@ const MOTES = (() => {
 
 export default function ArenaBackdrop() {
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
       <div
         className="absolute inset-0"
         style={{

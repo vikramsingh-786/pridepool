@@ -7,7 +7,6 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      aria-labelledby="hero-heading"
       className="relative isolate flex min-h-svh flex-col overflow-hidden"
     >
       <ArenaBackdrop />
@@ -15,7 +14,6 @@ export default function Hero() {
         <div className="arena-container relative xl:max-w-[100rem]">
           <div className="hero-figure absolute bottom-0 left-[clamp(1.25rem,4vw,3rem)]">
             <div
-              aria-hidden
               className="hero-figure-rim pointer-events-none absolute -inset-x-[24%] -top-[8%] bottom-[6%] -z-10"
             />
             <Image
@@ -29,7 +27,6 @@ export default function Hero() {
               style={{ "--e-delay": "0.34s" } as React.CSSProperties}
             />
             <div
-              aria-hidden
               className="hero-figure-base pointer-events-none absolute inset-x-[-10%] bottom-0 h-24"
             />
           </div>
@@ -39,7 +36,7 @@ export default function Hero() {
         <div className="arena-container grid grid-cols-[1fr_auto_1fr] items-center gap-4 py-3.5">
           <div className="col-start-2 flex items-center gap-4 sm:gap-6">
             <Image src="/lemonn-white.svg" alt="Lemonn" width={193} height={52} priority className="h-6 w-auto sm:h-7 lg:h-8" />
-            <span aria-hidden className="text-2xl font-light leading-none text-fg-muted sm:text-3xl">×</span>
+            <span className="text-2xl font-light leading-none text-fg-muted sm:text-3xl">×</span>
             <span className="flex h-10 w-32 items-center justify-center rounded-xl bg-white px-2 sm:h-11 sm:w-36 lg:h-12 lg:w-40">
               <Image
                 src="/bomming-bulls-icon.webp"
@@ -59,7 +56,6 @@ export default function Hero() {
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:gap-14 xl:grid-cols-[var(--hero-pw)_minmax(0,1fr)] xl:gap-16">
             <div className="relative text-center lg:col-start-2 lg:row-start-1 lg:text-left">
               <div
-                aria-hidden
                 className="pointer-events-none absolute -inset-x-16 -inset-y-20 -z-10 lg:-left-4"
                 style={{
                   background:
@@ -71,7 +67,7 @@ export default function Hero() {
                 style={{ "--e-delay": "0.05s" } as React.CSSProperties}
               >
                 <span className="section-label neu-inset">
-                  <span aria-hidden className="section-label-dot" />
+                  <span className="section-label-dot" />
                   The Pride Pool
                 </span>
                 <span className="text-sm font-extrabold tracking-tight text-violet sm:text-base xl:text-lg">
@@ -110,7 +106,7 @@ export default function Hero() {
                   href="#giveaway"
                   className="inline-flex items-center gap-2 rounded-full border border-accent/50 bg-accent/10 px-3.5 py-1.5 text-[0.8125rem] font-bold text-accent transition-colors duration-200 hover:bg-accent/20"
                 >
-                  <svg aria-hidden viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="4" y="5" width="16" height="11" rx="1.5" />
                     <path d="M2 19h20" />
                   </svg>
@@ -133,17 +129,16 @@ export default function Hero() {
                   className="arena-cta inline-flex h-[3.25rem] items-center justify-center gap-2 btn-key px-7 text-[0.9375rem] xl:h-16 xl:px-10 xl:text-lg font-extrabold tracking-[-0.01em]"
                 >
                   Join the ₹1 Crore Pool
-                  <span aria-hidden>→</span>
+                  <span>→</span>
                 </a>
                 <p className="flex items-center gap-2 text-sm font-semibold text-fg/85 xl:text-base">
-                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-success" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-success" />
                   Existing Lemonn users are already in
                 </p>
               </div>
             </div>
             <div className="relative order-first -mb-14 w-full max-w-[16rem] justify-self-center sm:-mb-16 sm:max-w-[20rem] lg:order-none lg:mb-0 lg:max-w-[19rem] xl:hidden">
               <div
-                aria-hidden
                 className="hero-figure-rim pointer-events-none absolute -inset-x-[24%] -top-[8%] bottom-[6%] -z-10"
               />
               <Image

@@ -7,7 +7,7 @@ const CLAUSES: Clause[] = [
     points: [
       "The Pride Pool campaign (\u201cthe Campaign\u201d) is run by [Lemonn legal entity name, registered address and SEBI registration number] (\u201cLemonn\u201d).",
       "The Campaign is run in association with Booming Bulls Academy to celebrate Anish Singh Thakur\u2019s achievement at the World Trading Championship.",
-      "[Confirm: Booming Bulls Academy\u2019s role is limited to announcing the Campaign, and it gives no investment advice, recommendations or claims about returns as part of it.]",
+      "[Confirm: Booming Bulls Academy\u2019s is limited to announcing the Campaign, and it gives no investment advice, recommendations or claims about returns as part of it.]",
     ],
   },
   {
@@ -135,11 +135,9 @@ export default function Terms() {
   return (
     <section
       id="terms"
-      aria-labelledby="terms-heading"
       className="arena-container relative isolate pb-24 lg:pb-32"
     >
       <div
-        aria-hidden
         className="pointer-events-none absolute inset-x-0 -top-16 -z-10 h-[28rem]"
         style={{
           background:
@@ -154,11 +152,10 @@ export default function Terms() {
           Terms &amp; Conditions
         </h1>
         <span
-          aria-hidden
           className="mx-auto mt-8 block h-px w-3/4 bg-gradient-to-r from-transparent via-accent/70 to-transparent"
         />
         <p className="mt-10 flex items-start gap-2.5 text-[0.875rem] font-semibold leading-relaxed text-accent">
-          <svg aria-hidden viewBox="0 0 16 16" width="15" height="15" fill="none" className="mt-[0.2rem] shrink-0">
+          <svg viewBox="0 0 16 16" width="15" height="15" fill="none" className="mt-[0.2rem] shrink-0">
             <path
               fill="currentColor"
               d="M7.1 1.9a1 1 0 0 1 1.8 0l6 11A1 1 0 0 1 14 14.5H2a1 1 0 0 1-.9-1.6l6-11ZM8 5.5a.8.8 0 0 0-.8.9l.3 3a.5.5 0 0 0 1 0l.3-3A.8.8 0 0 0 8 5.5Zm0 5.3a.85.85 0 1 0 0 1.7.85.85 0 0 0 0-1.7Z"

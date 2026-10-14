@@ -32,10 +32,7 @@ export default function RevealRoot() {
       el.dataset.revealed = "true";
     };
 
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (reduced || typeof IntersectionObserver === "undefined") {
+    if (typeof IntersectionObserver === "undefined") {
       nodes.forEach(reveal);
       root.classList.remove("reveal-ready");
       return;
