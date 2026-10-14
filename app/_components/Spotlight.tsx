@@ -20,8 +20,8 @@ export default function Spotlight() {
 
       <div className="relative mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16 min-[1920px]:max-w-6xl min-[1920px]:grid-cols-[minmax(0,1fr)_25rem]">
         <div data-reveal className="text-center lg:text-left">
-          <p className="inline-flex items-center gap-2 rounded-full neu-inset px-3.5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-accent">
-            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_2px_rgba(177,69,201,0.6)]" />
+          <p className="section-label neu-inset">
+            <span aria-hidden className="section-label-dot" />
             From the championship stage
           </p>
           <h2
@@ -31,8 +31,8 @@ export default function Spotlight() {
             <Placeholder>One minute from the title</Placeholder>
           </h2>
 
-          <figure className="mx-auto mt-8 max-w-xl lg:mx-0">
-            <blockquote className="flex flex-col gap-4">
+          <figure className="mx-auto mt-8 max-w-[35rem] lg:mx-0">
+            <blockquote className="flex flex-col gap-4 border-l-2 border-accent pl-5 text-left">
               <p className="text-[clamp(1.25rem,2.6vw,1.75rem)] font-bold leading-snug text-gold-bright">
                 <Placeholder>&ldquo;I came here to become the champion.&rdquo;</Placeholder>
               </p>

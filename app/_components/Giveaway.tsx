@@ -14,7 +14,7 @@ export default function Giveaway() {
     <section
       id="giveaway"
       aria-labelledby="giveaway-heading"
-      className="arena-container relative pb-16 lg:pb-20"
+      className="arena-container relative pb-20 lg:pb-28"
     >
       <div
         data-reveal
@@ -50,11 +50,11 @@ export default function Giveaway() {
 
           <div className="text-center lg:text-left">
             <div className="flex flex-wrap items-center justify-center gap-2 lg:justify-start">
-              <p className="inline-flex items-center gap-2 rounded-full neu-inset px-3.5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-accent">
-                <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
+              <p className="section-label neu-inset">
+                <span aria-hidden className="section-label-dot" />
                 Bonus giveaway
               </p>
-              <p className="rounded-full border border-accent/40 px-3 py-1 text-[0.625rem] font-bold uppercase tracking-[0.14em] text-accent">
+              <p className="text-[0.625rem] font-bold uppercase tracking-[0.14em] text-fg-subtle">
                 Draft · details to be confirmed
               </p>
             </div>
@@ -73,9 +73,9 @@ export default function Giveaway() {
               </Placeholder>
             </p>
 
-            <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <dl className="mt-6 grid grid-cols-1 divide-y divide-white/10 overflow-hidden rounded-xl neu-inset sm:grid-cols-3 sm:divide-x sm:divide-y-0">
               {DETAILS.map((d) => (
-                <div key={d.label} className="rounded-xl neu-inset px-4 py-3 text-left">
+                <div key={d.label} className="px-4 py-3 text-left">
                   <dt className="text-[0.625rem] font-bold uppercase tracking-[0.14em] text-fg-subtle">
                     {d.label}
                   </dt>

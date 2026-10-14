@@ -37,7 +37,7 @@ export default function Footer() {
         aria-hidden
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"
       />
-      <div className="arena-container py-12 sm:py-14">
+      <div className="arena-container py-10 sm:py-12">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <div className="flex items-center gap-4">
@@ -97,7 +97,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-12 flex flex-col gap-4 border-t border-white/5 pt-6 sm:flex-row sm:items-start sm:justify-between">
+        <div className="mt-8 flex flex-col gap-4 border-t border-white/5 pt-6 sm:flex-row sm:items-start sm:justify-between">
           <p className="max-w-[80ch] text-xs leading-relaxed text-fg-subtle">
             <Placeholder>
               Subject to a final agreement, verification of the championship

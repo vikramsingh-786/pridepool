@@ -41,9 +41,9 @@ export default function ShortPlayer({ id, title }: { id: string; title: string }
       />
       <span
         aria-hidden
-        className="btn-key absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+        className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/15 text-white backdrop-blur-sm transition-colors duration-200 group-hover:bg-white/25"
       >
-        <svg viewBox="0 0 24 24" width="30" height="30" className="ml-1">
+        <svg viewBox="0 0 24 24" width="22" height="22" className="ml-0.5">
           <path d="M7 4.5v15a1 1 0 0 0 1.5.87l12-7.5a1 1 0 0 0 0-1.74l-12-7.5A1 1 0 0 0 7 4.5Z" fill="currentColor" />
         </svg>
       </span>

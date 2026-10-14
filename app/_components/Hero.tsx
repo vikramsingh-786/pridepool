@@ -55,23 +55,23 @@ export default function Hero() {
         </div>
       </div>
       <div className="relative z-10 flex flex-1 items-center xl:mt-auto xl:min-h-[calc(var(--hero-pw)*1.2131)] xl:flex-none">
-        <div className="arena-container py-14 md:py-16 lg:py-20 xl:max-w-[100rem] xl:py-0">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,25rem)_minmax(0,1fr)] lg:gap-14 xl:grid-cols-[var(--hero-pw)_minmax(0,1fr)] xl:gap-16">
+        <div className="arena-container py-14 md:py-16 lg:py-10 xl:max-w-[100rem] xl:py-0">
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:gap-14 xl:grid-cols-[var(--hero-pw)_minmax(0,1fr)] xl:gap-16">
             <div className="relative text-center lg:col-start-2 lg:row-start-1 lg:text-left">
               <div
                 aria-hidden
                 className="pointer-events-none absolute -inset-x-16 -inset-y-20 -z-10 lg:-left-4"
                 style={{
                   background:
-                    "radial-gradient(ellipse 62% 58% at 42% 50%, rgba(11,11,15,0.92) 0%, rgba(11,11,15,0.78) 45%, transparent 82%)",
+                    "radial-gradient(ellipse 62% 58% at 42% 50%, rgba(1,4,13,0.94) 0%, rgba(1,4,13,0.82) 45%, transparent 82%)",
                 }}
               />
               <div
-                className="arena-enter flex flex-wrap items-center justify-center gap-x-4 gap-y-2 lg:justify-start"
+                className="arena-enter flex flex-col items-center gap-2.5 lg:items-start"
                 style={{ "--e-delay": "0.05s" } as React.CSSProperties}
               >
-                <span className="inline-flex items-center gap-2 rounded-full border border-accent/50 bg-accent/10 px-3.5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.22em] text-accent xl:text-xs">
-                  <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-accent" />
+                <span className="section-label neu-inset">
+                  <span aria-hidden className="section-label-dot" />
                   The Pride Pool
                 </span>
                 <span className="text-sm font-extrabold tracking-tight text-violet sm:text-base xl:text-lg">
@@ -110,7 +110,10 @@ export default function Hero() {
                   href="#giveaway"
                   className="inline-flex items-center gap-2 rounded-full border border-accent/50 bg-accent/10 px-3.5 py-1.5 text-[0.8125rem] font-bold text-accent transition-colors duration-200 hover:bg-accent/20"
                 >
-                  <span aria-hidden>💻</span>
+                  <svg aria-hidden viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="4" y="5" width="16" height="11" rx="1.5" />
+                    <path d="M2 19h20" />
+                  </svg>
                   <Placeholder>+ 20 laptops to be won</Placeholder>
                 </a>
               </p>
@@ -138,7 +141,7 @@ export default function Hero() {
                 </p>
               </div>
             </div>
-            <div className="relative order-first -mb-14 w-full max-w-[16rem] justify-self-center sm:-mb-16 sm:max-w-[20rem] lg:order-none lg:mb-0 lg:max-w-[25rem] xl:hidden">
+            <div className="relative order-first -mb-14 w-full max-w-[16rem] justify-self-center sm:-mb-16 sm:max-w-[20rem] lg:order-none lg:mb-0 lg:max-w-[19rem] xl:hidden">
               <div
                 aria-hidden
                 className="hero-figure-rim pointer-events-none absolute -inset-x-[24%] -top-[8%] bottom-[6%] -z-10"

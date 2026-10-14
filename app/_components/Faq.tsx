@@ -4,36 +4,32 @@ import { useId, useState } from "react";
 
 const FAQS: { q: string; a: string }[] = [
   {
-    q: "What is the Lemonn × Booming Bulls campaign?",
-    a: "This campaign celebrates Anish Singh Thakur's achievement at the World Trading Championship. Final campaign details and participation rules are awaiting approval.",
+    q: "What is the Pride Pool?",
+    a: "The Pride Pool is a shared ₹1 crore brokerage pool for eligible Lemonn customers, along with a giveaway of 20 laptops.",
   },
   {
-    q: "What is the ₹1 Crore Brokerage Credits Pool?",
-    a: "The campaign is planned around a ₹1 Crore brokerage credits pool. The allocation, eligibility, and redemption rules have not yet been finalized.",
+    q: "I’m already a Lemonn customer. Do I need to register?",
+    a: "No. Existing Lemonn customers are automatically included. No separate campaign registration is needed. Campaign eligibility terms apply.",
   },
   {
-    q: "Who can participate?",
-    a: "Eligibility requirements for new and existing Lemonn users are awaiting confirmation. Please check the final campaign terms once they are published.",
+    q: "How can new customers participate?",
+    a: "Sign up through the campaign link and complete Lemonn’s account-opening process to participate, subject to campaign eligibility.",
   },
   {
-    q: "How do I join the campaign?",
-    a: "Tap “Join the ₹1 Crore Pool”. That is the only step on this page — there is no form to fill in. Existing Lemonn customers are part of the pool automatically.",
+    q: "Is there a limit on how much brokerage I can use from the pool?",
+    a: "There is no individual usage cap. The total shared pool is ₹1 crore, and benefits are available while the pool lasts during the campaign period.",
   },
   {
-    q: "Do I need to share my mobile number or an OTP here?",
-    a: "No. This page does not ask for a mobile number, an OTP or any other personal details.",
+    q: "How can I win a laptop?",
+    a: "There are 20 laptops in the giveaway. Higher eligible brokerage usage from the pool increases your chance of winning. It does not guarantee a win. The published giveaway rules explain the selection process.",
   },
   {
-    q: "How will brokerage credits be allocated?",
-    a: "The allocation method, applicable conditions, and any eligibility restrictions have not yet been approved.",
+    q: "Does this mean all trading charges are waived?",
+    a: "No. The benefit applies to eligible brokerage. Applicable taxes, statutory charges and other charges still apply, as detailed in the campaign terms.",
   },
   {
-    q: "Is there a laptop giveaway?",
-    a: "Yes. 20 laptops will be given away to participants. How winners are chosen, who is eligible and when results are announced are still to be confirmed, and will be published in the terms.",
-  },
-  {
-    q: "Where can I find the campaign rules?",
-    a: "The draft terms are on the Terms & Conditions page, linked in the footer. The final terms will be published after business and legal review.",
+    q: "Where can I track my usage?",
+    a: "Check the campaign leaderboard above and its last-updated timestamp. Your leaderboard position does not guarantee a laptop.",
   },
 ];
 
@@ -87,8 +83,8 @@ export default function Faq() {
       />
       <div className="relative mx-auto max-w-4xl min-[1920px]:max-w-5xl">
         <div data-reveal className="text-center">
-          <p className="inline-flex items-center gap-2 rounded-full neu-inset px-3.5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-accent">
-            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_2px_rgba(177,69,201,0.6)]" />
+          <p className="section-label neu-inset">
+            <span aria-hidden className="section-label-dot" />
             FAQ
           </p>
           <h2
@@ -145,7 +141,7 @@ export default function Faq() {
                 }`}
               >
                 <div className="overflow-hidden">
-                  <p className={`max-w-[78ch] px-4 pb-4 pr-10 text-[0.875rem] leading-relaxed text-fg-muted transition-opacity duration-300 sm:px-5 sm:pb-5 sm:pr-12 ${isOpen ? "opacity-100" : "opacity-0"}`}>
+                  <p className={`max-w-[78ch] px-4 pb-4 pr-10 text-[0.875rem] leading-relaxed text-fg/90 transition-opacity duration-300 sm:px-5 sm:pb-5 sm:pr-12 ${isOpen ? "opacity-100" : "opacity-0"}`}>
                     {faq.a}
                   </p>
                 </div>

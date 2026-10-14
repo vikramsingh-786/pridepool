@@ -1,3 +1,1 @@
-// ponytail: no registration destination exists yet — point this at the real
-
-export const JOIN_HREF = "#";
+export const JOIN_HREF = "https://stocks.trade-kar.com/invite?data=PridePool";

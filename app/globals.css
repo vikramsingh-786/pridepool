@@ -49,8 +49,8 @@
   }
 
   .neu-raised {
-    background: linear-gradient(145deg, #131830 0%, #0a0e1d 55%, #05070f 100%);
-    border: 1px solid rgb(177 69 201 / 0.13);
+    background: linear-gradient(145deg, #211a2c 0%, #1a1424 55%, #130e1a 100%);
+    border: 1px solid rgb(255 255 255 / 0.08);
     box-shadow:
       inset 0 1px 0 rgb(231 182 242 / 0.16),
       inset 1px 1px 0 rgb(255 255 255 / 0.06),
@@ -63,12 +63,12 @@
   .key-cap,
   .key-cap-sm {
     --key-depth: 8px;
-    background: linear-gradient(180deg, #171c33 0%, #0d1121 100%);
+    background: linear-gradient(180deg, #261e31 0%, #1a1424 100%);
     border: 1px solid rgb(255 255 255 / 0.08);
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 0.12),
       inset 0 -3px 0 rgb(0 0 0 / 0.3),
-      0 var(--key-depth) 0 var(--key-side, #010309),
+      0 var(--key-depth) 0 var(--key-side, #0b0810),
       0 calc(var(--key-depth) + 14px) 26px -6px rgb(0 0 0 / 0.9);
     transition:
       translate 0.22s cubic-bezier(0.2, 0.7, 0.3, 1),
@@ -122,7 +122,7 @@
   }
 
   .neu-inset {
-    background: #03060f;
+    background: #0f0b14;
     border: 1px solid rgb(0 0 0 / 0.5);
     box-shadow:
       inset 5px 5px 11px rgb(0 0 0 / 0.85),
@@ -315,49 +315,6 @@
     }
   }
 
-  .arena-halo {
-    animation: arena-halo 7s ease-in-out 1.6s infinite alternate;
-  }
-  @keyframes arena-halo {
-    from {
-      opacity: 0.3;
-    }
-    to {
-      opacity: 0.75;
-    }
-  }
-
-  .arena-beam {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-  }
-  .arena-beam::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 190%;
-    aspect-ratio: 1;
-    z-index: -1;
-    background: conic-gradient(
-      from 0deg,
-      transparent 0deg 190deg,
-      rgba(177, 69, 201, 0.9) 268deg,
-      rgba(231, 182, 242, 0.95) 310deg,
-      transparent 350deg
-    );
-    animation: arena-beam 9s linear infinite;
-  }
-  @keyframes arena-beam {
-    from {
-      transform: translate(-50%, -50%) rotate(0deg);
-    }
-    to {
-      transform: translate(-50%, -50%) rotate(360deg);
-    }
-  }
-
   .arena-cta {
     position: relative;
     overflow: hidden;
@@ -444,15 +401,6 @@
       animation: none !important;
       transform: none !important;
     }
-    .arena-halo {
-      animation: none !important;
-      opacity: 0.5;
-    }
-
-    .arena-beam::before {
-      animation: none !important;
-      transform: translate(-50%, -50%) rotate(300deg);
-    }
     .arena-cta::after {
       display: none;
     }
@@ -527,18 +475,12 @@
    it just stops moving. Entrance animations are unaffected. */
 @media (max-width: 1023px), (pointer: coarse) {
   .arena-drift,
-  .arena-particle,
-  .arena-halo,
-  .arena-beam::before {
+  .arena-particle {
     animation: none !important;
     will-change: auto;
   }
   .arena-particle {
     opacity: var(--p-opacity, 0.5);
-  }
-  /* Park the Join card's rim light (same as the reduced-motion rule). */
-  .arena-beam::before {
-    transform: translate(-50%, -50%) rotate(300deg);
   }
 }
 
@@ -577,12 +519,12 @@
   --color-accent: #9a2fb3;
   --color-border-subtle: #e2dfe8;
   color: var(--color-fg);
-  background: linear-gradient(180deg, #ffffff 0%, #f1eff5 100%);
+  background: linear-gradient(180deg, #f6f3f9 0%, #e9e4ef 100%);
   border: 1px solid rgb(0 0 0 / 0.08);
   box-shadow:
-    inset 0 2px 0 #ffffff,
+    inset 0 2px 0 rgb(255 255 255 / 0.7),
     inset 0 -3px 0 rgb(0 0 0 / 0.05),
-    0 10px 0 #c4c0cf,
+    0 10px 0 #bdb6c9,
     0 10px 0 1px rgb(0 0 0 / 0.12),
     0 30px 50px -18px rgb(0 0 0 / 0.75);
 }
@@ -596,12 +538,12 @@
 
 /* Dark keycap (graphite): same construction as .key-light, charcoal face. */
 .key-dark {
-  background: linear-gradient(180deg, #2c2d36 0%, #1d1e25 100%);
-  border: 1px solid rgb(255 255 255 / 0.1);
+  background: linear-gradient(180deg, #261e31 0%, #1a1424 100%);
+  border: 1px solid rgb(255 255 255 / 0.08);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.14),
     inset 0 -2px 0 rgb(0 0 0 / 0.3),
-    0 6px 0 #0d0d12,
+    0 6px 0 #0b0810,
     0 6px 0 1px rgb(0 0 0 / 0.5),
     0 16px 26px -10px rgb(0 0 0 / 0.85);
 }
@@ -612,5 +554,28 @@
   --color-fg: #ffffff;
   --color-fg-muted: #bfc0c8;
   --color-fg-subtle: #8d8fa0;
+  --color-gold: #ffc978;
+  --color-silver: #d9d9e8;
+  --color-bronze: #e09a62;
   color: var(--color-fg);
+}
+
+/* One section-label style everywhere: filled dark pill, accent dot. */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.section-label-dot {
+  height: 0.375rem;
+  width: 0.375rem;
+  border-radius: 9999px;
+  background: var(--color-accent);
 }
