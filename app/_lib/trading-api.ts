@@ -37,13 +37,17 @@ export type Leaderboard = {
   error: string | null;
 };
 
-// Every amount on the page is whole rupees, never paise, even if the feed sends decimals (rounded half up: ₹29.71 → ₹30)
+// Every amount on the page is whole rupees, never paise: anything after the decimal point is dropped (49.5 → ₹49, 49.12932 → ₹49).
 const rupees = new Intl.NumberFormat("en-IN", {
   style: "currency",
   currency: "INR",
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
+
+// Drops everything after the decimal point, no rounding: 49.99999999 → 49
+const whole = (n: number) => Math.trunc(n);
+const inr = (n: number) => rupees.format(whole(n));
 
 function config() {
   const env = {
@@ -70,25 +74,28 @@ type Row = { name: string; brokerage_saved: number };
 
 const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : null);
 
-function toContest(c: Record<string, unknown> | undefined): Contest | null {
+// usedSum: Σ of every trader's brokerage saved, each with its decimals dropped (see getTopBrokerageSavings). The feed's own
+// exhausted_amount is only the fallback when not every row could be fetched; its `remaining` isn't used at all.
+function toContest(c: Record<string, unknown> | undefined, usedSum: number | null): Contest | null {
   if (!c) return null;
-  const pool = num(c.pool_size), used = num(c.exhausted_amount), left = num(c.remaining);
+  const pool = num(c.pool_size), used = usedSum ?? num(c.exhausted_amount);
   const enrolled = num(c.users_enrolled), benefited = num(c.users_benefited);
   const day = (v: unknown) => (typeof v === "string" ? new Date(`${v}T00:00:00+05:30`) : null);
   const start = day(c.start_date), end = day(c.end_date);
   const valid = (d: Date | null): d is Date => !!d && !isNaN(+d);
-  if (pool === null || used === null || left === null || enrolled === null || benefited === null || !valid(start) || !valid(end)) return null;
+  if (pool === null || used === null || enrolled === null || benefited === null || !valid(start) || !valid(end)) return null;
   const fmt = (d: Date, withYear: boolean) =>
     d.toLocaleDateString("en-IN", { day: "numeric", month: "short", ...(withYear && { year: "numeric" }), timeZone: "Asia/Kolkata" });
   return {
     name: typeof c.name === "string" ? c.name : "",
     status: typeof c.status === "string" ? c.status : "",
-    poolSize: rupees.format(pool),
-    used: rupees.format(used),
-    remaining: rupees.format(left),
-    // from the same whole-rupee amounts shown on the page, so "₹50 of ₹50 used" reads 100%, not 99% (49.71 / 50)
+    poolSize: inr(pool),
+    used: inr(used),
+    // Pool − Used, in the same whole rupees shown (₹50 − ₹49 = ₹1)
+    remaining: inr(Math.max(0, whole(pool) - whole(used))),
+    // from the same whole-rupee amounts shown on the page, so the % always matches "₹X of ₹Y used"
     // ×100 before ÷ keeps it exact (29/50 → 58, not 57.999…)
-    usedPct: Math.round(pool) > 0 ? Math.min(100, (Math.round(used) * 100) / Math.round(pool)) : 0,
+    usedPct: whole(pool) > 0 ? Math.min(100, (whole(used) * 100) / whole(pool)) : 0,
     usersEnrolled: enrolled,
     usersBenefited: benefited,
     period: `${fmt(start, false)} – ${fmt(end, true)}`,
@@ -150,25 +157,45 @@ const toEntry = (r: Row, rank: number): BoardEntry => ({
   // Backend pads the mask to the full name length ("SA*****************NA"); keep it short so it fits a podium
   participant: r.name.replace(/\*{4,}/g, "****"),
   score: r.brokerage_saved,
-  display: rupees.format(r.brokerage_saved),
+  display: inr(r.brokerage_saved),
 });
 
 const unavailable = (error: string): Leaderboard => ({ status: "unavailable", entries: [], contest: null, updatedAt: null, total: 0, error });
 
 // Podium + first table page + contest stats, in one call.
+// Every ranked row, for summing "Used": the first call's rows, plus the rest in pages of SUM_PAGE (in parallel) when there are
+// more traders than it returned. null if any page fails, so a partial sum is never shown.
+// ponytail: one call per SUM_PAGE traders on every page load; ask the backend for a sum-of-whole-rupees field if traders run into the thousands.
+const SUM_PAGE = 100;
+async function allRows(cfg: Cfg | null, first: Row[], count: number): Promise<Row[] | null> {
+  if (first.length < PODIUM + PAGE_SIZE || first.length >= count) return first; // the first call already held them all
+  const offsets: number[] = [];
+  for (let o = first.length; o < count; o += SUM_PAGE) offsets.push(o);
+  const pages = await Promise.all(offsets.map((o) => upstream(cfg, o, SUM_PAGE)));
+  if (pages.some((p) => !p.data)) {
+    console.error("[leaderboard] couldn't fetch every row to sum Used; showing the feed's exhausted_amount instead");
+    return null;
+  }
+  return first.concat(...pages.map((p) => p.data!.rows));
+}
+
 export async function getTopBrokerageSavings(): Promise<Leaderboard> {
-  const { data, error } = await upstream(config(), 0, PODIUM + PAGE_SIZE);
+  const cfg = config();
+  const { data, error } = await upstream(cfg, 0, PODIUM + PAGE_SIZE);
   if (!data) return unavailable(error);
 
   const entries = data.rows.slice(0, PODIUM + PAGE_SIZE).map((r, i) => toEntry(r, i + 1));
   const benefited = num(data.contest?.users_benefited);
   // ponytail: the API has no row total; users_benefited (traders with savings) is used as the ranked count. Swap in a real total if the backend adds one.
   const total = Math.max(benefited ?? 0, entries.length);
+  // Used = Σ whole rupees saved by every trader (29.708 + 20 → 29 + 20 = ₹49)
+  const rows = await allRows(cfg, data.rows, total);
+  const usedSum = rows ? rows.reduce((sum, r) => sum + whole(r.brokerage_saved), 0) : null;
 
   return {
     status: entries.length ? "ready" : "empty",
     entries,
-    contest: toContest(data.contest),
+    contest: toContest(data.contest, usedSum),
     updatedAt: updatedNow(),
     total,
     error: null,

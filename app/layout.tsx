@@ -26,7 +26,10 @@ export default function CampaignRootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "if('IntersectionObserver' in window)document.documentElement.classList.add('reveal-ready')",
+              "if('IntersectionObserver' in window)document.documentElement.classList.add('reveal-ready');" +
+              // Desktop scales with the width (globals.css), so a wide-but-short window would make the hero taller than the screen.
+              // --hero-fit shrinks just the hero to fit the height: its design is 1440×900, so at width W it needs W×900/1440 of height.
+              "(function(){var r=document.documentElement;function f(){r.style.setProperty('--hero-fit',String(Math.min(1,innerHeight/(innerWidth*900/1440))))}f();addEventListener('resize',f)})()",
           }}
         />
         {children}

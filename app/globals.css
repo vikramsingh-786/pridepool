@@ -251,11 +251,6 @@
     margin-inline: auto;
     padding-inline: clamp(1.25rem, 4vw, 3rem);
   }
-  @media (min-width: 1920px) {
-    .arena-container {
-      max-width: 100rem;
-    }
-  }
   .neu-raised {
     background: linear-gradient(145deg, #131830 0%, #0a0e1d 55%, #05070f 100%);
     border: 1px solid rgb(var(--glow) / 0.13);
@@ -545,15 +540,19 @@
   }
 }
 
-/* ───────────────────────── The page scales like an image ───────────────────────── Designed on two canvases: mobile 390×844 and desktop (≥1024px) 1440×900. Everything is sized in rem, so setting the root font size scales the whole page to fit the screen's width AND height — same composition on a phone, laptop or big monitor. (Switched on by <html class="scale-artboard">, set in layout.tsx.) */
+/* ───────────────────────── The page scales like an image ───────────────────────── Designed on two canvases: mobile 390×844 and desktop (≥1024px) 1440×900. Everything is sized in rem, so setting the root font size scales the whole page: phones fit width and height; desktop (≥1024px) scales with the width, so sections fill wide screens. (Switched on by <html class="scale-artboard">, set in layout.tsx.) */
 html.scale-artboard {
   /* 16px at 390 wide / 844 tall; never below 13px so text stays readable */
   font-size: max(13px, min(calc(100vw / 390 * 16), calc(100svh / 844 * 16)));
 }
 @media (min-width: 1024px) {
   html.scale-artboard {
-    /* 16px at 1440 wide / 900 tall */
-    font-size: max(12px, min(calc(100vw / 1440 * 16), calc(100vh / 900 * 16)));
+    /* 16px at 1440 wide; scales with the width only, so on wide-but-short windows and big monitors every section fills the screen width instead of shrinking to fit the height (phones still fit both, above) */
+    font-size: max(12px, calc(100vw / 1440 * 16));
+  }
+  /* …except the hero, which shrinks to fit the window's height (--hero-fit, set in layout.tsx) so its Join buttons stay on the first screen */
+  html.scale-artboard #hero {
+    zoom: var(--hero-fit, 1);
   }
 }
 
