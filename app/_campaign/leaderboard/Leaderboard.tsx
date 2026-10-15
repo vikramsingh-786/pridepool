@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import Odometer from '../components/Odometer';
 import Flag from './Flag';
 import { POOL } from '../content';
-import type { Leaderboard as BoardData } from '../../_lib/trading-api';
+import type { Leaderboard as BoardData, Contest } from '../../_lib/trading-api';
 import {
   BRONZE_MEDAL,
   BRONZE_PODIUM,
@@ -52,7 +52,7 @@ const toLeader = (e: { rank: number; participant: string; score: number }, best:
 /**
  * Backend feed → what the design draws. null when the feed is unavailable, so the section can say so
  * instead of standing up an empty podium. The feed carries no country and this is an India campaign,
- * so row flags are India; the three podium flags are fixed Figma art (gold/bronze only exist as USA).
+ * so every flag, rows and podium, is India.
  */
 function fromBoard(board: BoardData | null | undefined) {
   if (!board || board.status === 'unavailable') return null;
@@ -62,6 +62,7 @@ function fromBoard(board: BoardData | null | undefined) {
   const at = (i: number) => (board.entries[i] ? toLeader(board.entries[i], best) : open(i + 1));
   return {
     best,
+    contest: board.contest,
     updatedAt: board.updatedAt,
     top: { gold: at(0), silver: at(1), bronze: at(2) },
     // the first call already carries page 1 of the table (ranks 4 onward); later pages are fetched
@@ -172,17 +173,7 @@ function PodiumScene({ rolling, art, TOP }: { rolling: boolean; art: boolean; TO
           <div className="absolute inset-0" style={{ transform: `scale(${MEDAL_RING_SCALE.silver})`, transformOrigin: '49.7% 49.91%' }}>
             <Layers layers={SILVER_MEDAL} />
           </div>
-          {/* the India flag flips over to Anish now and then (animation: .lb-flip in globals.css) */}
-          <div className="lb-flip absolute" style={pos(SILVER_FLAG_BOX)}>
-            <div className="lb-flip-card">
-              <span className="lb-flip-face">
-                <Flag country="india" variant="podium-india" className="size-full" />
-              </span>
-              <span className="lb-flip-face lb-flip-back">
-                <img src="/anish-face.webp" alt="" width="192" height="192" decoding="async" draggable={false} className="block size-full" />
-              </span>
-            </div>
-          </div>
+          <Flag country="india" variant="podium-india" className="absolute" style={pos(SILVER_FLAG_BOX)} />
         </Coin>
       </Podium>
 
@@ -194,7 +185,7 @@ function PodiumScene({ rolling, art, TOP }: { rolling: boolean; art: boolean; TO
           <div className="absolute inset-0 overflow-hidden" style={{ transform: `scale(${MEDAL_RING_SCALE.bronze})`, transformOrigin: '50.21% 18.83%' }}>
             <Img src="bronze-medal" box={BRONZE_MEDAL.medal} />
           </div>
-          <Flag country="usa" variant="podium-usa-bronze" className="absolute" style={pos(BRONZE_MEDAL.flag)} />
+          <Flag country="india" variant="podium-usa-bronze" className="absolute" style={pos(BRONZE_MEDAL.flag)} />
         </Coin>
         <Details at={DETAILS.bronze} crown="bronze-crown" crownSize={[67.405, 43.718]} gaps={[13.746, 22]} nameSize={36.656} scoreSize={45.82} scoreColor="#ffc79a" shadow={[3.384, 10.151]} leader={TOP.bronze} rolling={rolling} />
       </Podium>
@@ -215,7 +206,7 @@ function PodiumScene({ rolling, art, TOP }: { rolling: boolean; art: boolean; TO
           <div className="absolute inset-0 overflow-hidden" style={{ transform: `scale(${MEDAL_RING_SCALE.gold})`, transformOrigin: '50.12% 18.86%' }}>
             <Img src="gold-medal" box={GOLD_MEDAL.medal} />
           </div>
-          <Flag country="usa" variant="podium-usa-gold" className="absolute" style={pos(GOLD_MEDAL.flag)} />
+          <Flag country="india" variant="podium-usa-gold" className="absolute" style={pos(GOLD_MEDAL.flag)} />
         </Coin>
         <Details at={DETAILS.gold} crown="gold-crown" crownSize={[105.303, 67.912]} crownShading gaps={[13.746, 22]} nameSize={36.656} scoreSize={45.82} scoreColor="#ffd873" shadow={[3.384, 10.151]} leader={TOP.gold} rolling={rolling} />
       </Podium>
@@ -258,8 +249,48 @@ function Pager({ page, pages, loading, onChange }: { page: number; pages: number
   );
 }
 
+/** Contest block from the feed, at the top of the standings card (as the old leaderboard had it): name, status, dates, pool used, then the numbers as white 3D keys (.btn-key-light, like the pager). */
+function ContestStats({ contest: c }: { contest: Contest }) {
+  const stats = [
+    ['Pool size', c.poolSize],
+    ['Used', c.used],
+    ['Remaining', c.remaining],
+    ['Traders enrolled', c.usersEnrolled.toLocaleString('en-IN')],
+    ['Traders benefited', c.usersBenefited.toLocaleString('en-IN')],
+  ];
+  return (
+    <div className="border-b-[0.0625rem] border-white/[0.07] px-[0.875rem] pb-6 pt-5 lg:border-b-[0.0966rem] lg:px-[1.546rem] lg:pb-8 lg:pt-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-[1rem] font-bold text-fg lg:text-[1.125rem]">{c.name}</p>
+        <p className="flex items-center gap-2 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.08em] text-fg-subtle">
+          {c.status && <span className="rounded-md border border-accent/40 px-2 py-0.5 text-accent">{c.status}</span>}
+          {c.period}
+        </p>
+      </div>
+      <div className="mt-4 flex items-baseline justify-between gap-2 font-mono text-[0.75rem] tabular-nums text-fg-subtle">
+        <span>
+          <span className="font-bold text-fg">{c.used}</span> of {c.poolSize} used
+        </span>
+        <span>{c.usedPct.toFixed(1)}%</span>
+      </div>
+      <div className="neu-inset mt-1.5 h-2.5 overflow-hidden rounded-full" role="progressbar" aria-label="Pool used" aria-valuenow={Math.round(c.usedPct)} aria-valuemin={0} aria-valuemax={100}>
+        <div className="h-full rounded-full bg-accent shadow-[0_0_0.75rem_rgb(var(--accent-glow-rgb)/0.6)]" style={{ width: `${Math.max(c.usedPct, 1.5)}%` }} />
+      </div>
+      <dl className="mt-5 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 lg:grid-cols-5 lg:gap-4">
+        {stats.map(([label, value]) => (
+          <div key={label} className="btn-key-light relative rounded-xl px-3 py-3 text-center lg:py-4">
+            <dt className="text-[0.625rem] font-bold uppercase tracking-[0.12em] text-black/55">{label}</dt>
+            <dd className="mt-1 font-mono text-[1rem] font-bold tabular-nums text-[#0b0b12] lg:text-[1.125rem]">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
 /** Places 4 onward (desktop sizes = Figma ÷ 2, in rem; phones get a compact row). */
 function RankingsTable({
+  contest,
   rows: ROWS,
   page,
   pages,
@@ -267,6 +298,7 @@ function RankingsTable({
   error,
   onPage,
 }: {
+  contest: Contest | null;
   rows: Leader[];
   page: number;
   pages: number;
@@ -276,9 +308,13 @@ function RankingsTable({
 }) {
   return (
     <div
-      className="relative z-10 -mt-[1.5%] overflow-hidden rounded-[1rem] border-[0.0625rem] border-white/[0.07] pb-[0.375rem] shadow-[0_-0.773rem_2.319rem_rgba(0,0,0,0.45)] backdrop-blur-[0.773rem] lg:-mt-[5.66%] lg:rounded-[1.159rem] lg:border-[0.0966rem]"
-      style={{ background: 'linear-gradient(to bottom, rgba(6,21,15,0.92), rgba(6,21,15,0.97))' }}
+      className="slab-3d relative z-10 -mt-[1.5%] mb-[0.875rem] overflow-hidden rounded-[1rem] border-[0.0625rem] border-white/[0.09] pb-[0.375rem] backdrop-blur-[0.773rem] lg:-mt-[5.66%] lg:mb-[1rem] lg:rounded-[1.159rem] lg:border-[0.0966rem]"
+      style={{
+        background: 'linear-gradient(to bottom, rgba(10,31,22,0.94), rgba(6,21,15,0.98))',
+        '--slab-side': '#031009',
+      }}
     >
+      {contest && <ContestStats contest={contest} />}
       <div className="flex h-[2.75rem] items-center border-b-[0.0625rem] border-white/[0.07] px-[0.875rem] text-[0.75rem] font-medium capitalize tracking-[0.04em] text-[#bdb7ae] lg:h-[3.875rem] lg:border-b-[0.0966rem] lg:pl-[1.739rem] lg:pr-[1.546rem] lg:text-[1rem] lg:tracking-[0.06rem]">
         <span className="w-[2.75rem] shrink-0 lg:w-[4.031rem]">Rank</span>
         <span className="flex-1">Participant</span>
@@ -396,7 +432,7 @@ export default function Leaderboard({ board }: { board?: BoardData | null }) {
       {standings ? (
         <div data-sticky-avoid className="relative mx-auto mt-8 w-full max-w-[63.53rem] lg:mt-12">
           <PodiumScene rolling={inView} art={art} TOP={standings.top} />
-          <RankingsTable rows={rows} page={page} pages={pages} loading={loading} error={error} onPage={onPage} />
+          <RankingsTable contest={standings.contest} rows={rows} page={page} pages={pages} loading={loading} error={error} onPage={onPage} />
         </div>
       ) : (
         <p className="mx-auto mt-8 max-w-[44ch] rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-8 text-center text-[0.9375rem] text-fg-muted lg:mt-12">

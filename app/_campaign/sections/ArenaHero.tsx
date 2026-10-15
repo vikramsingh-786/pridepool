@@ -174,8 +174,8 @@ function Headline({ align, onComplete, replay }: { align: 'center' | 'left'; onC
   );
 }
 
-/** The title's last shine takes this long to sweep across (PoolHeadline: SWEEP_VISIBLE_MS) */
-const JOIN_SHAKE_AFTER_MS = 1100;
+/** The Join button shakes once the last shine has mostly crossed the title */
+const JOIN_SHAKE_AFTER_MS = 700;
 
 export default function ArenaHero({
   badgeStyle = 'medal',
@@ -205,7 +205,7 @@ export default function ArenaHero({
     cardsDoneRef.current = true;
     setCards(3);
     setSweepReplay((n) => (n === 0 ? 1 : n));
-    // both cards are down → the page can be scrolled (the last shine plays as you go)
+    // both cards are down → the intro is done (the Champion cover may start loading)
     onIntroDone?.();
     // the shine finishes → Join shakes
     window.setTimeout(() => setShakeJoin(true), JOIN_SHAKE_AFTER_MS);

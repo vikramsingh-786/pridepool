@@ -19,7 +19,9 @@ function files(variant: Variant, country: Country) {
     return { mask: 'flag-row-mask', art: `flag-row-art-${country}`, base: 'flag-row-base', gloss: 'flag-row-gloss', outline: 'flag-row-outline', outlineBox: [0, 0, 100, 100] as Box };
   }
   const set = variant === 'podium-india' ? 'india-podium' : variant === 'podium-usa-gold' ? 'usa-gold' : 'usa-bronze';
-  return { mask: `flag-${set}-mask`, art: `flag-${set}-art`, base: `flag-${set}-base`, gloss: `flag-${set}-gloss`, outline: `flag-${set}-outline`, outlineBox: [-0.857, -0.857, 101.714, 101.714] as Box };
+  // India artwork fits any podium medal (every set is a full-box circle); the medal keeps its own ring and gloss
+  const art = country === 'india' ? 'india-podium' : set;
+  return { mask: `flag-${art}-mask`, art: `flag-${art}-art`, base: `flag-${set}-base`, gloss: `flag-${set}-gloss`, outline: `flag-${set}-outline`, outlineBox: [-0.857, -0.857, 101.714, 101.714] as Box };
 }
 
 const pos = ([l, t, w, h]: Box) => ({ left: `${l}%`, top: `${t}%`, width: `${w}%`, height: `${h}%` });

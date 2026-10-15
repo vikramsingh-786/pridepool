@@ -17,16 +17,15 @@ export type LeaderboardStatus = "ready" | "empty" | "unavailable";
 export type BoardEntry = { rank: number; participant: string; score: number; display: string };
 
 export type Contest = {
+  name: string;
+  status: string;
   poolSize: string;
   used: string;
   remaining: string;
   usedPct: number;
-  poolSizeValue: number;
-  remainingValue: number;
   usersEnrolled: number;
   usersBenefited: number;
   period: string;
-  isActive: boolean;
 };
 
 export type Leaderboard = {
@@ -81,17 +80,16 @@ function toContest(c: Record<string, unknown> | undefined): Contest | null {
   const fmt = (d: Date, withYear: boolean) =>
     d.toLocaleDateString("en-IN", { day: "numeric", month: "short", ...(withYear && { year: "numeric" }), timeZone: "Asia/Kolkata" });
   return {
+    name: typeof c.name === "string" ? c.name : "",
+    status: typeof c.status === "string" ? c.status : "",
     // Whole pool sizes read as ₹50 / ₹1,00,00,000, not ₹50.00.
     poolSize: Number.isInteger(pool) ? `₹${pool.toLocaleString("en-IN")}` : rupees.format(pool),
     used: rupees.format(used),
     remaining: rupees.format(left),
     usedPct: pool > 0 ? Math.min(100, (used / pool) * 100) : 0,
-    poolSizeValue: pool,
-    remainingValue: Math.max(0, left),
     usersEnrolled: enrolled,
     usersBenefited: benefited,
     period: `${fmt(start, false)} – ${fmt(end, true)}`,
-    isActive: c.status === "ACTIVE",
   };
 }
 

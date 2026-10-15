@@ -35,12 +35,12 @@ export default function Background() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-bg">
       <div
-        className="absolute inset-0 opacity-[0.12]"
+        className="absolute inset-0 opacity-[0.22]"
         style={{
           backgroundImage: 'linear-gradient(var(--color-violet) 1px, transparent 1px), linear-gradient(90deg, var(--color-violet) 1px, transparent 1px)',
           backgroundSize: '3rem 3rem',
-          maskImage: 'radial-gradient(ellipse 85% 65% at 50% 55%, #000 10%, transparent 75%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 85% 65% at 50% 55%, #000 10%, transparent 75%)',
+          maskImage: 'radial-gradient(ellipse 95% 80% at 50% 55%, #000 20%, transparent 90%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 95% 80% at 50% 55%, #000 20%, transparent 90%)',
         }}
       />
       <div className="arena-halo absolute left-1/2 top-[58%] h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl lg:left-[68%] lg:top-[55%] lg:h-[48rem] lg:w-[48rem]" style={{ background: 'radial-gradient(closest-side, rgb(var(--glow-deep)/0.6), transparent)' }} />

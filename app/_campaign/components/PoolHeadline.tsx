@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-// The sweep's light has left the text well before its 1.9s ease-out tail ends — what follows starts here
-const SWEEP_VISIBLE_MS = 1100;
+// What follows the title starts this long into its 1.2s light sweep, so the badge lands while the shine is still crossing
+const SWEEP_VISIBLE_MS = 400;
 import Odometer from '../components/Odometer';
 import { POOL } from '../content';
 
 /** The ₹1 Crore headline: 1. ₹1,00,00,000 rolls up like a slot machine 2. right after it lands, all at once: the zeros turn into "Crore", the line shrinks, PRIZE POOL rises in below 3. once it has settled (end of the shrink), a bright light sweeps across the text once, like a reflection The final state stays on screen. With reduced motion it starts at the final state (no sweep). */
 type Phase = 'roll' | 'final';
 
-const ROLL_DONE_MS = 1650; // last digit has visibly landed (8 × 70 ms stagger + the roll's ease-out; its slow tail is invisible)
+const ROLL_DONE_MS = 950; // last digit has visibly landed (8 × 40 ms stagger + the roll's ease-out; its slow tail is invisible)
 const HOLD_MS = 80; // tiny beat so the full number registers
 const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
 
@@ -74,8 +74,8 @@ export default function PoolHeadline({ align = 'center', onComplete, replay = 0 
     <div aria-hidden="true" className={align === 'center' ? 'text-center' : 'text-left'}>
       {/* Line 1: ₹1,00,00,000 → ₹1 Crore, shrinking at the same time */}
       <p
-        className={`font-extrabold leading-none tracking-[-0.04em] text-white [text-shadow:0_0_3.75rem_rgb(var(--glow)/0.55)] ${final ? 'text-[2.25rem] lg:text-[3.25rem]' : 'text-[3.25rem] lg:text-[5.75rem]'}`}
-        style={{ transition: `font-size 0.7s ${ease}` }}
+        className={`font-extrabold leading-none tracking-[-0.04em] text-white [filter:drop-shadow(0_0_1.9rem_rgb(var(--glow)/0.55))] ${final ? 'text-[2.25rem] lg:text-[3.25rem]' : 'text-[3.25rem] lg:text-[5.75rem]'}`}
+        style={{ transition: `font-size 0.45s ${ease}` }}
         onTransitionEnd={(e) => {
           // The light sweep starts only once the shrink has really finished, so it always lines up with the text
           if (final && e.target === e.currentTarget && e.propertyName === 'font-size') setSweep(true);
@@ -85,7 +85,7 @@ export default function PoolHeadline({ align = 'center', onComplete, replay = 0 
           <Odometer text="₹1" label={POOL.amount} />
           <span
             className="relative inline-block h-[1em] overflow-hidden align-top"
-            style={{ width: widths ? `${final ? widths.crore : widths.zeros}em` : undefined, transition: `width 0.6s ${ease}` }}
+            style={{ width: widths ? `${final ? widths.crore : widths.zeros}em` : undefined, transition: `width 0.4s ${ease}` }}
           >
             {/* the zeros slide up and out… */}
             <span
@@ -115,15 +115,15 @@ export default function PoolHeadline({ align = 'center', onComplete, replay = 0 
       </p>
 
       {/* Line 2: PRIDE POOL rises in, bigger — at the same moment */}
-      <div className="grid" style={{ gridTemplateRows: final ? '1fr' : '0fr', transition: `grid-template-rows 0.7s ${ease}` }}>
+      <div className="grid" style={{ gridTemplateRows: final ? '1fr' : '0fr', transition: `grid-template-rows 0.45s ${ease}` }}>
         <div className="overflow-hidden">
           <p
             className="pb-[0.08em] pt-[0.12em] text-[3.75rem] font-extrabold uppercase leading-[0.95] tracking-[-0.03em] lg:text-[6.5rem]"
-            style={{ transform: final ? 'none' : 'translateY(40%) scale(1.15)', opacity: final ? 1 : 0, transition: `transform 0.8s ${ease}, opacity 0.5s ease`, transformOrigin: align === 'center' ? 'center top' : 'left top' }}
+            style={{ transform: final ? 'none' : 'translateY(40%) scale(1.15)', opacity: final ? 1 : 0, transition: `transform 0.5s ${ease}, opacity 0.35s ease`, transformOrigin: align === 'center' ? 'center top' : 'left top' }}
           >
             <span className="relative inline-block">
               <span className="text-grad-silver">{POOL.title}</span>
-              {sweep && <Sweep key={replay} delay="0.3s" onDone={complete}>{POOL.title}</Sweep>}
+              {sweep && <Sweep key={replay} delay="0.1s" onDone={complete}>{POOL.title}</Sweep>}
             </span>
           </p>
         </div>

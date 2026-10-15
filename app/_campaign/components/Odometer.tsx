@@ -5,7 +5,7 @@ export default function Odometer({ text, label, delayOffset = 0 }: { text: strin
     <span aria-label={label} role="img" className="inline-flex leading-none tabular-nums">
       {[...text].map((ch, i) => {
         if (!/\d/.test(ch)) return <span key={i} aria-hidden="true">{ch}</span>;
-        const delay = `${digitIndex++ * 70}ms`;
+        const delay = `${digitIndex++ * 40}ms`;
         return (
           <span key={i} aria-hidden="true" className="inline-block h-[1em] overflow-hidden">
             <span className="odo-strip block" style={{ '--d': Number(ch), animationDelay: delay }}>

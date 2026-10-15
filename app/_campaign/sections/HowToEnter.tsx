@@ -196,7 +196,7 @@ export default function HowToEnter() {
           id="enter-panel"
           role="tabpanel"
           aria-labelledby={`enter-tab-${active}`}
-          className="neu-raised mt-5 overflow-hidden rounded-2xl lg:mt-6"
+          className="neu-raised slab-3d mb-[0.875rem] mt-5 overflow-hidden rounded-2xl lg:mt-6"
         >
           <div key={active} className="step-in grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
             <div className="p-5 lg:p-8">
