@@ -142,7 +142,8 @@ async function upstream(cfg: Cfg, offset: number, limit: number): Promise<Result
 
 const toEntry = (r: Row, rank: number): BoardEntry => ({
   rank,
-  participant: r.name,
+  // Backend pads the mask to the full name length ("SA*****************NA"); keep it short so it fits a podium
+  participant: r.name.replace(/\*{4,}/g, "****"),
   score: r.brokerage_saved,
   display: rupees.format(r.brokerage_saved),
 });
