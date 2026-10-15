@@ -1,6 +1,6 @@
 import { onLanded } from '../components/landed';
 import { artUrl, useLeaderboardArt } from './artStore';
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import Odometer from '../components/Odometer';
 import Flag from './Flag';
 import { POOL } from '../content';
@@ -38,14 +38,11 @@ const PAGE_SIZE = 10;
 /** Ranks 1-3 live on the podium, not in the table. */
 const PODIUM = 3;
 
-/** Amounts to the paisa, the same way the feed reports them. */
-const rupees = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-/** One API row → one table row. The feed's `brokerage_saved` is the ranked number; `best` is rank 1's, for the "% of #1" line. */
-const toLeader = (e: { rank: number; participant: string; score: number }, best: number): Leader => ({
+/** One API row → one table row. The amount text comes formatted from the server (_lib/trading-api: whole rupees); `best` is rank 1's score, for the "% of #1" line. */
+const toLeader = (e: { rank: number; participant: string; score: number; display: string }, best: number): Leader => ({
   rank: e.rank,
   name: e.participant,
-  score: rupees.format(e.score),
+  score: e.display,
   pct: best > 0 ? `${Math.round((e.score / best) * 100)}%` : undefined,
 });
 
@@ -81,6 +78,35 @@ function Img({ src, box, className = '' }: { src: string; box: Box; className?: 
 }
 const Layers = ({ layers }: { layers: Layer[] }) => <>{layers.map((l, i) => <Img key={`${l.src}-${i}`} src={l.src} box={l.box} />)}</>;
 
+/**
+ * One line of podium text that can never run past the podium's front face: the line is capped at `maxCqw` (% of the scene width,
+ * so it scales with the scene), the text's real rendered width is measured, and if it's wider it's scaled down to fit.
+ * Works for any name or amount, any font, any screen size, and during the digit roll. transform doesn't change layout size,
+ * so re-measuring never loops.
+ */
+function FitLine({ maxCqw, className, style, children }: { maxCqw: number; className: string; style: CSSProperties; children: ReactNode }) {
+  const box = useRef<HTMLParagraphElement>(null);
+  const text = useRef<HTMLSpanElement>(null);
+  const [scale, setScale] = useState(1);
+  useLayoutEffect(() => {
+    const b = box.current, t = text.current;
+    if (!b || !t) return;
+    const measure = () => setScale(Math.min(1, b.clientWidth / Math.max(1, t.offsetWidth)));
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(b);
+    ro.observe(t);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <p ref={box} className={`flex justify-center ${className}`} style={{ ...style, width: `${maxCqw}cqw` }}>
+      <span ref={text} className="inline-block shrink-0 whitespace-nowrap" style={{ transform: `scale(${scale})`, transformOrigin: '50% 50%' }}>
+        {children}
+      </span>
+    </p>
+  );
+}
+
 /** Crown, name and score on the front of a podium (sizes in Figma px). */
 function Details({
   at,
@@ -94,6 +120,7 @@ function Details({
   shadow,
   leader,
   rolling,
+  face,
 }: {
   at: readonly [number, number];
   crown: string;
@@ -106,6 +133,8 @@ function Details({
   shadow: [number, number];
   leader: Leader;
   rolling: boolean;
+  /** Widest the name / score may be, in % of the scene (cqw): ~82% of this podium's front face, so text always keeps a margin to its edges */
+  face: number;
 }) {
   return (
     <div
@@ -114,16 +143,16 @@ function Details({
     >
       <div className="relative flex flex-col items-center" style={{ gap: u(gaps[0]) }}>
         <img src={artUrl(crown)} alt="" aria-hidden="true" className="block max-w-none" style={{ width: u(crownSize[0]), height: u(crownSize[1]) }} />
-        <p className="font-medium leading-[normal] text-white" style={{ fontSize: u(nameSize), fontFamily: '"Inter", "Inter Variable", var(--font-sans)' }}>
+        <FitLine maxCqw={face} className="font-medium leading-[normal] text-white" style={{ fontSize: u(nameSize), fontFamily: '"Inter", "Inter Variable", var(--font-sans)' }}>
           {leader.name}
-        </p>
+        </FitLine>
         {crownShading && (
           <img src={artUrl('gold-crown-shading')} alt="" aria-hidden="true" className="absolute left-1/2 block max-w-none -translate-x-1/2" style={{ top: u(61.857), width: u(87.978), height: u(11.505) }} />
         )}
       </div>
-      <p className="font-semibold leading-[normal]" style={{ fontSize: u(scoreSize), color: scoreColor }}>
+      <FitLine maxCqw={face} className="font-semibold leading-[normal]" style={{ fontSize: u(scoreSize), color: scoreColor }}>
         {rolling ? <Odometer text={leader.score} label={leader.score} /> : leader.score}
-      </p>
+      </FitLine>
     </div>
   );
 }
@@ -166,7 +195,7 @@ function PodiumScene({ rolling, art, TOP }: { rolling: boolean; art: boolean; TO
         <div className="lb-body absolute inset-0">
           <Layers layers={SILVER_BELOW} />
         </div>
-        <Details at={DETAILS.silver} crown="silver-crown" crownSize={[82.455, 53.479]} gaps={[16.815, 20]} nameSize={36} scoreSize={44} scoreColor="#ffffff" shadow={[4.139, 12.418]} leader={TOP.silver} rolling={rolling} />
+        <Details at={DETAILS.silver} crown="silver-crown" crownSize={[82.455, 53.479]} gaps={[16.815, 20]} nameSize={36} scoreSize={44} scoreColor="#ffffff" shadow={[4.139, 12.418]} leader={TOP.silver} rolling={rolling} face={11} />
         <div className="lb-body absolute inset-0">
           <Layers layers={SILVER_ABOVE} />
         </div>
@@ -189,7 +218,7 @@ function PodiumScene({ rolling, art, TOP }: { rolling: boolean; art: boolean; TO
           </div>
           <Flag country="india" variant="podium-usa-bronze" className="absolute" style={pos(BRONZE_MEDAL.flag)} />
         </Coin>
-        <Details at={DETAILS.bronze} crown="bronze-crown" crownSize={[67.405, 43.718]} gaps={[13.746, 22]} nameSize={36.656} scoreSize={45.82} scoreColor="#ffc79a" shadow={[3.384, 10.151]} leader={TOP.bronze} rolling={rolling} />
+        <Details at={DETAILS.bronze} crown="bronze-crown" crownSize={[67.405, 43.718]} gaps={[13.746, 22]} nameSize={36.656} scoreSize={45.82} scoreColor="#ffc79a" shadow={[3.384, 10.151]} leader={TOP.bronze} rolling={rolling} face={10} />
       </Podium>
 
       <Podium box={GROUPS.gold} delay="0.2s" label={`1st place, ${TOP.gold.name}, ${TOP.gold.score} brokerage saved`}>
@@ -210,7 +239,7 @@ function PodiumScene({ rolling, art, TOP }: { rolling: boolean; art: boolean; TO
           </div>
           <Flag country="india" variant="podium-usa-gold" className="absolute" style={pos(GOLD_MEDAL.flag)} />
         </Coin>
-        <Details at={DETAILS.gold} crown="gold-crown" crownSize={[105.303, 67.912]} crownShading gaps={[13.746, 22]} nameSize={36.656} scoreSize={45.82} scoreColor="#ffd873" shadow={[3.384, 10.151]} leader={TOP.gold} rolling={rolling} />
+        <Details at={DETAILS.gold} crown="gold-crown" crownSize={[105.303, 67.912]} crownShading gaps={[13.746, 22]} nameSize={36.656} scoreSize={45.82} scoreColor="#ffd873" shadow={[3.384, 10.151]} leader={TOP.gold} rolling={rolling} face={13.5} />
       </Podium>
       </>
       )}
@@ -274,7 +303,7 @@ function ContestStats({ contest: c }: { contest: Contest }) {
         <span>
           <span className="font-bold text-fg">{c.used}</span> of {c.poolSize} used
         </span>
-        <span>{c.usedPct.toFixed(1)}%</span>
+        <span>{Math.floor(c.usedPct)}%</span>
       </div>
       <div className="neu-inset mt-1.5 h-2.5 overflow-hidden rounded-full" role="progressbar" aria-label="Pool used" aria-valuenow={Math.round(c.usedPct)} aria-valuemin={0} aria-valuemax={100}>
         <div className="h-full rounded-full bg-accent shadow-[0_0_0.75rem_rgb(var(--accent-glow-rgb)/0.6)]" style={{ width: `${Math.max(c.usedPct, 1.5)}%` }} />
@@ -315,17 +344,19 @@ function RankingsTable({
 }) {
   return (
     <div
-      className="slab-3d relative z-10 -mt-[1.5%] mb-[0.875rem] overflow-hidden rounded-[1rem] border-[0.0625rem] border-white/[0.09] pb-[0.375rem] backdrop-blur-[0.773rem] lg:-mt-[5.66%] lg:mb-[1rem] lg:rounded-[1.159rem] lg:border-[0.0966rem]"
+      className="slab-3d relative z-10 -mt-[1.5%] mb-[1.125rem] overflow-hidden rounded-[1rem] border-[0.0625rem] border-white/[0.09] pb-[0.375rem] backdrop-blur-[0.773rem] lg:-mt-[5.66%] lg:mb-[1.125rem] lg:rounded-[1.159rem] lg:border-[0.0966rem]"
       style={{
         background: 'linear-gradient(to bottom, rgba(10,31,22,0.94), rgba(6,21,15,0.98))',
-        '--slab-side': '#031009',
+        // green side a step lighter than the page, so the slab's thickness reads on the dark background
+        '--slab-side': '#12332a',
+        '--slab-depth': '1rem',
         // soft shadow cast up onto the podium bases, so they sink behind the card instead of meeting a hard edge
         '--slab-extra': '0 -0.75rem 2rem rgba(0,0,0,0.55)',
       }}
     >
       {contest && <ContestStats contest={contest} />}
-      <div className="flex h-[2.75rem] items-center border-b-[0.0625rem] border-white/[0.07] px-[0.875rem] text-[0.75rem] font-medium capitalize tracking-[0.04em] text-[#bdb7ae] lg:h-[3.875rem] lg:border-b-[0.0966rem] lg:pl-[1.739rem] lg:pr-[1.546rem] lg:text-[1rem] lg:tracking-[0.06rem]">
-        <span className="w-[2.75rem] shrink-0 lg:w-[4.031rem]">Rank</span>
+      <div className="flex h-[2.75rem] items-center border-b-[0.0625rem] border-white/[0.07] px-[0.875rem] text-[0.75rem] font-medium capitalize tracking-[0.04em] text-[#bdb7ae] lg:h-[3rem] lg:border-b-[0.0966rem] lg:pl-[1.739rem] lg:pr-[1.546rem] lg:text-[0.8125rem] lg:tracking-[0.06rem]">
+        <span className="w-[2.375rem] shrink-0 lg:w-[3rem]">Rank</span>
         <span className="flex-1">Participant</span>
         <span>Brokerage saved</span>
       </div>
@@ -336,29 +367,48 @@ function RankingsTable({
             data-row
             // page 1 waits for the podiums to rise; a page you clicked to should answer at once
             style={{ '--d': `${(page === 1 ? 0.5 : 0) + i * 0.04}s` }}
-            className="group flex h-[3.75rem] items-center gap-[0.875rem] px-[0.875rem] transition-colors duration-300 hover:bg-[rgba(46,229,157,0.045)] lg:h-[4.625rem] lg:gap-[1.75rem] lg:px-[1.546rem]"
+            className="group flex h-[3.25rem] items-center gap-[0.75rem] px-[0.875rem] transition-colors duration-300 hover:bg-[rgba(46,229,157,0.045)] lg:h-[3.5rem] lg:gap-[1.25rem] lg:px-[1.546rem]"
           >
             <span
-              className="flex size-[1.875rem] shrink-0 items-center justify-center rounded-full border-[0.0625rem] border-[rgba(46,229,157,0.75)] text-[0.75rem] font-medium text-[#effff7] shadow-[0_0_0.479rem_rgba(46,229,157,0.18)] transition-shadow duration-300 group-hover:shadow-[0_0_0.9rem_rgba(46,229,157,0.45)] lg:size-[2.156rem] lg:border-[0.084rem] lg:text-[0.8525rem]"
+              className="flex size-[1.625rem] shrink-0 items-center justify-center rounded-full border-[0.0625rem] border-[rgba(46,229,157,0.75)] text-[0.6875rem] font-medium text-[#effff7] shadow-[0_0_0.479rem_rgba(46,229,157,0.18)] transition-shadow duration-300 group-hover:shadow-[0_0_0.9rem_rgba(46,229,157,0.45)] lg:size-[1.75rem] lg:border-[0.0625rem] lg:text-[0.75rem]"
               style={{ background: 'linear-gradient(to bottom, #06140f, #000000)' }}
             >
               <span className="sr-only">Rank </span>
               {row.rank}
             </span>
             <div className={`flex h-full min-w-0 flex-1 items-center gap-[0.75rem] lg:gap-[1.449rem] ${i < ROWS.length - 1 ? 'border-b-[0.0625rem] border-white/[0.07] lg:border-b-[0.0966rem]' : ''}`}>
-              <p className="min-w-0 flex-1 truncate text-[0.9375rem] font-semibold text-[#ece8e2] transition-colors duration-300 group-hover:text-white lg:text-[1.25rem]">{row.name}</p>
-              <Flag country="india" className="size-[1.5rem] shrink-0 transition-transform duration-300 group-hover:scale-110 lg:size-[2.125rem]" />
+              <p className="min-w-0 flex-1 truncate text-[0.875rem] font-medium text-[#ece8e2] transition-colors duration-300 group-hover:text-white lg:text-[1rem]">{row.name}</p>
+              <Flag country="india" className="size-[1.25rem] shrink-0 transition-transform duration-300 group-hover:scale-110 lg:size-[1.5rem]" />
               <div className="flex shrink-0 flex-col items-end gap-[0.125rem] text-right font-medium leading-[normal] lg:gap-[0.193rem]">
-                <p className="text-[1rem] text-white lg:text-[1.375rem]">
+                <p className="text-[0.875rem] text-white lg:text-[1rem]">
                   <span className="sr-only">brokerage saved </span>
                   {row.score}
                 </p>
-                <p className="text-[0.6875rem] text-white/50 lg:text-[1rem]">{row.pct} of #1</p>
+                <p className="text-[0.625rem] text-white/50 lg:text-[0.75rem]">{row.pct} of #1</p>
               </div>
             </div>
           </li>
         ))}
       </ol>
+      {/* While a page is on its way: placeholder rows shaped like the real ones, pulsing one after another */}
+      {loading && ROWS.length === 0 && (
+        <ol aria-hidden="true">
+          {Array.from({ length: PAGE_SIZE }, (_, i) => (
+            <li key={i} className="flex h-[3.25rem] animate-pulse items-center gap-[0.75rem] px-[0.875rem] lg:h-[3.5rem] lg:gap-[1.25rem] lg:px-[1.546rem]" style={{ animationDelay: `${i * 0.08}s` }}>
+              <span className="size-[1.625rem] shrink-0 rounded-full border-[0.0625rem] border-[rgba(46,229,157,0.35)] bg-white/[0.04] lg:size-[1.75rem]" />
+              <div className={`flex h-full min-w-0 flex-1 items-center gap-[0.75rem] lg:gap-[1.25rem] ${i < PAGE_SIZE - 1 ? 'border-b-[0.0625rem] border-white/[0.07]' : ''}`}>
+                <span className="h-[0.75rem] flex-1 rounded-full bg-white/[0.08]" style={{ maxWidth: `${30 + ((i * 17) % 25)}%` }} />
+                <span className="ml-auto size-[1.25rem] shrink-0 rounded-full bg-white/[0.08] lg:size-[1.5rem]" />
+                <div className="flex shrink-0 flex-col items-end gap-[0.375rem]">
+                  <span className="h-[0.75rem] w-[3.5rem] rounded-full bg-white/[0.1] lg:w-[4.5rem]" />
+                  <span className="h-[0.5rem] w-[2.25rem] rounded-full bg-white/[0.06] lg:w-[3rem]" />
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
+      <span className="sr-only" aria-live="polite">{loading ? 'Loading standings…' : ''}</span>
       {ROWS.length === 0 && !loading && (
         <p className="px-[0.875rem] py-[1.5rem] text-center text-[0.875rem] text-fg-subtle lg:px-[1.546rem]">
           {error ?? 'Places 4 and below open up as more traders join the pool.'}
@@ -392,7 +442,7 @@ export default function Leaderboard({ board }: { board?: BoardData | null }) {
     try {
       const res = await fetch(`/api/leaderboard?page=${next}`);
       if (!res.ok) throw new Error(String(res.status));
-      const data: { rows: { rank: number; participant: string; score: number }[] } = await res.json();
+      const data: { rows: { rank: number; participant: string; score: number; display: string }[] } = await res.json();
       setFetched((f) => ({ ...f, [next]: data.rows.map((r) => toLeader(r, standings.best)) }));
     } catch {
       setError('Couldn’t load that page. Try again in a moment.');

@@ -30,14 +30,14 @@ export default function FinalCall() {
         className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-[40rem] max-w-full -translate-x-1/2 -translate-y-1/2 opacity-60 blur-[110px]"
         style={{ background: 'radial-gradient(closest-side, var(--color-violet-deep), transparent)' }}
       />
-      <div className="relative mx-auto max-w-2xl">
+      <div className="relative mx-auto max-w-lg">
         <Corner className="-left-2 -top-2 border-l-2 border-t-2" />
         <Corner className="-right-2 -top-2 border-r-2 border-t-2" />
         <Corner className="-bottom-2 -left-2 border-b-2 border-l-2" />
         <Corner className="-bottom-2 -right-2 border-b-2 border-r-2" />
 
         <div className="arena-beam rounded-3xl p-px shadow-[0_40px_90px_-40px_rgba(0,0,0,1)]">
-          <div className="relative overflow-hidden rounded-[calc(1.5rem-1px)] bg-bg/95 px-5 py-9 text-center sm:px-10 sm:py-12">
+          <div className="relative overflow-hidden rounded-[calc(1.5rem-1px)] bg-bg/95 px-5 py-9 text-center sm:px-8 sm:py-12">
             <span
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 opacity-[0.07]"
@@ -55,7 +55,7 @@ export default function FinalCall() {
               </p>
               <h2
                 id="join-heading"
-                className="mt-4 text-[clamp(1.875rem,6vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-fg [text-shadow:0_0_50px_rgb(var(--glow)/0.45)]"
+                className="mt-4 whitespace-nowrap text-[clamp(1.5rem,7vw,2.375rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-fg [text-shadow:0_0_50px_rgb(var(--glow)/0.45)]"
               >
                 Enter the Pride Pool
               </h2>

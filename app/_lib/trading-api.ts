@@ -37,11 +37,12 @@ export type Leaderboard = {
   error: string | null;
 };
 
+// Every amount on the page is whole rupees, never paise, even if the feed sends decimals (rounded half up: ₹29.71 → ₹30)
 const rupees = new Intl.NumberFormat("en-IN", {
   style: "currency",
   currency: "INR",
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
 });
 
 function config() {
@@ -82,8 +83,7 @@ function toContest(c: Record<string, unknown> | undefined): Contest | null {
   return {
     name: typeof c.name === "string" ? c.name : "",
     status: typeof c.status === "string" ? c.status : "",
-    // Whole pool sizes read as ₹50 / ₹1,00,00,000, not ₹50.00.
-    poolSize: Number.isInteger(pool) ? `₹${pool.toLocaleString("en-IN")}` : rupees.format(pool),
+    poolSize: rupees.format(pool),
     used: rupees.format(used),
     remaining: rupees.format(left),
     usedPct: pool > 0 ? Math.min(100, (used / pool) * 100) : 0,
@@ -106,7 +106,11 @@ type Upstream = { rows: Row[]; contest: Record<string, unknown> | undefined };
 type Result = { data: Upstream; error: null } | { data: null; error: string };
 
 // One signed call to the backend for a slice of the ranking.
-async function upstream(cfg: Cfg, offset: number, limit: number): Promise<Result> {
+async function upstream(cfg: Cfg | null, offset: number, limit: number): Promise<Result> {
+  if (!cfg) {
+    console.error("[leaderboard] LEMONN_TRADING_* env vars not configured");
+    return { data: null, error: "server not configured (LEMONN_TRADING_* env vars missing)" };
+  }
   const url = new URL(PATH, cfg.baseUrl);
   url.search = new URLSearchParams({ offset: String(offset), limit: String(limit) }).toString();
   const { epoch, signature } = signRequest(cfg.apiKey, cfg.privateKey);
@@ -150,13 +154,7 @@ const unavailable = (error: string): Leaderboard => ({ status: "unavailable", en
 
 // Podium + first table page + contest stats, in one call.
 export async function getTopBrokerageSavings(): Promise<Leaderboard> {
-  const cfg = config();
-  if (!cfg) {
-    console.error("[leaderboard] LEMONN_TRADING_* env vars not configured");
-    return unavailable("server not configured (LEMONN_TRADING_* env vars missing)");
-  }
-
-  const { data, error } = await upstream(cfg, 0, PODIUM + PAGE_SIZE);
+  const { data, error } = await upstream(config(), 0, PODIUM + PAGE_SIZE);
   if (!data) return unavailable(error);
 
   const entries = data.rows.slice(0, PODIUM + PAGE_SIZE).map((r, i) => toEntry(r, i + 1));
@@ -176,9 +174,7 @@ export async function getTopBrokerageSavings(): Promise<Leaderboard> {
 
 // Table page N (1-based): ranks PODIUM+1 onward, PAGE_SIZE per page.
 export async function getPage(page: number): Promise<{ rows: BoardEntry[] } | { error: string }> {
-  const cfg = config();
-  if (!cfg) return { error: "server not configured" };
   const offset = PODIUM + (page - 1) * PAGE_SIZE;
-  const { data, error } = await upstream(cfg, offset, PAGE_SIZE);
+  const { data, error } = await upstream(config(), offset, PAGE_SIZE);
   return data ? { rows: data.rows.map((r, i) => toEntry(r, offset + i + 1)) } : { error };
 }

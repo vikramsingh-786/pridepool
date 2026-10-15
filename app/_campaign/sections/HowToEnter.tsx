@@ -196,7 +196,8 @@ export default function HowToEnter() {
           id="enter-panel"
           role="tabpanel"
           aria-labelledby={`enter-tab-${active}`}
-          className="neu-raised slab-3d mb-[0.875rem] mt-5 overflow-hidden rounded-2xl lg:mt-6"
+          // navy side a step lighter than the page, so the slab's thickness reads on the dark background
+          className="neu-raised slab-3d mb-[1.125rem] mt-5 overflow-hidden rounded-2xl [--slab-depth:1rem] [--slab-side:#1a2142] lg:mt-6"
         >
           <div key={active} className="step-in grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
             <div className="p-5 lg:p-8">
@@ -221,9 +222,9 @@ export default function HowToEnter() {
         </div>
       </div>
 
-      <div data-reveal="near" className="mt-6 text-center" style={{ '--reveal-delay': '0.2s' }}>
+      <div data-reveal="near" className="mt-8 text-center lg:mt-10" style={{ '--reveal-delay': '0.2s' }}>
         <JoinButton location="steps" />
-        <p className="mx-auto mt-3 max-w-[46ch] text-xs text-fg-subtle">
+        <p className="mx-auto mt-5 max-w-[46ch] text-xs text-fg-subtle lg:mt-6">
           Steps are indicative. Allocation, eligibility and how winners are picked will be in the final campaign terms.
         </p>
       </div>
