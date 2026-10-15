@@ -1,5 +1,5 @@
-import JoinButton from '../components/JoinButton';
-import { ANISH, LAPTOPS, OPEN_APP_URL, POOL } from '../content';
+import JoinChoice from '../components/JoinChoice';
+import { ANISH, LAPTOPS, POOL } from '../content';
 
 function Corner({ className }: { className: string }) {
   return <span aria-hidden="true" className={`absolute h-5 w-5 border-accent/60 ${className}`} />;
@@ -19,8 +19,8 @@ function Check() {
 export default function FinalCall() {
   const recap = [
     `Celebrate ${ANISH.name}, World ${ANISH.rank}`,
-    `${POOL.amount} brokerage credits pool`,
-    `${LAPTOPS.count} laptops for participants`,
+    `${POOL.amount} shared brokerage pool, no individual cap`,
+    `${LAPTOPS.count} laptops to win, not guaranteed`,
   ];
 
   return (
@@ -72,13 +72,7 @@ export default function FinalCall() {
 
             {/* Kept outside the fade-in so the button is never invisible while on screen */}
             <div className="relative mt-8">
-              <JoinButton location="final" className="mx-auto max-w-[26rem]" />
-              <p className="mt-3 text-[0.8125rem] font-semibold text-fg-muted lg:text-sm">
-                Already on Lemonn? You’re already in.{' '}
-                <a href={OPEN_APP_URL} className="inline-flex min-h-12 items-center text-fg underline decoration-white/30 underline-offset-4 hover:decoration-white">
-                  Open the app
-                </a>
-              </p>
+              <JoinChoice location="final" />
             </div>
 
             <div className="relative mt-4 flex flex-col items-center justify-center gap-x-6 gap-y-1 border-t border-white/10 pt-5 text-xs text-fg-subtle sm:flex-row">

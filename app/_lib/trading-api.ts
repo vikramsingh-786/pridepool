@@ -93,8 +93,9 @@ function toContest(c: Record<string, unknown> | undefined): Contest | null {
   };
 }
 
+// When these standings were fetched (every page load fetches fresh): "15 Oct, 1:13 pm IST"
 const updatedNow = () =>
-  new Date().toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", timeZone: "Asia/Kolkata" });
+  `${new Date().toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: "Asia/Kolkata" })} IST`;
 
 function isRow(r: unknown): r is Row {
   const o = r as Row;

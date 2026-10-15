@@ -1,7 +1,7 @@
-import { JOIN_LABEL, JOIN_URL } from '../content';
+import { JOIN_LABEL, JOIN_URL, OPEN_APP_LABEL, OPEN_APP_URL } from '../content';
 
-/** THE Join button. Every Join on the page is this component, so label, link and look stay identical. Tracking: each one carries data-cta="join" and data-cta-location (hero, round-1…3, steps, final, sticky, navbar), so analytics can count taps per position without extra code (e.g. a click trigger on [data-cta="join"]). */
-type JoinLocation = 'hero' | 'round-1' | 'round-2' | 'round-3' | 'final' | 'sticky' | 'navbar' | 'steps';
+/** THE Join button. Every Join on the page is this component, so label, link and look stay identical. Tracking: each one carries data-cta="join" (or "open-app" for the existing-customer button) and data-cta-location (hero, round-1…3, steps, final, sticky, navbar), so analytics can count taps per position without extra code (e.g. a click trigger on [data-cta="join"]). */
+export type JoinLocation = 'hero' | 'round-1' | 'round-2' | 'round-3' | 'final' | 'sticky' | 'navbar' | 'steps';
 
 const SIZES = {
   /** Hero and final call: full width on phones, auto width on desktop */
@@ -12,6 +12,10 @@ const SIZES = {
   bar: 'flex h-14 w-full text-base',
   /** Top navbar (tablet and desktop) */
   nav: 'inline-flex h-11 px-5 text-[0.875rem]',
+  /** Two buttons side by side (JoinChoice): each fills half the row */
+  pair: 'flex h-14 w-full px-3 text-[0.875rem] lg:h-16 lg:text-base',
+  /** Same pair, compact (floating desktop card) */
+  pairSm: 'flex h-10 w-full px-2.5 text-[0.8125rem]',
 };
 
 type Props = {
@@ -21,6 +25,8 @@ type Props = {
   inPage?: boolean;
   /** primary = the green 3D key; outline = quiet secondary look (navbar on the first fold) */
   variant?: 'primary' | 'outline';
+  /** join = sign-up link (default); open = existing customers' app link, as the white 3D key */
+  action?: 'join' | 'open';
   className?: string;
 };
 
@@ -29,17 +35,29 @@ const VARIANTS = {
   outline: 'rounded-full border border-accent/70 text-accent transition-colors duration-200 hover:bg-accent/10',
 };
 
-export default function JoinButton({ location, size = 'lg', inPage = true, variant = 'primary', className = '' }: Props) {
+export default function JoinButton({ location, size = 'lg', inPage = true, variant = 'primary', action = 'join', className = '' }: Props) {
+  const open = action === 'open';
   return (
     <a
-      href={JOIN_URL}
-      data-cta="join"
+      href={open ? OPEN_APP_URL : JOIN_URL}
+      data-cta={open ? 'open-app' : 'join'}
       data-cta-location={location}
       data-cta-inpage={inPage ? '' : undefined}
-      className={`${VARIANTS[variant]} items-center justify-center gap-2 font-extrabold tracking-[-0.01em] ${SIZES[size]} ${className}`}
+      className={`${open ? 'btn-key-light' : VARIANTS[variant]} items-center justify-center gap-2 whitespace-nowrap font-extrabold tracking-[-0.01em] ${SIZES[size]} ${className}`}
     >
-      {JOIN_LABEL}
+      {open ? OPEN_APP_LABEL : JOIN_LABEL}
       <span aria-hidden="true">→</span>
     </a>
+  );
+}
+
+/** The pair shown wherever there's a Join: "Open Lemonn App" (existing customers, white key) next to "Sign Up & Join" (new customers, green key), each half the row. */
+export function JoinPair({ location, inPage = true, compact = false, className = '' }: { location: JoinLocation; inPage?: boolean; /** smaller buttons for tight spots (floating desktop card) */ compact?: boolean; className?: string }) {
+  const size = compact ? 'pairSm' : 'pair';
+  return (
+    <div className={`grid grid-cols-2 gap-2.5 lg:gap-3 ${className}`}>
+      <JoinButton location={location} size={size} action="open" inPage={inPage} />
+      <JoinButton location={location} size={size} inPage={inPage} />
+    </div>
   );
 }

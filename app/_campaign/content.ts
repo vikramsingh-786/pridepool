@@ -1,6 +1,6 @@
 /** Campaign copy and links, kept in one place so they're easy to change. */
 
-/** Where "Join the ₹1 Crore Pool" goes: the Lemonn invite link for this campaign. */
+/** Where "Sign Up & Join" goes: the Lemonn invite link for this campaign. */
 export const JOIN_URL = 'https://stocks.trade-kar.com/invite?data=PridePool';
 
 /** For people who already use Lemonn (they're in the pool automatically). */
@@ -24,8 +24,13 @@ export const POOL = {
   amount: '₹1 Crore',
   short: '₹1 Cr',
   /** Headline name of the pool in the hero. The campaign itself is still "The Pride Pool". */
-  title: 'Prize Pool',
-  label: 'Credits pool',
+  title: 'Brokerage Pool',
+  label: 'Brokerage pool',
+  /** The hero's key line, under the headline (next to the laptop badge) */
+  pitch: 'The more brokerage you use from the pool, the higher your chances of winning a laptop.',
+  /** The two rules stated wherever the pool is pitched (hero, leaderboard, How to enter, final call) */
+  noCap: 'No individual usage cap while the shared ₹1 Crore pool lasts',
+  noGuarantee: 'Winning a laptop is not guaranteed',
 };
 
 export const LAPTOPS = {
@@ -34,7 +39,11 @@ export const LAPTOPS = {
 };
 
 /** The one Join label, used on every Join button. */
-export const JOIN_LABEL = `Join the ${POOL.amount} Pool`;
+export const JOIN_LABEL = 'Sign Up & Join';
+
+/** Hero and final call: one button for existing customers, one for new ones, with this line above them. */
+export const EXISTING_NOTE = 'Existing Lemonn customers are already part of the Pride Pool. Simply open the Lemonn app. New customers can sign up to join.';
+export const OPEN_APP_LABEL = 'Open Lemonn App';
 
 /** Page anchors for the three story touchpoints (each hero tile scrolls to one). */
 export const ANCHORS = {

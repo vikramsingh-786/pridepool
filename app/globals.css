@@ -157,6 +157,8 @@
     isolation: isolate;
     position: relative;
     overflow: hidden;
+    /* steady base outline (shows through the p-px gap); the rotating beam below sweeps over it */
+    background: color-mix(in srgb, var(--accent-glow) 30%, transparent);
   }
   .arena-beam:before {
     content: "";

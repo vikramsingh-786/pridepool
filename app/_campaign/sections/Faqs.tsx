@@ -34,7 +34,8 @@ const FAQS = [
 
 export default function Faqs() {
   const id = useId();
-  const [open, setOpen] = useState<number | null>(0);
+  // all questions start closed
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
     <section id="faqs" aria-labelledby="faqs-heading" className="fold arena-container relative py-12 lg:py-16">
@@ -53,7 +54,7 @@ export default function Faqs() {
           {FAQS.map((item, i) => {
             const isOpen = open === i;
             return (
-              <li key={item.q} data-reveal="near" style={{ '--reveal-delay': `${0.05 * i}s` }} className={`overflow-hidden rounded-xl ${isOpen ? 'neu-inset' : 'neu-raised'}`}>
+              <li key={item.q} data-reveal="near" style={{ '--reveal-delay': `${0.05 * i}s` }} className={`overflow-hidden rounded-xl [filter:drop-shadow(0_0_0.75rem_rgb(var(--accent-glow-rgb)/0.16))] ${isOpen ? 'neu-inset border-accent/65' : 'neu-raised border-accent/30'}`}>
                 <h3>
                   <button
                     type="button"
@@ -61,7 +62,8 @@ export default function Faqs() {
                     aria-expanded={isOpen}
                     aria-controls={`${id}-a${i}`}
                     onClick={() => setOpen(isOpen ? null : i)}
-                    className="flex min-h-14 w-full items-center justify-between gap-4 px-4 py-3.5 text-left sm:px-5"
+                    // focus ring drawn inside: the item clips its edges, so the page's outer ring showed only as a stray bar under the question
+                    className="flex min-h-14 w-full items-center justify-between gap-4 rounded-xl px-4 py-3.5 text-left focus-visible:!outline-none focus-visible:!shadow-[inset_0_0_0_2px_var(--color-focus)] sm:px-5"
                   >
                     <span className={`text-[0.9375rem] font-bold leading-snug ${isOpen ? 'text-accent' : 'text-fg'}`}>{item.q}</span>
                     <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true" className={`shrink-0 text-fg-subtle transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>

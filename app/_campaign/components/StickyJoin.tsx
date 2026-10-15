@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import JoinButton from './JoinButton';
+import { JoinPair } from './JoinButton';
+import JoinChoice from './JoinChoice';
 import useInPageJoinVisible from './useInPageJoin';
 import { LAPTOPS, POOL } from '../content';
 
@@ -46,13 +47,13 @@ export default function StickyJoin() {
       >
         <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-full h-6 bg-gradient-to-t from-bg to-transparent" />
         <div className="border-t border-white/10 bg-bg/95 px-4 pt-3" style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}>
-          <JoinButton size="bar" location="sticky" inPage={false} />
+          <JoinPair location="sticky" inPage={false} />
         </div>
       </div>
 
       {/* Desktop: floating card */}
       <div
-        className={`fixed bottom-6 right-6 z-50 hidden w-[21rem] transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none md:block ${visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-6 opacity-0'}`}
+        className={`fixed bottom-6 right-6 z-50 hidden w-[24rem] transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none md:block ${visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-6 opacity-0'}`}
       >
         <Corner className="-left-1.5 -top-1.5 border-l-2 border-t-2" />
         <Corner className="-right-1.5 -top-1.5 border-r-2 border-t-2" />
@@ -61,18 +62,16 @@ export default function StickyJoin() {
         <div className="arena-beam rounded-2xl p-px shadow-[0_40px_90px_-40px_rgba(0,0,0,1)]">
           <div className="relative overflow-hidden rounded-[calc(1rem-1px)] bg-bg/95">
             <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-            <div className="relative flex items-center gap-2 border-b border-white/10 px-5 py-3 text-[0.625rem] font-bold uppercase tracking-[0.18em] text-fg-subtle">
+            <div className="relative flex items-center gap-2 border-b border-white/10 px-4 py-2 text-[0.5625rem] font-bold uppercase tracking-[0.18em] text-fg-subtle">
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
               Registration open
             </div>
-            <div className="relative p-5">
-              <p className="text-xl font-bold tracking-tight text-fg">Enter the arena</p>
-              <p className="mt-1 text-sm text-fg-muted">
+            <div className="relative p-4">
+              <p className="text-base font-bold tracking-tight text-fg">Enter the arena</p>
+              <p className="mt-0.5 text-xs text-fg-muted">
                 {POOL.amount} pool · {LAPTOPS.count} laptops
               </p>
-              <div className="mt-5">
-                <JoinButton size="bar" location="sticky" inPage={false} />
-              </div>
+              <JoinChoice location="sticky" compact inPage={false} className="mt-3" />
             </div>
           </div>
         </div>

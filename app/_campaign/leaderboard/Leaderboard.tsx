@@ -344,16 +344,19 @@ function RankingsTable({
 }) {
   return (
     <div
-      className="slab-3d relative z-10 -mt-[1.5%] mb-[1.125rem] overflow-hidden rounded-[1rem] border-[0.0625rem] border-white/[0.09] pb-[0.375rem] backdrop-blur-[0.773rem] lg:-mt-[5.66%] lg:mb-[1.125rem] lg:rounded-[1.159rem] lg:border-[0.0966rem]"
+      className="slab-3d relative z-10 -mt-[1.5%] mb-[1.125rem] overflow-hidden rounded-[1rem] border-[0.0625rem] border-accent/45 pb-[0.375rem] backdrop-blur-[0.773rem] lg:-mt-[5.66%] lg:mb-[1.125rem] lg:rounded-[1.159rem] lg:border-[0.0966rem]"
       style={{
         background: 'linear-gradient(to bottom, rgba(10,31,22,0.94), rgba(6,21,15,0.98))',
         // green side a step lighter than the page, so the slab's thickness reads on the dark background
         '--slab-side': '#12332a',
         '--slab-depth': '1rem',
         // soft shadow cast up onto the podium bases, so they sink behind the card instead of meeting a hard edge
-        '--slab-extra': '0 -0.75rem 2rem rgba(0,0,0,0.55)',
+        // + a soft accent glow all round, so the standings card stands out on the page
+        '--slab-extra': '0 -0.75rem 2rem rgba(0,0,0,0.55), 0 0 3.5rem -0.5rem rgb(var(--accent-glow-rgb) / 0.35)',
       }}
     >
+      {/* bright accent line along the top edge */}
+      <span aria-hidden="true" className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
       {contest && <ContestStats contest={contest} />}
       <div className="flex h-[2.75rem] items-center border-b-[0.0625rem] border-white/[0.07] px-[0.875rem] text-[0.75rem] font-medium capitalize tracking-[0.04em] text-[#bdb7ae] lg:h-[3rem] lg:border-b-[0.0966rem] lg:pl-[1.739rem] lg:pr-[1.546rem] lg:text-[0.8125rem] lg:tracking-[0.06rem]">
         <span className="w-[2.375rem] shrink-0 lg:w-[3rem]">Rank</span>
@@ -474,13 +477,16 @@ export default function Leaderboard({ board }: { board?: BoardData | null }) {
           The Leaderboard
         </h2>
         <p className="mx-auto mt-3 max-w-[44ch] text-pretty text-[0.9375rem] font-medium leading-relaxed text-fg-muted lg:text-lg">
-          Ranked by brokerage saved from the {POOL.amount} pool.
+          Ranked by brokerage used from the shared {POOL.amount} pool. {POOL.noCap}; a top rank doesn’t guarantee a laptop.
         </p>
-        <p className="mt-3 inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/[0.03] px-2.5 py-1 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.08em] text-fg-subtle">
+        <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/[0.08] px-3.5 py-1.5 font-mono text-[0.75rem] font-bold uppercase tracking-[0.08em] text-fg lg:text-[0.875rem]">
           {standings ? (
             <>
-              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-success" />
-              Live · updated {standings.updatedAt}
+              <span aria-hidden="true" className="relative flex h-2 w-2">
+                <span className="absolute inset-0 animate-ping rounded-full bg-success opacity-70 motion-reduce:animate-none" />
+                <span className="relative h-2 w-2 rounded-full bg-success" />
+              </span>
+              Live <span className="text-fg-subtle">·</span> Last updated <time className="text-accent">{standings.updatedAt}</time>
             </>
           ) : (
             'Standings unavailable'

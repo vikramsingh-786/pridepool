@@ -1,6 +1,6 @@
 # The Pride Pool
 
-Lemonn × Booming Bulls — **The Pride Pool**, a ₹1 Crore Brokerage Credits Pool campaign page.
+Lemonn × Booming Bulls — **The Pride Pool**, a ₹1 Crore Brokerage Pool campaign page.
 
 Built with Next.js 16, React 19 and Tailwind CSS 4.
 

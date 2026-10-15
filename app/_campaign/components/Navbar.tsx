@@ -7,9 +7,9 @@ const SCROLL_PADDING = ['scroll-pt-16', 'lg:scroll-pt-20'];
 
 /** Quick links, in page order. Each id is a section on the page. */
 const LINKS = [
+  { id: 'leaderboard', label: 'Leaderboard' },
   { id: 'moment', label: 'Champion' },
   { id: 'enter', label: 'How to enter' },
-  { id: 'leaderboard', label: 'Leaderboard' },
   { id: 'faqs', label: 'FAQs' },
 ];
 
@@ -86,7 +86,10 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop Join: a quiet outline while a section's own Join is on screen, otherwise the primary green button. Both sit in the same spot and crossfade; only the visible one can be tapped. */}
-        <div className="hidden shrink-0 md:ml-auto md:grid lg:ml-0">
+        <div className="hidden shrink-0 items-center gap-3 md:ml-auto md:flex lg:ml-0">
+        {/* existing customers: always the white key, beside the Join */}
+        <JoinButton size="nav" action="open" location="navbar" inPage={false} />
+        <div className="grid">
           <div
             aria-hidden={primary}
             inert={primary}
@@ -101,6 +104,7 @@ export default function Navbar() {
           >
             <JoinButton size="nav" location="navbar" inPage={false} />
           </div>
+        </div>
         </div>
 
         {/* Phone menu button */}

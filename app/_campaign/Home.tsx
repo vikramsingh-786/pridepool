@@ -74,13 +74,15 @@ export default function Home({ badgeStyle = 'medal', board }: { badgeStyle?: 'me
         <Background />
         <ArenaHero badgeStyle={badgeStyle} ready={ready} onIntroDone={onIntroDone} />
 
+        {/* Live standings straight after the hero */}
+        <Leaderboard board={board} />
+
         {/* Round 1 · The Champion */}
         <Champion coverReady={introDone} />
 
         {/* How to enter: the steps to join the pool and grab the prize (replaces The Pool + The Bonus) */}
         <HowToEnter />
 
-        <Leaderboard board={board} />
         <FinalCall />
         <Faqs />
       </main>

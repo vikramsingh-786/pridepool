@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import CampaignHome from "./_components/CampaignHome";
 import { getTopBrokerageSavings } from "./_lib/trading-api";
 
-const TITLE = "₹1 Crore Brokerage Credits Pool — Lemonn × Booming Bulls";
+const TITLE = "₹1 Crore Brokerage Pool — Lemonn × Booming Bulls";
 const DESCRIPTION =
-  "Lemonn × Booming Bulls: a ₹1 Crore brokerage credits pool marking Anish Singh Thakur's achievement at the World Trading Championship.";
+  "Lemonn × Booming Bulls: a ₹1 Crore brokerage pool marking Anish Singh Thakur's achievement at the World Trading Championship.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Lemonn × Booming Bulls — ₹1 Crore Brokerage Credits Pool.",
+        alt: "Lemonn × Booming Bulls — ₹1 Crore Brokerage Pool.",
       },
     ],
   },

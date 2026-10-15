@@ -3,7 +3,7 @@ import Link from "next/link";
 import Background from "./_campaign/components/Background";
 import PageHeader from "./_campaign/components/PageHeader";
 import Footer from "./_campaign/sections/Footer";
-import { JOIN_LABEL, JOIN_URL, POOL } from "./_campaign/content";
+import { JOIN_LABEL, JOIN_URL, OPEN_APP_LABEL, OPEN_APP_URL, POOL } from "./_campaign/content";
 
 export const metadata: Metadata = {
   title: `Page not found — ${POOL.amount} Pride Pool`,
@@ -56,6 +56,15 @@ export default function NotFound() {
                 Back to the campaign
                 <span aria-hidden="true">→</span>
               </Link>
+              <a
+                href={OPEN_APP_URL}
+                data-cta="open-app"
+                data-cta-location="404"
+                className="flex h-14 w-full max-w-[22rem] items-center justify-center gap-2 rounded-full border border-white/40 font-extrabold tracking-[-0.01em] text-fg transition-colors duration-200 hover:bg-white/10 sm:w-auto sm:px-8"
+              >
+                {OPEN_APP_LABEL}
+                <span aria-hidden="true">→</span>
+              </a>
               <a
                 href={JOIN_URL}
                 data-cta="join"

@@ -16,8 +16,8 @@ const CLAUSES: Clause[] = [
       "“Lemonn”, “we” or “us” means [Lemonn legal entity name], a [SEBI-registered stock broker, registration no. INZ…], having its registered office at [address].",
       "“Booming Bulls” means [Booming Bulls Academy legal entity name], the Campaign partner.",
       "“Participant” or “you” means an individual who meets the eligibility conditions below.",
-      "“Pool” means the total of ₹1,00,00,000 (₹1 Crore) in Brokerage Credits made available under the Campaign. “Prize Pool” on the Site refers to this Pool; it is not cash.",
-      "“Brokerage Credits” means a benefit that reduces or offsets the brokerage Lemonn charges on Eligible Trades, as set out in these Terms.",
+      "“Pool” means the total of ₹1,00,00,000 (₹1 Crore) of Brokerage Benefits made available under the Campaign. “Brokerage Pool” on the Site refers to this Pool; it is not cash.",
+      "“Brokerage Benefits” means the brokerage Lemonn does not charge on Eligible Trades because it is paid from the Pool, as set out in these Terms.",
       "“Eligible Trade” means a trade placed and executed through your Lemonn account during the Campaign Period in [eligible segments, e.g. equity delivery, intraday, F&O].",
       "“Campaign Period” means the period stated in the Campaign period clause below.",
     ],
@@ -25,7 +25,7 @@ const CLAUSES: Clause[] = [
   {
     heading: "Organiser and partner",
     points: [
-      "The Campaign is organised and run by Lemonn. Lemonn alone issues Brokerage Credits, runs the laptop giveaway and decides any question about the Campaign.",
+      "The Campaign is organised and run by Lemonn. Lemonn alone issues Brokerage Benefits, runs the laptop giveaway and decides any question about the Campaign.",
       "The Campaign is run in association with Booming Bulls to celebrate Anish Singh Thakur’s result at the World Trading Championship. References to his result are [subject to verification of the championship result, as stated in the Site footer]. [Confirm the approved wording of the result, e.g. “World #2”.]",
       "Booming Bulls and Mr. Thakur do not give investment advice, recommendations or any assurance of returns as part of the Campaign, and are not responsible for Lemonn’s services. [Confirm the scope of the partnership.]",
       "The Campaign is subject to [the final agreement between Lemonn and Booming Bulls and any regulatory approvals]. If any of these is not obtained, Lemonn may change or withdraw the Campaign under the Changes clause below.",
@@ -35,7 +35,7 @@ const CLAUSES: Clause[] = [
     heading: "Campaign period",
     points: [
       "The Campaign runs from [start date] to [end date], both days inclusive, Indian Standard Time (IST). The live dates are also shown on the Site’s leaderboard.",
-      "Brokerage Credits are available only for Eligible Trades executed within the Campaign Period, and only while the Pool lasts, whichever ends first.",
+      "Brokerage Benefits are available only for Eligible Trades executed within the Campaign Period, and only while the Pool lasts, whichever ends first.",
     ],
   },
   {
@@ -53,17 +53,17 @@ const CLAUSES: Clause[] = [
       "Tap “Join the ₹1 Crore Pool” on the Site and sign up or log in on Lemonn, then place Eligible Trades during the Campaign Period.",
       "Joining the Campaign is free. [Confirm: there is no minimum trade, deposit or activity requirement to join.]",
       "The Site never asks for your mobile number, OTP, password, bank details or any other personal details. Lemonn will never ask for your OTP or password by phone, email or message about the Campaign; do not share them.",
-      "Joining does not guarantee any specific amount of Brokerage Credits or any prize.",
+      "Joining does not guarantee any specific amount of Brokerage Benefits or any prize.",
     ],
   },
   {
-    heading: "Brokerage Credits from the Pool",
+    heading: "Brokerage Benefits from the Pool",
     points: [
-      "The Pool is shared by all Participants. There is no individual cap: Brokerage Credits are applied to the brokerage on your Eligible Trades as they are executed, until the Pool is used up or the Campaign Period ends, whichever comes first. [Confirm this mechanism; the “How to enter” section of the Site currently says the Pool is “shared out when the campaign ends” and must be aligned before launch.]",
+      "The Pool is shared by all Participants. There is no individual cap: Brokerage Benefits are applied to the brokerage on your Eligible Trades as they are executed, until the Pool is used up or the Campaign Period ends, whichever comes first. [Confirm this mechanism.]",
       "Once the Pool is used up, normal brokerage applies to all further trades, even if the Campaign Period has not ended. The amount used and remaining, shown on the Site, is indicative; Lemonn’s records are final.",
-      "Brokerage Credits apply only to brokerage. They do not cover taxes or statutory and other charges, including Securities Transaction Tax (STT), stamp duty, GST, exchange transaction charges, SEBI turnover fees, DP charges, clearing charges, call-and-trade or auto square-off charges, interest or any penalty.",
-      "Brokerage Credits have no cash value. They cannot be withdrawn, transferred, sold, exchanged or moved to another account, and they lapse at the end of the Campaign Period or when the Pool is used up. [Confirm whether any unused credit balance survives the Campaign Period, and if so, its expiry date.]",
-      "If a trade is cancelled, reversed or found not to be an Eligible Trade, Lemonn may reverse the Brokerage Credit applied to it.",
+      "Brokerage Benefits apply only to brokerage. They do not cover taxes or statutory and other charges, including Securities Transaction Tax (STT), stamp duty, GST, exchange transaction charges, SEBI turnover fees, DP charges, clearing charges, call-and-trade or auto square-off charges, interest or any penalty.",
+      "Brokerage Benefits have no cash value. They cannot be withdrawn, transferred, sold, exchanged or moved to another account, and they lapse at the end of the Campaign Period or when the Pool is used up. [Confirm whether any unused balance survives the Campaign Period, and if so, its expiry date.]",
+      "If a trade is cancelled, reversed or found not to be an Eligible Trade, Lemonn may reverse the Brokerage Benefit applied to it.",
     ],
   },
   {
@@ -87,8 +87,8 @@ const CLAUSES: Clause[] = [
   {
     heading: "Fair use and disqualification",
     points: [
-      "Lemonn may disqualify a Participant, withhold or reverse Brokerage Credits, and withdraw a prize, if it reasonably believes there has been fraud, misuse, multiple or fake accounts, collusion, self-trades, circular, wash or synthetic trades, trades placed mainly to use up the Pool, use of bots or scripts to exploit the Campaign, or any breach of these Terms, Lemonn’s account terms, exchange rules or applicable law.",
-      "Lemonn’s decision on eligibility, Brokerage Credits, rankings and prizes is final, subject to applicable law and your right to raise a grievance below.",
+      "Lemonn may disqualify a Participant, withhold or reverse Brokerage Benefits, and withdraw a prize, if it reasonably believes there has been fraud, misuse, multiple or fake accounts, collusion, self-trades, circular, wash or synthetic trades, trades placed mainly to use up the Pool, use of bots or scripts to exploit the Campaign, or any breach of these Terms, Lemonn’s account terms, exchange rules or applicable law.",
+      "Lemonn’s decision on eligibility, Brokerage Benefits, rankings and prizes is final, subject to applicable law and your right to raise a grievance below.",
     ],
   },
   {
@@ -96,7 +96,7 @@ const CLAUSES: Clause[] = [
     points: [
       "Investments in the securities market are subject to market risks; read all the related documents carefully before investing.",
       "Nothing on the Site or in the Campaign, including the leaderboard, the championship story or any statement by Mr. Thakur or Booming Bulls, is investment advice, a research recommendation or a solicitation to buy or sell any security, or to trade more or more often. Past performance, including any championship result, does not indicate future returns.",
-      "Brokerage Credits lower your brokerage cost only. They do not reduce market risk, and you remain fully responsible for your trading decisions, losses and margin obligations. Please trade only within your means and risk appetite.",
+      "Brokerage Benefits lower your brokerage cost only. They do not reduce market risk, and you remain fully responsible for your trading decisions, losses and margin obligations. Please trade only within your means and risk appetite.",
     ],
   },
   {
@@ -109,7 +109,7 @@ const CLAUSES: Clause[] = [
     heading: "Privacy",
     points: [
       "The Site does not ask you for personal details. The leaderboard is built from Lemonn’s records and shows only masked names and amounts.",
-      "Lemonn processes your personal data for the Campaign (eligibility, Brokerage Credits, leaderboard, prize selection, delivery and tax compliance) under its Privacy Policy [link] and the Digital Personal Data Protection Act, 2023. Lemonn does not share your personal data with Booming Bulls except [confirm, e.g. none / winners’ first names for announcements, with consent].",
+      "Lemonn processes your personal data for the Campaign (eligibility, Brokerage Benefits, leaderboard, prize selection, delivery and tax compliance) under its Privacy Policy [link] and the Digital Personal Data Protection Act, 2023. Lemonn does not share your personal data with Booming Bulls except [confirm, e.g. none / winners’ first names for announcements, with consent].",
       "The Site may record anonymous usage, such as which Join button was tapped, to measure the Campaign. [Confirm analytics tools and cookies used, if any.]",
       "Winners may be asked to consent to their name, city and photo being used in Campaign announcements. Refusing consent does not affect the prize.",
     ],
@@ -124,14 +124,14 @@ const CLAUSES: Clause[] = [
     heading: "Changes, suspension and withdrawal",
     points: [
       "Lemonn may modify, extend, suspend or withdraw the Campaign or these Terms at any time, including for regulatory reasons, technical failure, suspected fraud or events outside its control. Changes take effect when published on this page with a new “Last updated” date. Continued participation means you accept the change.",
-      "Brokerage Credits already applied to executed Eligible Trades will not be reversed because of a change, except under the Fair use clause above.",
+      "Brokerage Benefits already applied to executed Eligible Trades will not be reversed because of a change, except under the Fair use clause above.",
     ],
   },
   {
     heading: "Limitation of liability",
     points: [
       "To the extent permitted by law, Lemonn, Booming Bulls and Mr. Thakur are not liable for any indirect, incidental or consequential loss arising from the Campaign or the Site, including trading losses, lost opportunities, or delays and errors in the leaderboard, Site or app.",
-      "Lemonn’s total liability to a Participant in connection with the Campaign is limited to the value of the Brokerage Credits or prize that Participant was entitled to and did not receive.",
+      "Lemonn’s total liability to a Participant in connection with the Campaign is limited to the value of the Brokerage Benefits or prize that Participant was entitled to and did not receive.",
       "Lemonn is not responsible for failure or delay caused by events beyond its reasonable control, including exchange or depository outages, network failures, regulatory action or natural events.",
     ],
   },

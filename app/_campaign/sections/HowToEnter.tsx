@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import JoinButton from '../components/JoinButton';
+import { JoinPair } from '../components/JoinButton';
 import CandleBackdrop from '../components/CandleBackdrop';
 import { onLanded } from '../components/landed';
 import { ANISH, JOIN_LABEL, LAPTOPS, POOL } from '../content';
 
-/** How to enter. The story: Anish finished World #2 → to celebrate, a ₹1 Crore prize pool → join it, trade, win brokerage credits or one of 20 laptops. Told as a stepper: 01 Join → 02 Trade → 03 Win. - Once the section lands, the steps play on their own (the rail fills, then moves to the next step). - It keeps playing: tapping a step jumps to it and carries on from there. - Mouse over the active step (its tab or the panel) pauses the fill; it resumes from the same spot on leave. - It also pauses while the section is off screen. id="enter": the hero's ₹1 Cr and 20 Laptops cards and the navbar link land here. TODO (product): the step copy below is a PLACEHOLDER until the product team shares the real steps. TODO (business): final heading. TODO (legal): allocation and winner rules. */
+/** How to enter. The story: Anish finished World #2 → to celebrate, a ₹1 Crore brokerage pool → join it, trade, use brokerage from the shared pool (no individual cap) and get a chance at one of 20 laptops. Told as a stepper: 01 Join → 02 Trade → 03 Win. - Once the section lands, the steps play on their own (the rail fills, then moves to the next step). - It keeps playing: tapping a step jumps to it and carries on from there. - Mouse over the active step (its tab or the panel) pauses the fill; it resumes from the same spot on leave. - It also pauses while the section is off screen. id="enter": the hero's ₹1 Cr and 20 Laptops cards and the navbar link land here. TODO (product): the step copy below is a PLACEHOLDER until the product team shares the real steps. TODO (business): final heading. TODO (legal): allocation and winner rules. */
 const HEADING = 'How to enter & grab the prize';
 const STEP_MS = 5000; // how long each step stays before the stepper moves on
 
@@ -15,7 +15,7 @@ const STEPS: Step[] = [
     n: '01',
     tag: 'Join',
     title: `Join the ${POOL.amount} pool`,
-    body: `Tap “${JOIN_LABEL}” and sign up on Lemonn. It takes a couple of minutes, and your entry is saved straight away.`,
+    body: `Tap “${JOIN_LABEL}” and create your Lemonn account. It takes a couple of minutes, and your entry is saved straight away.`,
     points: ['Tap the Join button on this page', 'Sign up or log in on the Lemonn app', 'Existing Lemonn users are already in'],
   },
   {
@@ -23,14 +23,14 @@ const STEPS: Step[] = [
     tag: 'Trade',
     title: 'Trade while the pool is live',
     body: 'Trade the way you already do. Every trade you place during the campaign counts towards your entry.',
-    points: ['Trade on Lemonn during the campaign', 'Brokerage credits from the pool go towards your trades', 'See where you stand on the leaderboard'],
+    points: ['Trade on Lemonn during the campaign', 'Brokerage on your trades comes from the shared pool', `${POOL.noCap}`],
   },
   {
     n: '03',
     tag: 'Win',
-    title: 'Win your share',
-    body: `When the campaign ends, ${POOL.amount} is shared out as brokerage credits, and ${LAPTOPS.count} laptops go to participants.`,
-    points: [`Your share of ${POOL.amount} in brokerage credits`, `${LAPTOPS.count} laptops up for grabs`, 'Winners are announced on Lemonn'],
+    title: 'Win a laptop',
+    body: `The more brokerage you use from the pool, the higher your chances at one of ${LAPTOPS.count} laptops. ${POOL.noGuarantee}.`,
+    points: [`${LAPTOPS.count} laptops up for grabs`, 'More brokerage used from the pool, better chances', 'Winners are announced on Lemonn'],
   },
 ];
 
@@ -40,7 +40,8 @@ function JoinVisual() {
   // the result of joining: a compact entry pass (fits the short phone strip and the tall desktop column)
   return (
     <div className="flex h-full items-center justify-center">
-      <div className="w-full max-w-[16rem] rounded-2xl border border-white/[0.12] bg-bg/80 p-4 shadow-[0_1rem_2rem_-1rem_rgba(0,0,0,0.8)] lg:max-w-[18rem] lg:p-5">
+      {/* 3D key like the step-3 pool card: navy side visible against the panel */}
+      <div className="key-cap relative w-full max-w-[16rem] rounded-2xl p-4 [--key-side:#2a3366] lg:max-w-[18rem] lg:p-5">
         <div className="flex items-center justify-between gap-3">
           <img src="/lemonn-white.svg" alt="" width="193" height="52" className="h-3.5 w-auto opacity-80 lg:h-4" />
           <span className="font-mono text-[0.5625rem] font-bold tracking-[0.16em] text-fg-subtle lg:text-[0.625rem]">ENTRY</span>
@@ -54,7 +55,7 @@ function JoinVisual() {
           </span>
           <div className="min-w-0">
             <p className="text-[0.9375rem] font-extrabold leading-tight text-fg lg:text-base">You’re in the pool</p>
-            <p className="mt-1 whitespace-nowrap font-mono text-[0.5625rem] font-bold tracking-[0.12em] text-accent lg:text-[0.625rem]">{POOL.amount.toUpperCase()} PRIZE POOL</p>
+            <p className="mt-1 whitespace-nowrap font-mono text-[0.5625rem] font-bold tracking-[0.12em] text-accent lg:text-[0.625rem]">{POOL.amount.toUpperCase()} {POOL.title.toUpperCase()}</p>
           </div>
         </div>
       </div>
@@ -69,7 +70,7 @@ function TradeVisual() {
 function WinVisual() {
   return (
     <div className="flex h-full items-center justify-center gap-3 lg:gap-5">
-      <div className="key-cap flex w-[44%] flex-col items-center justify-center rounded-2xl px-2 py-4 text-center">
+      <div className="key-cap relative flex w-[44%] flex-col items-center justify-center rounded-2xl px-2 py-4 text-center [--key-side:#2a3366]">
         <span className="text-[1.25rem] font-extrabold uppercase leading-none tracking-[-0.01em] text-fg lg:text-[1.75rem]">{POOL.short}</span>
         <span className="mt-1.5 text-[0.5625rem] font-bold uppercase tracking-[0.14em] text-fg-subtle lg:text-[0.75rem]">{POOL.label}</span>
       </div>
@@ -197,8 +198,10 @@ export default function HowToEnter() {
           role="tabpanel"
           aria-labelledby={`enter-tab-${active}`}
           // navy side a step lighter than the page, so the slab's thickness reads on the dark background
-          className="neu-raised slab-3d mb-[1.125rem] mt-5 overflow-hidden rounded-2xl [--slab-depth:1rem] [--slab-side:#1a2142] lg:mt-6"
+          // highlighted like the standings card: accent border, soft accent glow all round, bright top line
+          className="neu-raised slab-3d relative mb-[1.125rem] mt-5 overflow-hidden rounded-2xl border-accent/45 [--slab-depth:1rem] [--slab-extra:0_0_3.5rem_-0.5rem_rgb(var(--accent-glow-rgb)/0.35)] [--slab-side:#1a2142] lg:mt-6"
         >
+          <span aria-hidden="true" className="pointer-events-none absolute inset-x-6 top-0 z-10 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
           <div key={active} className="step-in grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
             <div className="p-5 lg:p-8">
               <p className="font-mono text-[0.625rem] font-bold tracking-[0.16em] text-success lg:text-[0.6875rem]">
@@ -223,7 +226,7 @@ export default function HowToEnter() {
       </div>
 
       <div data-reveal="near" className="mt-8 text-center lg:mt-10" style={{ '--reveal-delay': '0.2s' }}>
-        <JoinButton location="steps" />
+        <JoinPair location="steps" className="mx-auto max-w-[30rem]" />
         <p className="mx-auto mt-5 max-w-[46ch] text-xs text-fg-subtle lg:mt-6">
           Steps are indicative. Allocation, eligibility and how winners are picked will be in the final campaign terms.
         </p>

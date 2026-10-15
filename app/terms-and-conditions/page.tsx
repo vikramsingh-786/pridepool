@@ -6,7 +6,7 @@ import Terms from "../_components/Terms";
 export const metadata: Metadata = {
   title: "Terms & Conditions — The Pride Pool · Lemonn × Booming Bulls",
   description:
-    "Draft terms and conditions for the Lemonn × Booming Bulls ₹1 Crore Brokerage Credits Pool.",
+    "Draft terms and conditions for the Lemonn × Booming Bulls ₹1 Crore Brokerage Pool.",
   alternates: { canonical: "/terms-and-conditions" },
 };
 

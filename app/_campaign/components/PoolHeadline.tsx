@@ -5,7 +5,7 @@ const SWEEP_VISIBLE_MS = 400;
 import Odometer from '../components/Odometer';
 import { POOL } from '../content';
 
-/** The ₹1 Crore headline: 1. ₹1,00,00,000 rolls up like a slot machine 2. right after it lands, all at once: the zeros turn into "Crore", the line shrinks, PRIZE POOL rises in below 3. once it has settled (end of the shrink), a bright light sweeps across the text once, like a reflection The final state stays on screen. With reduced motion it starts at the final state (no sweep). */
+/** The ₹1 Crore headline: 1. ₹1,00,00,000 rolls up like a slot machine 2. right after it lands, all at once: the zeros turn into "Crore", the line shrinks, the pool title (BROKERAGE POOL) rises in below 3. once it has settled (end of the shrink), a bright light sweeps across the text once, like a reflection The final state stays on screen. With reduced motion it starts at the final state (no sweep). */
 type Phase = 'roll' | 'final';
 
 const ROLL_DONE_MS = 950; // last digit has visibly landed (8 × 40 ms stagger + the roll's ease-out; its slow tail is invisible)
@@ -114,11 +114,12 @@ export default function PoolHeadline({ align = 'center', onComplete, replay = 0 
         </span>
       </p>
 
-      {/* Line 2: PRIDE POOL rises in, bigger — at the same moment */}
+      {/* Line 2: the pool title rises in, bigger — at the same moment. Clipped top/bottom only (for the rise); never at the sides, so a long title isn't cut off */}
       <div className="grid" style={{ gridTemplateRows: final ? '1fr' : '0fr', transition: `grid-template-rows 0.45s ${ease}` }}>
-        <div className="overflow-hidden">
+        <div className="overflow-x-visible overflow-y-clip">
           <p
-            className="pb-[0.08em] pt-[0.12em] text-[3.75rem] font-extrabold uppercase leading-[0.95] tracking-[-0.03em] lg:text-[6.5rem]"
+            // sized for "BROKERAGE POOL" (14 letters) on one line: fits a phone and stays clear of the photo on desktop
+            className="whitespace-nowrap pb-[0.08em] pt-[0.12em] text-[2.125rem] font-extrabold uppercase leading-[0.95] tracking-[-0.03em] lg:text-[4.5rem]"
             style={{ transform: final ? 'none' : 'translateY(40%) scale(1.15)', opacity: final ? 1 : 0, transition: `transform 0.5s ${ease}, opacity 0.35s ease`, transformOrigin: align === 'center' ? 'center top' : 'left top' }}
           >
             <span className="relative inline-block">

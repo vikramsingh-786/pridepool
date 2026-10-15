@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import JoinButton from '../components/JoinButton';
+import JoinChoice from '../components/JoinChoice';
 import PoolHeadline from '../components/PoolHeadline';
 import { ANCHORS, ANISH, LAPTOPS, POOL } from '../content';
 
@@ -40,7 +40,7 @@ function Pedestal({
       <div className={`relative flex w-full flex-1 items-end justify-center ${tucked ? 'z-0' : 'z-10'}`}>{item}</div>
       {/* Pedestal block: 3D key, accent rim on top */}
       {value && (
-      <div className={`key-cap relative mt-2 flex w-full flex-col items-center justify-center rounded-xl px-1.5 py-3 text-center lg:rounded-2xl lg:py-4 ${tucked ? 'z-10' : ''}`}>
+      <div className={`key-cap relative mt-2 flex w-full flex-col items-center justify-center rounded-xl px-1.5 py-3 text-center [--key-side:#2a3366] lg:rounded-2xl lg:py-4 ${tucked ? 'z-10' : ''}`}>
         <span aria-hidden="true" className="absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
         {/* impact ring when the card is stamped down */}
         {stamp === 'play' && <span aria-hidden="true" className="card-stamp-impact pointer-events-none absolute -inset-1.5 rounded-[1rem] border-2 border-accent/70 lg:rounded-[1.25rem]" />}
@@ -89,7 +89,7 @@ function Stamp({ className = '', onLanded }: { className?: string; onLanded?: ()
   );
 }
 
-/** Stack of ₹ credit coins — the pool, on the left pedestal. */
+/** Stack of ₹ coins — the pool, on the left pedestal. */
 const BUBBLES = [
   { left: '8%', bottom: '-1.5rem', ms: '3.2s', delay: '1.2s' },
   { left: '62%', bottom: '-1.5rem', ms: '3.8s', delay: '2.1s' },
@@ -167,8 +167,21 @@ function Headline({ align, onComplete, replay }: { align: 'center' | 'left'; onC
   return (
     <div className={align === 'center' ? 'text-center' : 'text-left'}>
       <PoolHeadline align={align} onComplete={onComplete} replay={replay} />
-      <p className="arena-enter mt-1.5 inline-flex items-center gap-1.5 font-mono text-[0.75rem] font-bold uppercase tracking-[0.08em] text-success lg:mt-2 lg:text-[1rem]" style={{ '--e-delay': '0.3s' }}>
-        Brokerage credits for India’s traders
+      {/* The key line, with the laptop giveaway highlighted right beside it */}
+      {/* same look as the old tagline: green mono caps */}
+      <p className={`arena-enter mt-2 max-w-[34rem] text-pretty font-mono text-[0.75rem] font-bold uppercase leading-relaxed tracking-[0.08em] text-success lg:mt-3 lg:text-[1rem] ${align === 'center' ? 'mx-auto' : ''}`} style={{ '--e-delay': '0.3s' }}>
+        {POOL.pitch}
+      </p>
+      <p className="arena-enter mt-2.5 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/10 px-3 py-1 font-mono text-[0.75rem] font-bold uppercase tracking-[0.08em] text-gold shadow-[0_0_1.25rem_-0.25rem_rgb(255_201_120/0.45)] lg:mt-3 lg:px-3.5 lg:py-1.5 lg:text-[0.875rem]" style={{ '--e-delay': '0.4s' }}>
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="4" y="5" width="16" height="11" rx="1.5" />
+          <path d="M2 19h20" />
+        </svg>
+        {LAPTOPS.count} laptops to win
+      </p>
+      {/* the pool's two rules, stated up front */}
+      <p className={`arena-enter mt-2.5 max-w-[30rem] text-pretty text-[0.75rem] font-medium leading-snug text-fg-muted lg:mt-3 lg:text-[0.875rem] ${align === 'center' ? 'mx-auto' : ''}`} style={{ '--e-delay': '0.45s' }}>
+        {POOL.noCap}. {POOL.noGuarantee}.
       </p>
     </div>
   );
@@ -244,16 +257,10 @@ export default function ArenaHero({
         <div className="hidden w-[36rem] shrink-0 lg:block">
           <Headline align="left" onComplete={onTitleDone} replay={sweepReplay} />
           <p className="arena-enter mt-6 max-w-[30rem] text-[1.25rem] font-medium leading-relaxed text-fg-muted" style={{ '--e-delay': '0.4s' }}>
-            Celebrating <strong className="font-bold text-fg">{ANISH.name}</strong>, India’s World {ANISH.rank} at the {ANISH.event}, with {POOL.amount} in brokerage credits and {LAPTOPS.count} laptops.
+            Celebrating <strong className="font-bold text-fg">{ANISH.name}</strong>, India’s World {ANISH.rank} at the {ANISH.event}, with a {POOL.amount} brokerage pool and {LAPTOPS.count} laptops.
           </p>
-          <div className="arena-enter mt-10" style={{ '--e-delay': '0.6s' }}>
-            <div className={`w-fit ${shakeJoin ? 'join-shake' : ''}`}>
-              <JoinButton location="hero" />
-            </div>
-            <p className="mt-4 flex items-center gap-2 text-[1rem] font-semibold text-fg-muted">
-              <span aria-hidden="true" className="h-2 w-2 rounded-full bg-success shadow-[0_0_8px_2px_rgba(61,214,140,0.5)]" />
-              Existing Lemonn users are already in.
-            </p>
+          <div className="arena-enter mt-8" style={{ '--e-delay': '0.6s' }}>
+            <JoinChoice location="hero" align="left" shake={shakeJoin} />
           </div>
         </div>
 
@@ -296,14 +303,8 @@ export default function ArenaHero({
         </div>
 
         {/* Mobile: Join never leaves the first screen */}
-        <div className="arena-enter shrink-0 text-center lg:hidden" style={{ '--e-delay': '0.6s' }}>
-          <div className={shakeJoin ? 'join-shake' : ''}>
-            <JoinButton location="hero" className="mx-auto max-w-[26rem]" />
-          </div>
-          <p className="mt-3 flex items-center justify-center gap-2 text-[0.8125rem] font-semibold text-fg-muted">
-            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_8px_2px_rgba(61,214,140,0.5)]" />
-            Existing Lemonn users are already in.
-          </p>
+        <div className="arena-enter shrink-0 lg:hidden" style={{ '--e-delay': '0.6s' }}>
+          <JoinChoice location="hero" shake={shakeJoin} />
         </div>
       </div>
       )}
