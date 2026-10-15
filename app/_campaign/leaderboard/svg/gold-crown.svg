@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="105.303" height="67.9129" viewBox="0 0 105.303 67.9129" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Gold Crown">
+<path id="Gold Crown &#226;&#128;&#148; Body" d="M8.66273 67.0669L5.27896 28.0858L31.537 48.7946L52.6518 6.15901L73.7665 48.7946L100.025 28.0858L96.6408 67.0669H8.66273Z" fill="url(#paint0_linear_0_79)" stroke="#8A5910" stroke-opacity="0.5" stroke-width="1.69189"/>
+<path id="Gold Crown &#226;&#128;&#148; Highlight" d="M52.6514 6.15901L73.7662 48.7946L52.6514 41.4856V6.15901Z" fill="white" fill-opacity="0.28"/>
+<path id="Gold Crown &#226;&#128;&#148; Base Band" d="M5.27868 33.3643C8.19401 33.3643 10.5574 31.0009 10.5574 28.0856C10.5574 25.1703 8.19401 22.8069 5.27868 22.8069C2.36334 22.8069 0 25.1703 0 28.0856C0 31.0009 2.36334 33.3643 5.27868 33.3643Z" fill="#FFEFB4"/>
+<path id="Gold Crown &#226;&#128;&#148; Left Tip Jewel" d="M100.024 33.3643C102.94 33.3643 105.303 31.0009 105.303 28.0856C105.303 25.1703 102.94 22.8069 100.024 22.8069C97.1089 22.8069 94.7455 25.1703 94.7455 28.0856C94.7455 31.0009 97.1089 33.3643 100.024 33.3643Z" fill="#FFEFB4"/>
+<path id="Gold Crown &#226;&#128;&#148; Right Tip Jewel" d="M52.6517 12.3172C56.0529 12.3172 58.8102 9.55994 58.8102 6.15872C58.8102 2.75749 56.0529 0.00022792 52.6517 0.00022792C49.2505 0.00022792 46.4932 2.75749 46.4932 6.15872C46.4932 9.55994 49.2505 12.3172 52.6517 12.3172Z" fill="#FFEFB4"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_79" x1="5.27896" y1="6.15901" x2="5.27896" y2="67.0669" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFEFB4"/>
+<stop offset="0.55" stop-color="#E8A93E"/>
+<stop offset="1" stop-color="#8A5910"/>
+</linearGradient>
+</defs>
+</svg>

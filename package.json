@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "gen:art": "node app/_campaign/leaderboard/gen-art.mjs"
   },
   "engines": {
     "node": ">=20.9.0"

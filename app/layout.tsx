@@ -1,18 +1,5 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import RevealRoot from "./_components/RevealRoot";
 import "./globals.css";
-
-const manrope = localFont({
-  src: "./fonts/Manrope-Variable.woff2",
-
-  weight: "200 800",
-  style: "normal",
-  display: "swap",
-  variable: "--font-campaign",
-  adjustFontFallback: "Arial",
-  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
-});
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -28,7 +15,13 @@ export default function CampaignRootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={manrope.variable} data-scroll-behavior="smooth">
+    // scale-artboard: the page is sized in rem on a 390×844 / 1440×900 canvas and scales like an image (globals.css).
+    <html lang="en" className="scale-artboard" data-scroll-behavior="smooth">
+      <head>
+        <link rel="preload" href="/fonts/Manrope-latin.woff2" as="font" type="font/woff2" crossOrigin="" />
+        {/* Hero photo: discovered with the HTML instead of after the JS */}
+        <link rel="preload" as="image" href="/anish.webp" type="image/webp" />
+      </head>
       <body>
         <script
           dangerouslySetInnerHTML={{
@@ -37,7 +30,6 @@ export default function CampaignRootLayout({
           }}
         />
         {children}
-        <RevealRoot />
       </body>
     </html>
   );

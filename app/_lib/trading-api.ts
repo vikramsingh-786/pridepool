@@ -2,15 +2,12 @@ import "server-only";
 import { unstable_rethrow } from "next/navigation";
 import { createPrivateKey, sign } from "node:crypto";
 
-// Server-only. The API key, private key and request id come from
-// private env vars (never NEXT_PUBLIC_) and never leave this module; only
-// masked names and amounts are returned to the page.
+// Server-only. The API key, private key and request id come from private env vars (never NEXT_PUBLIC_) and never leave this module; only masked names and amounts are returned to the page.
 
 const PATH = "/api-trading/api/v1/top-brokerage-savings";
-// Podium = ranks 1-3; the table pages through the rest, PAGE_SIZE at a time,
-// using the backend's own offset/limit (offset is 0-based upstream).
+// Podium = ranks 1-3; the table pages through the rest, PAGE_SIZE at a time, using the backend's own offset/limit (offset is 0-based upstream).
 const PODIUM = 3;
-export const PAGE_SIZE = 10;
+const PAGE_SIZE = 10;
 const TIMEOUT_MS = 8000;
 // DER prefix that wraps a raw 32-byte Ed25519 seed as a PKCS#8 key.
 const ED25519_PKCS8_PREFIX = Buffer.from("302e020100300506032b657004220420", "hex");
@@ -165,8 +162,7 @@ export async function getTopBrokerageSavings(): Promise<Leaderboard> {
 
   const entries = data.rows.slice(0, PODIUM + PAGE_SIZE).map((r, i) => toEntry(r, i + 1));
   const benefited = num(data.contest?.users_benefited);
-  // ponytail: the API has no row total; users_benefited (traders with savings)
-  // is used as the ranked count. Swap in a real total if the backend adds one.
+  // ponytail: the API has no row total; users_benefited (traders with savings) is used as the ranked count. Swap in a real total if the backend adds one.
   const total = Math.max(benefited ?? 0, entries.length);
 
   return {

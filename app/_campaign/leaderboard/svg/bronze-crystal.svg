@@ -1,0 +1,44 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="425.667" height="407.575" viewBox="0 0 425.667 407.575" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Bronze Podium &#226;&#128;&#148; Crystal Faces">
+<path id="Bronze Podium &#226;&#128;&#148; Left Face" d="M33.1552 32.3155L104.891 62.7694L85.942 406.222L1.34774 375.768L33.1552 32.3155Z" fill="url(#paint0_linear_0_165)"/>
+<path id="Bronze Podium &#226;&#128;&#148; Front Face &#226;&#128;&#148; Base" d="M104.891 62.7694H320.776L339.725 406.222H85.942L104.891 62.7694Z" fill="url(#paint1_linear_0_165)"/>
+<path id="Bronze Podium &#226;&#128;&#148; Front Face &#226;&#128;&#148; Tint" d="M104.891 62.7694H320.776L339.725 406.222H85.942L104.891 62.7694Z" fill="url(#paint2_linear_0_165)"/>
+<path id="Bronze Podium &#226;&#128;&#148; Right Face" d="M320.776 62.7694L392.512 32.3155L424.319 375.768L339.725 406.222L320.776 62.7694Z" fill="url(#paint3_linear_0_165)"/>
+<path id="Bronze Podium &#226;&#128;&#148; Front Face &#226;&#128;&#148; Glow" d="M104.891 62.7694H320.776L339.725 406.222H85.942L104.891 62.7694Z" fill="url(#paint4_radial_0_165)"/>
+<path id="Bronze Podium &#226;&#128;&#148; Left Facet Edge" d="M104.891 62.7694L194.899 224.175L85.942 406.222" stroke="white" stroke-opacity="0.08" stroke-width="3.38377"/>
+<path id="Bronze Podium &#226;&#128;&#148; Right Facet Edge" d="M320.776 62.7694L255.807 170.373" stroke="white" stroke-opacity="0.1" stroke-width="3.38377"/>
+<path id="Bronze Podium &#226;&#128;&#148; Front Face &#226;&#128;&#148; Outline" d="M104.891 62.7694L85.942 406.222M320.776 62.7694L339.725 406.222" stroke="#FFD9BC" stroke-opacity="0.75" stroke-width="3.0454"/>
+<path id="Bronze Podium &#226;&#128;&#148; Side Face &#226;&#128;&#148; Outline" d="M33.1552 32.3155L1.34774 375.768M392.512 32.3155L424.319 375.768" stroke="#FFD9BC" stroke-opacity="0.35" stroke-width="2.70702"/>
+<path id="Bronze Podium &#226;&#128;&#148; Base Edge" d="M1.34774 375.768L85.942 406.222H339.725L424.319 375.768H1.34774Z" stroke="#FFD9BC" stroke-opacity="0.3" stroke-width="2.70702"/>
+<path id="Bronze Podium &#226;&#128;&#148; Top Face" d="M33.1552 32.315L104.891 1.86107H320.776L392.512 32.315L320.776 62.769H104.891L33.1552 32.315Z" fill="url(#paint5_linear_0_165)" stroke="#FFD9BC" stroke-width="3.72215"/>
+<path id="Bronze Podium &#226;&#128;&#148; Top Facet Edge" d="M104.891 62.769V1.86107H320.776V62.769" stroke="white" stroke-opacity="0.35" stroke-width="2.03026"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_165" x1="1.34774" y1="32.3155" x2="1.34774" y2="406.222" gradientUnits="userSpaceOnUse">
+<stop stop-color="#B35A24"/>
+<stop offset="1" stop-color="#4A1F09"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_165" x1="85.942" y1="62.7694" x2="85.942" y2="406.222" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F59A5A"/>
+<stop offset="0.45" stop-color="#7A3512"/>
+<stop offset="1" stop-color="#7A3512"/>
+</linearGradient>
+<linearGradient id="paint2_linear_0_165" x1="85.942" y1="62.7694" x2="85.942" y2="406.222" gradientUnits="userSpaceOnUse">
+<stop stop-opacity="0"/>
+<stop offset="0.3" stop-opacity="0.22"/>
+<stop offset="1" stop-opacity="0.45"/>
+</linearGradient>
+<linearGradient id="paint3_linear_0_165" x1="320.776" y1="32.3155" x2="320.776" y2="406.222" gradientUnits="userSpaceOnUse">
+<stop stop-color="#864019"/>
+<stop offset="1" stop-color="#381706"/>
+</linearGradient>
+<radialGradient id="paint4_radial_0_165" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(212.833 62.7694) scale(203.026 274.762)">
+<stop stop-color="#FF8A45" stop-opacity="0.5"/>
+<stop offset="1" stop-color="#FF8A45" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="paint5_linear_0_165" x1="33.1552" y1="1.86107" x2="53.2254" y2="120.275" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFD6B2"/>
+<stop offset="1" stop-color="#E08848"/>
+</linearGradient>
+</defs>
+</svg>

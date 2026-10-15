@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
-import JoinDock from "./_components/JoinDock";
-import Footer from "./_components/Footer";
-import Hero from "./_components/Hero";
-import Leaderboard from "./_components/Leaderboard";
-import PageBackdrop from "./_components/PageBackdrop";
-import CampaignBasis from "./_components/CampaignBasis";
-import Faq from "./_components/Faq";
-import Giveaway from "./_components/Giveaway";
-import Spotlight from "./_components/Spotlight";
+import CampaignHome from "./_components/CampaignHome";
+import { getTopBrokerageSavings } from "./_lib/trading-api";
 
 const TITLE = "₹1 Crore Brokerage Credits Pool — Lemonn × Booming Bulls";
 const DESCRIPTION =
@@ -43,23 +36,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CampaignPage() {
-  return (
-    <>
-      <main id="main" className="relative">
-        <PageBackdrop />
-        <Hero />
-        <div className="pointer-events-none relative -z-[5] h-0">
-          <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-bg to-transparent sm:h-64" />
-        </div>
-        <CampaignBasis />
-        <Spotlight />
-        <Giveaway />
-        <Leaderboard />
-        <Faq />
-      </main>
-      <Footer />
-      <JoinDock />
-    </>
-  );
+// The leaderboard is signed per request and never cached.
+export const dynamic = "force-dynamic";
+
+export default async function CampaignPage() {
+  const board = await getTopBrokerageSavings();
+  return <CampaignHome board={board} />;
 }
