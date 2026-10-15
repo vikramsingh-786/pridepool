@@ -86,7 +86,9 @@ function toContest(c: Record<string, unknown> | undefined): Contest | null {
     poolSize: rupees.format(pool),
     used: rupees.format(used),
     remaining: rupees.format(left),
-    usedPct: pool > 0 ? Math.min(100, (used / pool) * 100) : 0,
+    // from the same whole-rupee amounts shown on the page, so "₹50 of ₹50 used" reads 100%, not 99% (49.71 / 50)
+    // ×100 before ÷ keeps it exact (29/50 → 58, not 57.999…)
+    usedPct: Math.round(pool) > 0 ? Math.min(100, (Math.round(used) * 100) / Math.round(pool)) : 0,
     usersEnrolled: enrolled,
     usersBenefited: benefited,
     period: `${fmt(start, false)} – ${fmt(end, true)}`,
