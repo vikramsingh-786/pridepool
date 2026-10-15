@@ -83,23 +83,24 @@ export default function PoolHeadline({ align = 'center', onComplete, replay = 0 
       >
         <span className="relative inline-block">
           <Odometer text="₹1" label={POOL.amount} />
+          {/* 1.4em tall like the digit windows inside it (-0.2em margins keep the line at 1em), so it doesn't re-clip the rolling zeros at 1em */}
           <span
-            className="relative inline-block h-[1em] overflow-hidden align-top"
+            className="relative -my-[0.2em] inline-block h-[1.4em] overflow-hidden align-top"
             style={{ width: widths ? `${final ? widths.crore : widths.zeros}em` : undefined, transition: `width 0.4s ${ease}` }}
           >
             {/* the zeros slide up and out… */}
             <span
               ref={zerosRef}
-              className="absolute left-0 top-0 inline-flex whitespace-nowrap"
-              style={{ transform: final ? 'translateY(-110%)' : 'none', opacity: final ? 0 : 1, transition: `transform 0.5s ${ease}, opacity 0.35s ease` }}
+              className="absolute left-0 top-[0.2em] inline-flex whitespace-nowrap"
+              style={{ transform: final ? 'translateY(-130%)' : 'none', opacity: final ? 0 : 1, transition: `transform 0.5s ${ease}, opacity 0.35s ease` }}
             >
               <Odometer text=",00,00,000" label="" delayOffset={1} />
             </span>
             {/* …and "Crore" slides up into their place */}
             <span
               ref={croreRef}
-              className="absolute left-0 top-0 inline-block whitespace-nowrap pl-[0.22em]"
-              style={{ transform: final ? 'none' : 'translateY(110%)', opacity: final ? 1 : 0, transition: `transform 0.5s ${ease} 0.06s, opacity 0.35s ease 0.06s` }}
+              className="absolute left-0 top-[0.2em] inline-block whitespace-nowrap pl-[0.22em]"
+              style={{ transform: final ? 'none' : 'translateY(130%)', opacity: final ? 1 : 0, transition: `transform 0.5s ${ease} 0.06s, opacity 0.35s ease 0.06s` }}
             >
               Crore
             </span>
@@ -116,7 +117,8 @@ export default function PoolHeadline({ align = 'center', onComplete, replay = 0 
 
       {/* Line 2: the pool title rises in, bigger — at the same moment. Clipped top/bottom only (for the rise); never at the sides, so a long title isn't cut off */}
       <div className="grid" style={{ gridTemplateRows: final ? '1fr' : '0fr', transition: `grid-template-rows 0.45s ${ease}` }}>
-        <div className="overflow-x-visible overflow-y-clip">
+        {/* min-h-0: lets the 0fr row really collapse (clip, unlike hidden, doesn't do that by itself), so no empty gap is held open before the title rises in */}
+        <div className="min-h-0 overflow-x-visible overflow-y-clip">
           <p
             // sized for "BROKERAGE POOL" (14 letters) on one line: fits a phone and stays clear of the photo on desktop
             className="whitespace-nowrap pb-[0.08em] pt-[0.12em] text-[2.125rem] font-extrabold uppercase leading-[0.95] tracking-[-0.03em] lg:text-[4.5rem]"

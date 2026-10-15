@@ -472,14 +472,14 @@
   from { opacity: 0; transform: scale(2.2) rotate(-18deg); }
   to { opacity: 1; transform: none; }
 }
-/* Slot-machine digits: each strip holds 0–9 twice and lands on --d */
+/* Slot-machine digits: each strip holds 0–9 twice and lands on --d. Rows are 1.4em tall (see Odometer.tsx), so every step is 1.4em */
 .odo-strip {
-  transform: translateY(calc((10 + var(--d)) * -1em));
+  transform: translateY(calc((10 + var(--d)) * -1.4em));
   animation: odo-roll 0.9s cubic-bezier(0.2, 0.75, 0.15, 1) both;
 }
 @keyframes odo-roll {
   from { transform: translateY(0); }
-  to { transform: translateY(calc((10 + var(--d)) * -1em)); }
+  to { transform: translateY(calc((10 + var(--d)) * -1.4em)); }
 }
 /* Items popping in one by one (laptops, reward tiles) */
 .story-pop {
