@@ -13,7 +13,6 @@ import StickyJoin from './components/StickyJoin';
 import Background from './components/Background';
 import RevealRoot from '../_components/RevealRoot';
 import Navbar from './components/Navbar';
-import CandleCursor from './components/CandleCursor';
 import { onLanded } from './components/landed';
 import type { Leaderboard as BoardData } from '../_lib/trading-api';
 
@@ -24,12 +23,6 @@ const INTRO_MAX_MS = 6000;
 const LANDING_HOLD_MS = 150;
 // Slow networks: the longest the intro waits for the hero photo + font after the hold
 const LANDING_WAIT_MAX_MS = 1500;
-
-// The candle cursor needs a mouse (or trackpad); not in Windows high-contrast mode, which keeps the system cursor
-const HAS_MOUSE =
-  typeof window !== 'undefined' &&
-  window.matchMedia('(any-hover: hover) and (any-pointer: fine)').matches &&
-  !window.matchMedia('(forced-colors: active)').matches;
 
 /** The campaign page. First screen: reward stage with all three touchpoints visible. Then the champion's moment, how to enter, the Figma leaderboard, the final call, a short FAQ and a slim footer. The page scales like an image (html.scale-artboard in globals.css). Scrolling is free: no section snapping, it fought touch momentum. */
 export default function Home({ badgeStyle = 'medal', board }: { badgeStyle?: 'medal' | 'stamp'; board?: BoardData | null }) {
@@ -94,7 +87,6 @@ export default function Home({ badgeStyle = 'medal', board }: { badgeStyle?: 'me
       <Footer />
       {/* Mounts with the hero so it can see the hero's Join button */}
       {ready && <StickyJoin />}
-      {HAS_MOUSE && <CandleCursor />}
       {/* Last child: its effect runs once every section above has committed, so the scroll-reveal observer actually finds this page's [data-reveal] nodes (the page mounts lazily, after the layout). */}
       <RevealRoot />
     </>

@@ -155,12 +155,14 @@ function Coin({ box, origin, delay, float = false, children }: { box: Box; origi
 
 function PodiumScene({ rolling, art, TOP }: { rolling: boolean; art: boolean; TOP: Record<'gold' | 'silver' | 'bronze', Leader> }) {
   return (
-    <div className="lb-scene relative -mx-[15%] w-[130%] lg:mx-0 lg:w-full" style={{ aspectRatio: '2033 / 813.0808715820312', containerType: 'inline-size' }}>
+    <div className="lb-scene relative -mx-[10%] w-[120%] translate-x-[1.5%] lg:mx-0 lg:w-full" style={{ aspectRatio: '2033 / 813.0808715820312', containerType: 'inline-size' }}>
+      {/* phones: scene 120% of the card; the podiums fill 77% of the scene, so they end ~4% inside the card edges (130% put them flush with the corners) */}
+      {/* translate-x 1.5%: the art is off-centre (silver's outer edge 11.5% from the left, bronze crystal's 14.5% from the right), so shift by half the difference to centre the podiums over the card */}
       {/* the scene keeps its size; its layers render once the leaderboard art has loaded (artStore.ts) */}
       {art && (
       <>
       {/* Paint order as in Figma: silver, bronze, gold on top */}
-      <Podium box={GROUPS.silver} delay="0.2s" label={`2nd place, ${TOP.silver.name}, ${TOP.silver.score} brokerage saved`}>
+      <Podium box={GROUPS.silver} delay="0.1s" label={`2nd place, ${TOP.silver.name}, ${TOP.silver.score} brokerage saved`}>
         <div className="lb-body absolute inset-0">
           <Layers layers={SILVER_BELOW} />
         </div>
@@ -168,7 +170,7 @@ function PodiumScene({ rolling, art, TOP }: { rolling: boolean; art: boolean; TO
         <div className="lb-body absolute inset-0">
           <Layers layers={SILVER_ABOVE} />
         </div>
-        <Coin box={SILVER_MEDAL_BOX} origin="50% 50%" delay="0.2s" float>
+        <Coin box={SILVER_MEDAL_BOX} origin="50% 50%" delay="0.1s" float>
           {/* medal artwork pulled in towards the flag: thinner ring, same flag size */}
           <div className="absolute inset-0" style={{ transform: `scale(${MEDAL_RING_SCALE.silver})`, transformOrigin: '49.7% 49.91%' }}>
             <Layers layers={SILVER_MEDAL} />
@@ -190,7 +192,7 @@ function PodiumScene({ rolling, art, TOP }: { rolling: boolean; art: boolean; TO
         <Details at={DETAILS.bronze} crown="bronze-crown" crownSize={[67.405, 43.718]} gaps={[13.746, 22]} nameSize={36.656} scoreSize={45.82} scoreColor="#ffc79a" shadow={[3.384, 10.151]} leader={TOP.bronze} rolling={rolling} />
       </Podium>
 
-      <Podium box={GROUPS.gold} delay="0.45s" label={`1st place, ${TOP.gold.name}, ${TOP.gold.score} brokerage saved`}>
+      <Podium box={GROUPS.gold} delay="0.2s" label={`1st place, ${TOP.gold.name}, ${TOP.gold.score} brokerage saved`}>
         <div className="lb-body absolute overflow-hidden" style={pos(GOLD_PODIUM.frame)}>
           <Img src="gold-crystal" box={GOLD_PODIUM.crystal} />
           {/* Light sweeping across the gold crystal (masked to its shape) */}
@@ -202,7 +204,7 @@ function PodiumScene({ rolling, art, TOP }: { rolling: boolean; art: boolean; TO
             <span />
           </span>
         </div>
-        <Coin box={GOLD_MEDAL.frame} origin="50% 18.83%" delay="0.45s">
+        <Coin box={GOLD_MEDAL.frame} origin="50% 18.83%" delay="0.2s">
           <div className="absolute inset-0 overflow-hidden" style={{ transform: `scale(${MEDAL_RING_SCALE.gold})`, transformOrigin: '50.12% 18.86%' }}>
             <Img src="gold-medal" box={GOLD_MEDAL.medal} />
           </div>
@@ -251,12 +253,13 @@ function Pager({ page, pages, loading, onChange }: { page: number; pages: number
 
 /** Contest block from the feed, at the top of the standings card (as the old leaderboard had it): name, status, dates, pool used, then the numbers as white 3D keys (.btn-key-light, like the pager). */
 function ContestStats({ contest: c }: { contest: Contest }) {
+  // [label, short label for phones, value]
   const stats = [
-    ['Pool size', c.poolSize],
-    ['Used', c.used],
-    ['Remaining', c.remaining],
-    ['Traders enrolled', c.usersEnrolled.toLocaleString('en-IN')],
-    ['Traders benefited', c.usersBenefited.toLocaleString('en-IN')],
+    ['Pool size', 'Pool', c.poolSize],
+    ['Used', 'Used', c.used],
+    ['Remaining', 'Left', c.remaining],
+    ['Traders enrolled', 'Enrolled', c.usersEnrolled.toLocaleString('en-IN')],
+    ['Traders benefited', 'Benefited', c.usersBenefited.toLocaleString('en-IN')],
   ];
   return (
     <div className="border-b-[0.0625rem] border-white/[0.07] px-[0.875rem] pb-6 pt-5 lg:border-b-[0.0966rem] lg:px-[1.546rem] lg:pb-8 lg:pt-6">
@@ -276,11 +279,15 @@ function ContestStats({ contest: c }: { contest: Contest }) {
       <div className="neu-inset mt-1.5 h-2.5 overflow-hidden rounded-full" role="progressbar" aria-label="Pool used" aria-valuenow={Math.round(c.usedPct)} aria-valuemin={0} aria-valuemax={100}>
         <div className="h-full rounded-full bg-accent shadow-[0_0_0.75rem_rgb(var(--accent-glow-rgb)/0.6)]" style={{ width: `${Math.max(c.usedPct, 1.5)}%` }} />
       </div>
-      <dl className="mt-5 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 lg:grid-cols-5 lg:gap-4">
-        {stats.map(([label, value]) => (
-          <div key={label} className="btn-key-light relative rounded-xl px-3 py-3 text-center lg:py-4">
-            <dt className="text-[0.625rem] font-bold uppercase tracking-[0.12em] text-black/55">{label}</dt>
-            <dd className="mt-1 font-mono text-[1rem] font-bold tabular-nums text-[#0b0b12] lg:text-[1.125rem]">{value}</dd>
+      {/* one row of 5 keys at every size; phones get compact keys; short labels below desktop */}
+      <dl className="mt-4 grid grid-cols-5 gap-1.5 sm:mt-5 sm:gap-3 lg:gap-4">
+        {stats.map(([label, short, value]) => (
+          <div key={label} className="btn-key-light relative min-w-0 rounded-lg px-1 py-2 text-center [--k:3px] sm:rounded-xl sm:px-3 sm:py-3 sm:[--k:5px] lg:py-4">
+            <dt className="truncate text-[0.5rem] font-bold uppercase tracking-[0.04em] text-black/55 sm:text-[0.625rem] sm:tracking-[0.12em]">
+              <span className="lg:hidden">{short}</span>
+              <span className="hidden lg:inline">{label}</span>
+            </dt>
+            <dd className="mt-0.5 truncate font-mono text-[0.75rem] font-bold tabular-nums tracking-[-0.03em] text-[#0b0b12] sm:mt-1 sm:text-[1rem] sm:tracking-normal lg:text-[1.125rem]">{value}</dd>
           </div>
         ))}
       </dl>
@@ -312,6 +319,8 @@ function RankingsTable({
       style={{
         background: 'linear-gradient(to bottom, rgba(10,31,22,0.94), rgba(6,21,15,0.98))',
         '--slab-side': '#031009',
+        // soft shadow cast up onto the podium bases, so they sink behind the card instead of meeting a hard edge
+        '--slab-extra': '0 -0.75rem 2rem rgba(0,0,0,0.55)',
       }}
     >
       {contest && <ContestStats contest={contest} />}
@@ -326,7 +335,7 @@ function RankingsTable({
             key={row.rank}
             data-row
             // page 1 waits for the podiums to rise; a page you clicked to should answer at once
-            style={{ '--d': `${(page === 1 ? 0.9 : 0) + i * 0.07}s` }}
+            style={{ '--d': `${(page === 1 ? 0.5 : 0) + i * 0.04}s` }}
             className="group flex h-[3.75rem] items-center gap-[0.875rem] px-[0.875rem] transition-colors duration-300 hover:bg-[rgba(46,229,157,0.045)] lg:h-[4.625rem] lg:gap-[1.75rem] lg:px-[1.546rem]"
           >
             <span
@@ -405,7 +414,7 @@ export default function Leaderboard({ board }: { board?: BoardData | null }) {
   }, []);
 
   return (
-    <section ref={ref} id="leaderboard" aria-labelledby="leaderboard-heading" className={`lb fold snap-start arena-container relative overflow-x-clip py-10 lg:py-12 ${inView ? 'lb-in' : ''}`}>
+    <section ref={ref} id="leaderboard" aria-labelledby="leaderboard-heading" className={`lb fold arena-container relative overflow-x-clip py-12 lg:py-16 ${inView ? 'lb-in' : ''}`}>
       <div data-reveal="true" className="relative text-center">
         <p className="inline-flex items-center gap-2 rounded-full neu-inset px-3.5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-accent">
           <span aria-hidden="true" className="h-1.5 w-1.5 rotate-45 bg-accent" />

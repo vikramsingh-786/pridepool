@@ -141,7 +141,7 @@ export default function Champion({ coverReady = true }: { coverReady?: boolean }
   }, [reduced]);
 
   return (
-    <section ref={ref} id="moment" aria-labelledby="champion-heading" className="fold snap-start arena-container relative py-10 lg:py-8">
+    <section ref={ref} id="moment" aria-labelledby="champion-heading" className="fold arena-container relative py-12 lg:py-16">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-24 h-80 w-[36rem] max-w-full -translate-x-1/2 opacity-60 blur-[110px]"

@@ -37,7 +37,7 @@ export default function Faqs() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faqs" aria-labelledby="faqs-heading" className="fold snap-start arena-container relative py-10 lg:py-12">
+    <section id="faqs" aria-labelledby="faqs-heading" className="fold arena-container relative py-12 lg:py-16">
       <div className="relative mx-auto max-w-3xl">
         <div data-reveal="true" className="text-center">
           <p className="inline-flex items-center gap-2 rounded-full neu-inset px-3.5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-accent">

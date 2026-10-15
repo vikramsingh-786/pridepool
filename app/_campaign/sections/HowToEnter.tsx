@@ -123,7 +123,7 @@ export default function HowToEnter() {
   const Visual = VISUALS[active];
 
   return (
-    <section ref={ref} id="enter" aria-labelledby="enter-heading" className="fold snap-start arena-container relative py-10 lg:py-12">
+    <section ref={ref} id="enter" aria-labelledby="enter-heading" className="fold arena-container relative py-12 lg:py-16">
       <div data-reveal="true" className="relative text-center">
         <p className="inline-flex items-center gap-2 rounded-full neu-inset px-3.5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-accent">
           <span aria-hidden="true" className="h-1.5 w-1.5 rotate-45 bg-accent" />
