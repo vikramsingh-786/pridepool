@@ -31,19 +31,18 @@ import {
  * page.tsx); the table pages through it with /api/leaderboard. Nothing is invented: if the feed
  * is down the section says so, and a place nobody holds yet reads "Up for grabs".
  */
-type Leader = { rank: number; name: string; score: string; pct?: string };
+type Leader = { rank: number; name: string; score: string };
 
 /** Ranks per table page. Matches the backend's own page size (_lib/trading-api PAGE_SIZE). */
 const PAGE_SIZE = 10;
 /** Ranks 1-3 live on the podium, not in the table. */
 const PODIUM = 3;
 
-/** One API row → one table row. The amount text comes formatted from the server (_lib/trading-api: whole rupees); `best` is rank 1's score, for the "% of #1" line. */
-const toLeader = (e: { rank: number; participant: string; score: number; display: string }, best: number): Leader => ({
+/** One API row → one table row, as the backend sent it (amount text from the server: ₹ + the raw number). */
+const toLeader = (e: { rank: number; participant: string; score: number; display: string }): Leader => ({
   rank: e.rank,
   name: e.participant,
   score: e.display,
-  pct: best > 0 ? `${Math.round((e.score / best) * 100)}%` : undefined,
 });
 
 /**
@@ -53,17 +52,15 @@ const toLeader = (e: { rank: number; participant: string; score: number; display
  */
 function fromBoard(board: BoardData | null | undefined) {
   if (!board || board.status === 'unavailable') return null;
-  const best = board.entries[0]?.score ?? 0;
   // A place nobody holds yet: the crystal still stands, the spot is simply open.
   const open = (rank: number): Leader => ({ rank, name: 'Up for grabs', score: '—' });
-  const at = (i: number) => (board.entries[i] ? toLeader(board.entries[i], best) : open(i + 1));
+  const at = (i: number) => (board.entries[i] ? toLeader(board.entries[i]) : open(i + 1));
   return {
-    best,
     contest: board.contest,
     updatedAt: board.updatedAt,
     top: { gold: at(0), silver: at(1), bronze: at(2) },
     // the first call already carries page 1 of the table (ranks 4 onward); later pages are fetched
-    firstPage: board.entries.slice(PODIUM).map((e) => toLeader(e, best)),
+    firstPage: board.entries.slice(PODIUM).map((e) => toLeader(e)),
     pages: Math.ceil(Math.max(0, board.total - PODIUM) / PAGE_SIZE),
   };
 }
@@ -287,8 +284,8 @@ function ContestStats({ contest: c }: { contest: Contest }) {
     ['Pool size', 'Pool', c.poolSize],
     ['Used', 'Used', c.used],
     ['Remaining', 'Left', c.remaining],
-    ['Traders enrolled', 'Enrolled', c.usersEnrolled.toLocaleString('en-IN')],
-    ['Traders benefited', 'Benefited', c.usersBenefited.toLocaleString('en-IN')],
+    ['Traders enrolled', 'Enrolled', c.usersEnrolled],
+    ['Traders benefited', 'Benefited', c.usersBenefited],
   ];
   return (
     <div className="border-b-[0.0625rem] border-white/[0.07] px-[0.875rem] pb-6 pt-5 lg:border-b-[0.0966rem] lg:px-[1.546rem] lg:pb-8 lg:pt-6">
@@ -296,18 +293,20 @@ function ContestStats({ contest: c }: { contest: Contest }) {
         <p className="text-[1rem] font-bold text-fg lg:text-[1.125rem]">{c.name}</p>
         <p className="flex items-center gap-2 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.08em] text-fg-subtle">
           {c.status && <span className="rounded-md border border-accent/40 px-2 py-0.5 text-accent">{c.status}</span>}
-          {c.period}
+          {c.startDate} – {c.endDate}
         </p>
       </div>
       <div className="mt-4 flex items-baseline justify-between gap-2 font-mono text-[0.75rem] tabular-nums text-fg-subtle">
         <span>
           <span className="font-bold text-fg">{c.used}</span> of {c.poolSize} used
         </span>
-        <span>{Math.floor(c.usedPct)}%</span>
+        {c.usedPct !== null && <span>{Math.floor(c.usedPct)}%</span>}
       </div>
-      <div className="neu-inset mt-1.5 h-2.5 overflow-hidden rounded-full" role="progressbar" aria-label="Pool used" aria-valuenow={Math.round(c.usedPct)} aria-valuemin={0} aria-valuemax={100}>
-        <div className="h-full rounded-full bg-accent shadow-[0_0_0.75rem_rgb(var(--accent-glow-rgb)/0.6)]" style={{ width: `${Math.max(c.usedPct, 1.5)}%` }} />
-      </div>
+      {c.usedPct !== null && (
+        <div className="neu-inset mt-1.5 h-2.5 overflow-hidden rounded-full" role="progressbar" aria-label="Pool used" aria-valuenow={Math.floor(c.usedPct)} aria-valuemin={0} aria-valuemax={100}>
+          <div className="h-full rounded-full bg-accent shadow-[0_0_0.75rem_rgb(var(--accent-glow-rgb)/0.6)]" style={{ width: `${Math.max(c.usedPct, 1.5)}%` }} />
+        </div>
+      )}
       {/* one row of 5 keys at every size; phones get compact keys; short labels below desktop */}
       <dl className="mt-4 grid grid-cols-5 gap-1.5 sm:mt-5 sm:gap-3 lg:gap-4">
         {stats.map(([label, short, value]) => (
@@ -387,7 +386,6 @@ function RankingsTable({
                   <span className="sr-only">brokerage saved </span>
                   {row.score}
                 </p>
-                <p className="text-[0.625rem] text-white/50 lg:text-[0.75rem]">{row.pct} of #1</p>
               </div>
             </div>
           </li>
@@ -446,7 +444,7 @@ export default function Leaderboard({ board }: { board?: BoardData | null }) {
       const res = await fetch(`/api/leaderboard?page=${next}`);
       if (!res.ok) throw new Error(String(res.status));
       const data: { rows: { rank: number; participant: string; score: number; display: string }[] } = await res.json();
-      setFetched((f) => ({ ...f, [next]: data.rows.map((r) => toLeader(r, standings.best)) }));
+      setFetched((f) => ({ ...f, [next]: data.rows.map((r) => toLeader(r)) }));
     } catch {
       setError('Couldn’t load that page. Try again in a moment.');
     } finally {
@@ -477,7 +475,7 @@ export default function Leaderboard({ board }: { board?: BoardData | null }) {
           The Leaderboard
         </h2>
         <p className="mx-auto mt-3 max-w-[44ch] text-pretty text-[0.9375rem] font-medium leading-relaxed text-fg-muted lg:text-lg">
-          Ranked by brokerage used from the shared {POOL.amount} pool. {POOL.noCap}; a top rank doesn’t guarantee a laptop.
+          Ranked by brokerage used from the shared {POOL.amount} pool. A top rank doesn’t guarantee a laptop.
         </p>
         <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/[0.08] px-3.5 py-1.5 font-mono text-[0.75rem] font-bold uppercase tracking-[0.08em] text-fg lg:text-[0.875rem]">
           {standings ? (

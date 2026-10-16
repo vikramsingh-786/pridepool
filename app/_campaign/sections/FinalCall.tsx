@@ -19,7 +19,7 @@ function Check() {
 export default function FinalCall() {
   const recap = [
     `Celebrate ${ANISH.name}, World ${ANISH.rank}`,
-    `${POOL.amount} shared brokerage pool, no individual cap`,
+    `${POOL.amount} shared brokerage pool`,
     `${LAPTOPS.count} laptops to win, not guaranteed`,
   ];
 

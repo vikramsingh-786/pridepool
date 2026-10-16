@@ -19,20 +19,13 @@ export const metadata: Metadata = {
     url: "/",
     siteName: "The Pride Pool",
     locale: "en_IN",
-    images: [
-      {
-        url: "/og.png",
-        width: 1200,
-        height: 630,
-        alt: "Lemonn × Booming Bulls — ₹1 Crore Brokerage Pool.",
-      },
-    ],
+    // image: app/opengraph-image.jpg (the ₹1 Crore Brokerage Pool banner), picked up automatically
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: ["/og.png"],
+    // image: app/twitter-image.jpg
   },
 };
 

@@ -4,9 +4,9 @@ import PageHeader from "../_campaign/components/PageHeader";
 import Terms from "../_components/Terms";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — The Pride Pool · Lemonn × Booming Bulls",
+  title: "Terms and Conditions — The Pride Pool · Booming Bulls × Lemonn",
   description:
-    "Draft terms and conditions for the Lemonn × Booming Bulls ₹1 Crore Brokerage Pool.",
+    "Terms and conditions for The Pride Pool: the Booming Bulls × Lemonn ₹1 Crore brokerage pool and laptop giveaway, 17 Oct to 15 Nov 2026.",
   alternates: { canonical: "/terms-and-conditions" },
 };
 

@@ -3,7 +3,8 @@ import Link from "next/link";
 import Background from "./_campaign/components/Background";
 import PageHeader from "./_campaign/components/PageHeader";
 import Footer from "./_campaign/sections/Footer";
-import { JOIN_LABEL, JOIN_URL, OPEN_APP_LABEL, OPEN_APP_URL, POOL } from "./_campaign/content";
+import { POOL } from "./_campaign/content";
+import { JoinPair } from "./_campaign/components/JoinButton";
 
 export const metadata: Metadata = {
   title: `Page not found — ${POOL.amount} Pride Pool`,
@@ -48,32 +49,16 @@ export default function NotFound() {
               campaign terms are all still a tap away.
             </p>
 
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            {/* back to the campaign on top; under it the site's standard Open Lemonn App + Sign Up & Join pair */}
+            <div className="mx-auto mt-8 flex w-full max-w-[30rem] flex-col gap-5">
               <Link
                 href="/"
-                className="arena-cta btn-key flex h-14 w-full max-w-[22rem] items-center justify-center gap-2 font-extrabold tracking-[-0.01em] sm:w-auto sm:px-8"
+                className="arena-cta btn-key flex h-14 w-full items-center justify-center gap-2 whitespace-nowrap font-extrabold tracking-[-0.01em]"
               >
                 Back to the campaign
                 <span aria-hidden="true">→</span>
               </Link>
-              <a
-                href={OPEN_APP_URL}
-                data-cta="open-app"
-                data-cta-location="404"
-                className="flex h-14 w-full max-w-[22rem] items-center justify-center gap-2 rounded-full border border-white/40 font-extrabold tracking-[-0.01em] text-fg transition-colors duration-200 hover:bg-white/10 sm:w-auto sm:px-8"
-              >
-                {OPEN_APP_LABEL}
-                <span aria-hidden="true">→</span>
-              </a>
-              <a
-                href={JOIN_URL}
-                data-cta="join"
-                data-cta-location="404"
-                className="flex h-14 w-full max-w-[22rem] items-center justify-center gap-2 rounded-full border border-accent/70 font-extrabold tracking-[-0.01em] text-accent transition-colors duration-200 hover:bg-accent/10 sm:w-auto sm:px-8"
-              >
-                {JOIN_LABEL}
-                <span aria-hidden="true">→</span>
-              </a>
+              <JoinPair location="404" inPage={false} />
             </div>
 
             <p className="mt-6 text-sm text-fg-subtle">

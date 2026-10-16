@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+// Base for every absolute URL (og:image, og:url, canonical). Share previews (WhatsApp, X, LinkedIn) need a public https
+// address; set NEXT_PUBLIC_SITE_URL per environment (e.g. a staging domain). Production falls back to the campaign domain.
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.NODE_ENV === "production" ? "https://pridepool.in" : "http://localhost:3000");
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

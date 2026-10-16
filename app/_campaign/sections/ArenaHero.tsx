@@ -167,21 +167,19 @@ function Headline({ align, onComplete, replay }: { align: 'center' | 'left'; onC
   return (
     <div className={align === 'center' ? 'text-center' : 'text-left'}>
       <PoolHeadline align={align} onComplete={onComplete} replay={replay} />
-      {/* The key line, with the laptop giveaway highlighted right beside it */}
-      {/* same look as the old tagline: green mono caps */}
-      <p className={`arena-enter mt-2 max-w-[34rem] text-pretty font-mono text-[0.75rem] font-bold uppercase leading-relaxed tracking-[0.08em] text-success lg:mt-3 lg:text-[1rem] ${align === 'center' ? 'mx-auto' : ''}`} style={{ '--e-delay': '0.3s' }}>
-        {POOL.pitch}
-      </p>
-      <p className="arena-enter mt-2.5 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/10 px-3 py-1 font-mono text-[0.75rem] font-bold uppercase tracking-[0.08em] text-gold shadow-[0_0_1.25rem_-0.25rem_rgb(255_201_120/0.45)] lg:mt-3 lg:px-3.5 lg:py-1.5 lg:text-[0.875rem]" style={{ '--e-delay': '0.4s' }}>
-        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="4" y="5" width="16" height="11" rx="1.5" />
-          <path d="M2 19h20" />
-        </svg>
-        {LAPTOPS.count} laptops to win
-      </p>
-      {/* the pool's two rules, stated up front */}
-      <p className={`arena-enter mt-2.5 max-w-[30rem] text-pretty text-[0.75rem] font-medium leading-snug text-fg-muted lg:mt-3 lg:text-[0.875rem] ${align === 'center' ? 'mx-auto' : ''}`} style={{ '--e-delay': '0.45s' }}>
-        {POOL.noCap}. {POOL.noGuarantee}.
+      {/* The key line, in the old tagline's look (green mono caps), small enough for one line in the desktop column (70 caps ≈ 33.5rem at 12px) */}
+      <p className={`arena-enter mt-2 max-w-[34rem] text-pretty font-mono text-[0.6875rem] font-bold uppercase leading-relaxed tracking-[0.04em] text-success lg:mt-3 lg:whitespace-nowrap lg:text-[0.75rem] ${align === 'center' ? 'mx-auto' : ''}`} style={{ '--e-delay': '0.3s' }}>
+        {POOL.pitch.split('\n').map((part, i) => (
+          <span key={i}>
+            {i > 0 && (
+              <>
+                {' '}
+                <br className="lg:hidden" />
+              </>
+            )}
+            {part}
+          </span>
+        ))}
       </p>
     </div>
   );
@@ -252,7 +250,8 @@ export default function ArenaHero({
       {/* Mounted after the landing hold, so every entrance animation (CSS and JS) starts together */}
       {/* lg:pb-20 = optical centring: the pedestals and candles weigh the bottom, so sit the content a little high */}
       {ready && (
-      <div className="arena-container flex min-h-0 flex-1 flex-col justify-center gap-6 lg:flex-row lg:items-center lg:justify-start lg:gap-12 lg:pb-20">
+      <div className="arena-container flex min-h-0 flex-1 flex-col justify-center gap-6 lg:flex-row lg:flex-wrap lg:content-center lg:items-end lg:justify-start lg:gap-12 lg:pb-20">
+        {/* desktop: the two columns line up at the bottom with each other (Join buttons + note level with the ₹1 Cr / Laptops cards), and that pair is centred in the hero: flex-wrap makes it one flex line that content-center can centre (it never actually wraps), items-end aligns within it */}
         {/* Desktop: headline column with the Join button */}
         <div className="hidden w-[36rem] shrink-0 lg:block">
           <Headline align="left" onComplete={onTitleDone} replay={sweepReplay} />
@@ -303,7 +302,8 @@ export default function ArenaHero({
         </div>
 
         {/* Mobile: Join never leaves the first screen */}
-        <div className="arena-enter shrink-0 lg:hidden" style={{ '--e-delay': '0.6s' }}>
+        {/* mt-4 on top of the row gap: the cards' 3D sides eat into it, so the buttons looked stuck to them */}
+        <div className="arena-enter mt-4 shrink-0 lg:hidden" style={{ '--e-delay': '0.6s' }}>
           <JoinChoice location="hero" shake={shakeJoin} />
         </div>
       </div>

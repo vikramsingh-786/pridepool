@@ -4,7 +4,7 @@ import CandleBackdrop from '../components/CandleBackdrop';
 import { onLanded } from '../components/landed';
 import { ANISH, JOIN_LABEL, LAPTOPS, POOL } from '../content';
 
-/** How to enter. The story: Anish finished World #2 → to celebrate, a ₹1 Crore brokerage pool → join it, trade, use brokerage from the shared pool (no individual cap) and get a chance at one of 20 laptops. Told as a stepper: 01 Join → 02 Trade → 03 Win. - Once the section lands, the steps play on their own (the rail fills, then moves to the next step). - It keeps playing: tapping a step jumps to it and carries on from there. - Mouse over the active step (its tab or the panel) pauses the fill; it resumes from the same spot on leave. - It also pauses while the section is off screen. id="enter": the hero's ₹1 Cr and 20 Laptops cards and the navbar link land here. TODO (product): the step copy below is a PLACEHOLDER until the product team shares the real steps. TODO (business): final heading. TODO (legal): allocation and winner rules. */
+/** How to enter. The story: Anish finished World #2 → to celebrate, a ₹1 Crore brokerage pool → join it, trade, use brokerage from the shared pool and get a chance at one of 20 laptops. Told as a stepper: 01 Join → 02 Trade → 03 Win. - Once the section lands, the steps play on their own (the rail fills, then moves to the next step). - It keeps playing: tapping a step jumps to it and carries on from there. - Mouse over the active step (its tab or the panel) pauses the fill; it resumes from the same spot on leave. - It also pauses while the section is off screen. id="enter": the hero's ₹1 Cr and 20 Laptops cards and the navbar link land here. TODO (product): the step copy below is a PLACEHOLDER until the product team shares the real steps. TODO (business): final heading. TODO (legal): allocation and winner rules. */
 const HEADING = 'How to enter & grab the prize';
 const STEP_MS = 5000; // how long each step stays before the stepper moves on
 
@@ -23,14 +23,14 @@ const STEPS: Step[] = [
     tag: 'Trade',
     title: 'Trade while the pool is live',
     body: 'Trade the way you already do. Every trade you place during the campaign counts towards your entry.',
-    points: ['Trade on Lemonn during the campaign', 'Brokerage on your trades comes from the shared pool', `${POOL.noCap}`],
+    points: ['Trade on Lemonn during the campaign', 'Brokerage on your trades comes from the shared pool', 'See where you stand on the leaderboard'],
   },
   {
     n: '03',
     tag: 'Win',
     title: 'Win a laptop',
-    body: `The more brokerage you use from the pool, the higher your chances at one of ${LAPTOPS.count} laptops. ${POOL.noGuarantee}.`,
-    points: [`${LAPTOPS.count} laptops up for grabs`, 'More brokerage used from the pool, better chances', 'Winners are announced on Lemonn'],
+    body: `More trades mean more brokerage saved and higher chances of winning one of ${LAPTOPS.count} laptops.`,
+    points: [`${LAPTOPS.count} laptops up for grabs`, 'More trades, more brokerage saved, higher chances', 'Winners are announced at the end of the contest'],
   },
 ];
 

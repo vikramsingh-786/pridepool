@@ -15,10 +15,6 @@ const FAQS = [
     a: 'Sign up through the campaign link and complete Lemonn’s account-opening process to participate, subject to campaign eligibility.',
   },
   {
-    q: 'Is there a limit on how much brokerage I can use from the pool?',
-    a: 'There is no individual usage cap. The total shared pool is ₹1 crore, and benefits are available while the pool lasts during the campaign period.',
-  },
-  {
     q: 'How can I win a laptop?',
     a: 'There are 20 laptops in the giveaway. Higher eligible brokerage usage from the pool increases your chance of winning. It does not guarantee a win. The published giveaway rules explain the selection process.',
   },
