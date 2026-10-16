@@ -277,6 +277,50 @@ function Pager({ page, pages, loading, onChange }: { page: number; pages: number
   );
 }
 
+/** A number in Indian words: 10000000 → "1 Crore" (long) / "1 Cr" (short); 2500000 → "25 Lakh" / "25 L". Up to 2 decimals (1.25 Cr). */
+function inWords(n: number, long: boolean): string {
+  const units: [number, string, string][] = [[1e7, ' Crore', ' Cr'], [1e5, ' Lakh', ' L'], [1e3, ' Thousand', 'K']];
+  for (const [size, l, sh] of units) if (Math.abs(n) >= size) return `${+(n / size).toFixed(2)}${long ? l : sh}`;
+  return String(n);
+}
+
+/**
+ * A stat value that never shows "…": the full value as sent if it fits the key, otherwise the same number in words
+ * (₹10000000 → ₹1 Crore → ₹1 Cr), whichever is the first to fit. Every option is measured as rendered (hidden copies)
+ * against the key's width, and re-picked when that width changes.
+ */
+function FitValue({ value, className }: { value: string; className: string }) {
+  const money = value.startsWith('₹');
+  const n = Number(money ? value.slice(1) : value);
+  const options = Number.isFinite(n) && value.trim() !== '' ? [value, ...[true, false].map((long) => `${money ? '₹' : ''}${inWords(n, long)}`)] : [value];
+  const box = useRef<HTMLElement>(null);
+  const probes = useRef<(HTMLSpanElement | null)[]>([]);
+  const [pick, setPick] = useState(0);
+  useLayoutEffect(() => {
+    const b = box.current;
+    if (!b) return;
+    const choose = () => {
+      const i = probes.current.findIndex((p) => !!p && p.offsetWidth <= b.clientWidth);
+      setPick(i === -1 ? options.length - 1 : i);
+    };
+    choose();
+    const ro = new ResizeObserver(choose);
+    ro.observe(b);
+    return () => ro.disconnect();
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+  return (
+    <dd ref={box} className={`relative ${className}`}>
+      {options[pick]}
+      {/* hidden copies, only for measuring which option fits */}
+      {options.map((o, i) => (
+        <span key={i} ref={(el) => { probes.current[i] = el; }} aria-hidden="true" className="invisible absolute left-0 top-0 whitespace-nowrap">
+          {o}
+        </span>
+      ))}
+    </dd>
+  );
+}
+
 /** Contest block from the feed, at the top of the standings card (as the old leaderboard had it): name, status, dates, pool used, then the numbers as white 3D keys (.btn-key-light, like the pager). */
 function ContestStats({ contest: c }: { contest: Contest }) {
   // [label, short label for phones, value]
@@ -315,7 +359,7 @@ function ContestStats({ contest: c }: { contest: Contest }) {
               <span className="lg:hidden">{short}</span>
               <span className="hidden lg:inline">{label}</span>
             </dt>
-            <dd className="mt-0.5 truncate font-mono text-[0.75rem] font-bold tabular-nums tracking-[-0.03em] text-[#0b0b12] sm:mt-1 sm:text-[1rem] sm:tracking-normal lg:text-[1.125rem]">{value}</dd>
+            <FitValue value={value} className="mt-0.5 truncate font-mono text-[0.75rem] font-bold tabular-nums tracking-[-0.03em] text-[#0b0b12] sm:mt-1 sm:text-[1rem] sm:tracking-normal lg:text-[1.125rem]" />
           </div>
         ))}
       </dl>
